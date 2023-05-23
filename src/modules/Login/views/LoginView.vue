@@ -82,7 +82,7 @@ const formState = reactive({
   password: "",
   platform: null,
   age: null,
-  remember: true,
+  remember: false,
 });
 // mensaje de envio exitoso en consola
 const onFinish = (values) => {
