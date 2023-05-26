@@ -43,13 +43,13 @@
           </a-input-password>
         </a-form-item>
         <a-form-item label="Plataforma" name="platform">
-          <a-select placeholder="Seleccione" v-model:value="formState.platform">
+          <a-select placeholder="Seleccione la plataforma" v-model:value="formState.platform">
             <a-select-option value="plataformaa" >Plataforma a</a-select-option>
             <a-select-option value="plataforma">Plataforma b</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="Año" name="age">
-          <a-select placeholder="Por favor, seleccione el año" v-model:value="formState.age">
+          <a-select placeholder="Seleccione el año" v-model:value="formState.age">
             <a-select-option value="2022">202x</a-select-option>
             <a-select-option value="2023">202x</a-select-option>
           </a-select>
@@ -80,9 +80,9 @@ import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons-vue"
 const formState = reactive({
   username: "",
   password: "",
-  platform: "",
-  age: "",
-  remember: true,
+  platform: null,
+  age: null,
+  remember: false,
 });
 // mensaje de envio exitoso en consola
 const onFinish = (values) => {
