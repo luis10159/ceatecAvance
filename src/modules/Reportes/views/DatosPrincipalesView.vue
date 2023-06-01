@@ -8,6 +8,10 @@
         <ConsultarSunat></ConsultarSunat>
         <RegistroPlanillas></RegistroPlanillas>
         <ParametrosAux></ParametrosAux>
+        <RegistroPlanillasB></RegistroPlanillasB>
+        <RegistroCajaBancos></RegistroCajaBancos>
+        <CuentasPorCobrar></CuentasPorCobrar>
+        <RegistrarCobranza></RegistrarCobranza>
     </div>
     <div>
         <datos></datos>
@@ -26,7 +30,10 @@ const MantClienteProv = defineAsyncComponent(() => import('@/modules/Reportes/co
 const ConsultarSunat = defineAsyncComponent(() => import('@/modules/Reportes/components/ConsultarSunat.vue'));
 const RegistroPlanillas = defineAsyncComponent(() => import('@/modules/Reportes/components/RegistroPlanillas.vue'));
 const ParametrosAux = defineAsyncComponent(() => import('@/modules/Reportes/components/ParametrosAux.vue'));
-
+const RegistroPlanillasB = defineAsyncComponent(() => import('@/modules/Reportes/components/RegistroPlanillasB.vue'));
+const RegistroCajaBancos = defineAsyncComponent(() => import('@/modules/Reportes/components/RegistroCajaBancos.vue'));
+const CuentasPorCobrar = defineAsyncComponent(() => import('@/modules/Reportes/components/CuentasPorCobrar.vue'));
+const RegistrarCobranza = defineAsyncComponent(() => import('@/modules/Reportes/components/RegistrarCobranza.vue'));
 </script>
 
 <style lang="scss" scoped>

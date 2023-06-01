@@ -3,7 +3,7 @@
 
     <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px" title="Parámetros Auxiliares"
         @ok="handleOkPro">
-        <a-form :model="formCompObli" :rules="rulesCompObli" layout="vertical">
+        <a-form :model="form" :rules="roles" layout="vertical">
 
             <a-row :gutter="16" class="margen-arriba">
                 <a-col :span="24">
@@ -13,7 +13,7 @@
                             <a-row justify="center" class="margen-abajo">
                                 <a-col>
                                     <a-space wrap>
-                                        
+
                                         <a-button block :icon="h(PlusOutlined)">Nuevo</a-button>
                                         <a-button type="dashed" block :icon="h(ArrowLeftOutlined)">Deshacer</a-button>
                                         <a-button danger block :icon="h(MinusOutlined)">Eliminar</a-button>
@@ -22,21 +22,50 @@
                                 </a-col>
                             </a-row>
 
-                            <a-typography-text strong >Parámetros Auxiliares</a-typography-text>
-                            <a-row :gutter="16" class="color">
-                                <a-col :span="8">
+                            <a-typography-text strong>Parámetros Auxiliares</a-typography-text>
+                            <a-row :gutter="16">
+                                <a-col :span="12">
                                     <a-form-item label="Descripción" name="glosario">
-                                        <a-input v-model:value="formCompObli.glosario" placeholder="Ingrese la descripción" />
+                                        <a-input v-model:value="form.glosario" placeholder="Ingrese la descripción" />
                                     </a-form-item>
                                 </a-col>
-                                <a-col :span="16">
-                                    <a-form-item label="Cta. Debe" name="glosario">
-                                        <a-input v-model:value="formCompObli.glosario" placeholder="Ingrese Cta. Debe" />
+                                <a-col :span="6">
+                                    <a-form-item label="Cta. Debe" name="debe">
+                                        <a-input v-model:value="form.debe" placeholder="Ingrese Cta. Debe" />
+                                    </a-form-item>
+                                </a-col>
+                                <a-col :span="6">
+                                    <a-form-item label="Cta. Haber" name="haber">
+                                        <a-input v-model:value="form.haber" placeholder="Ingrese Cta. Haber" />
+                                    </a-form-item>
+                                </a-col>
+                                <a-col :span="6">
+                                    <a-form-item label="Valor" name="valor">
+                                        <a-input-number v-model:value="form.valor" :min="0" :max="100"
+                                            :formatter="value => `${value}%`" :parser="value => value.replace('%', '')" class="ancho"/>
+                                    </a-form-item>
+                                </a-col>
+                                <a-col :span="6">
+                                    <a-form-item label="Tipo" name="tipo">
+                                        <a-select ref="select" v-model:value="form.tipo" :options="optClientProv"
+                                            @focus="focusTipo" @change="handleChangeTipo"
+                                            placeholder="Ingrese tipo"></a-select>
+                                    </a-form-item>
+                                </a-col>
+
+                                <a-col :span="6">
+                                    <a-form-item label="Situación" name="descripcion">
+                                        <a-checkbox v-model:checked="form.checkCtaCont">Activo</a-checkbox>
+                                    </a-form-item>
+                                </a-col>
+                                <a-col :span="6">
+                                    <a-form-item label="Orden" name="debe">
+                                        <a-input-number v-model:value="form.debe" class="ancho"
+                                            placeholder="Ingrese el orden" />
                                     </a-form-item>
                                 </a-col>
                             </a-row>
-                            <a-typography-title :level="3" style="color: red;">Falta terminar</a-typography-title>
-                            <a-row class="margen-arriba">
+                            <a-row class="margen-arriba" :gutter="16" align="middle">
                                 <a-col :span="18">
                                     <a-typography-text strong>Historico</a-typography-text>
                                     <a-table :columns="columns" :data-source="data" bordered size="small"
@@ -47,6 +76,12 @@
                                             </template>
                                         </template>
                                     </a-table>
+                                </a-col>
+                                <a-col :span="6">
+                                    <a-button block :icon="h(PlusOutlined)">Agregar</a-button>
+                                    <a-button type="dashed" block :icon="h(EditOutlined)">Modifica</a-button>
+                                    <a-button danger block :icon="h(MinusOutlined)">Eliminar</a-button>
+
                                 </a-col>
                             </a-row>
 
@@ -60,9 +95,8 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import { PrinterOutlined, PlusOutlined, MinusOutlined, ArrowLeftOutlined } from '@ant-design/icons-vue';
-import { h } from 'vue';
+import { ref, reactive, h } from 'vue'
+import { PrinterOutlined, PlusOutlined, MinusOutlined, ArrowLeftOutlined, EditOutlined } from '@ant-design/icons-vue';
 
 //  inicar proceso
 const openPro = ref(false);
@@ -125,64 +159,97 @@ const data = [{
     cuenta: '7673',
     cCosto: 32,
     debeSol: '87857',
-    
+
 }, {
     key: '4',
     cuenta: '7673',
     cCosto: 32,
     debeSol: '87857',
-    
+
 }, {
     key: '5',
     cuenta: '7673',
     cCosto: 32,
     debeSol: '87857',
-    
+
 }, {
     key: '6',
     cuenta: '7673',
     cCosto: 32,
     debeSol: '87857',
-    
+
 }];
 
 //datos modal
-const formCompObli = reactive({
-    voucher: null,
-    PeriaCOnt: null,
-    LibroAux: null,
-    NuVoucher: null,
-    fecha: null,
-    glosario: null,
+const form = reactive({
+    descripcion: null,
+    debe: null,
+    haber: null,
+    valor: null,
+    tipo: null,
+    checkSituac: null,
 
 });
 
-const rulesCompObli = {
-    voucher: [{
+const roles = {
+    descripcion: [{
         required: true,
-        message: 'Ingrese el voucher',
+        message: 'Ingrese la descripción',
     }],
-    PeriaCOnt: [{
+    debe: [{
         required: true,
-        message: 'Ingrese el periodo contable',
+        message: 'Ingrese el debe',
     }],
-    LibroAux: [{
+    haber: [{
         required: true,
-        message: 'Selecione el N° de voucher',
+        message: 'Selecione el haber',
     }],
-    NuVoucher: [{
+    valor: [{
         required: true,
-        message: 'Selecione el año',
+        message: 'Selecione el valor',
     }],
     fecha: [{
         required: true,
-        message: 'Selecione el mes',
+        message: 'Selecione la fecha',
     }],
-    glosario: [{
+    tipo: [{
         required: true,
-        message: 'Selecione el glosario',
+        message: 'Selecione el tipo',
+    }],
+    tipo: [{
+        required: true,
+        message: 'Selecione el tipo',
+    }],
+    tipo: [{
+        required: true,
+        message: 'Selecione el tipo',
     }],
 }
+
+// Select tipo
+
+const optClientProv = ref([{
+    value: '001',
+    label: 'Cliente/Proveedor',
+}, {
+    value: '002',
+    label: 'Selección 2',
+}, {
+    value: '003',
+    label: 'Selección 3',
+}, {
+    value: '004',
+    label: 'Selección 4',
+}]);
+
+const focusTipo = () => {
+    console.log('focus');
+};
+const handleChangeTipo = value => {
+    console.log(`Seleccionado ${value}`);
+};
+
+
 
 </script>
 
@@ -200,6 +267,7 @@ const rulesCompObli = {
 .margen-arriba {
     margin-top: 30px;
 }
+
 .margen-abajo {
     margin-bottom: 30px;
 }
