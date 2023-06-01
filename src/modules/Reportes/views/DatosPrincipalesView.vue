@@ -2,9 +2,7 @@
     <div>
         <DatosPrincipales></DatosPrincipales>
         <ComprasObligaciones></ComprasObligaciones>
-        
         <MantClienteProv></MantClienteProv>
-
         <ConsultarSunat></ConsultarSunat>
         <RegistroPlanillas></RegistroPlanillas>
         <ParametrosAux></ParametrosAux>
@@ -12,6 +10,9 @@
         <RegistroCajaBancos></RegistroCajaBancos>
         <CuentasPorCobrar></CuentasPorCobrar>
         <RegistrarCobranza></RegistrarCobranza>
+        <MantenimientoBancos></MantenimientoBancos>
+        <TipoCambio></TipoCambio>
+        <BuscarDocumento></BuscarDocumento>
     </div>
     <div>
         <datos></datos>
@@ -34,6 +35,10 @@ const RegistroPlanillasB = defineAsyncComponent(() => import('@/modules/Reportes
 const RegistroCajaBancos = defineAsyncComponent(() => import('@/modules/Reportes/components/RegistroCajaBancos.vue'));
 const CuentasPorCobrar = defineAsyncComponent(() => import('@/modules/Reportes/components/CuentasPorCobrar.vue'));
 const RegistrarCobranza = defineAsyncComponent(() => import('@/modules/Reportes/components/RegistrarCobranza.vue'));
+const MantenimientoBancos = defineAsyncComponent(() => import('@/modules/Reportes/components/MantenimientoBancos.vue'));
+const TipoCambio = defineAsyncComponent(() => import('@/modules/Reportes/components/TipoCambio.vue'));
+const BuscarDocumento = defineAsyncComponent(() => import('@/modules/Reportes/components/BuscarDocumento.vue'));
+
 </script>
 
 <style lang="scss" scoped>

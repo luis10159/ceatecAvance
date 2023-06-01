@@ -1,110 +1,61 @@
 <template>
-        <a-button type="primary" @click="showModal">Resgistrar Cobranza</a-button>
-        <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="open" width="700px"
-            title="Registrar cobranza" @ok="handleOk">
-            <a-form :model="form" :rules="rules" layout="vertical">
-                <a-config-provider :component-size="componentSize">
-                <a-row :gutter="16" justify="center" class="margen-abajo">
-                    <a-col :span="4">
+    <a-button type="primary" @click="showModal">Resgistrar Cobranza</a-button>
+    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="open" width="700px" title="Registrar cobranza"
+        @ok="handleOk">
+        <a-form :model="form" :rules="rules" layout="vertical">
+            <a-config-provider :component-size="componentSize">
+                <a-row :gutter="16" class="margen-abajo" align="bottom">
+                    <a-col :span="5">
                         <a-form-item label="Nro Voucher" name="NumDoc">
                             <a-input v-model:value="form.NumDoc" placeholder="Ingrese" />
                         </a-form-item>
                     </a-col>
                     <a-col :span="10">
-                        <a-form-item label="Cliente" name="ctaCont">
-                            <a-select placeholder="Seleccione la cuenta contable" v-model:value="form.ctaCont" show-search
-                                :options="ctaCont" :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur"
+                        <a-form-item label="Cliente" name="cliente">
+                            <a-select placeholder="Seleccione el cliente" v-model:value="form.cliente" show-search
+                                :options="cliente" :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur"
                                 @change="handleChange"></a-select>
                         </a-form-item>
-
                     </a-col>
-                    <a-col :span="10">
+                    <a-col :span="9">
                         <a-form-item label="Tipo de operación" name="TipOper">
                             <a-select ref="select" v-model:value="form.TipOper" :options="optTipOper" @focus="focusTipo"
                                 @change="handleChangeTipo" placeholder="Seleccione el tipo de operación"></a-select>
                         </a-form-item>
                     </a-col>
                     <a-col :span="10">
-                        <a-form-item label="caja" name="TipOper">
-                            <a-select ref="select" v-model:value="form.TipOper" :options="optTipOper" @focus="focusTipo"
-                                @change="handleChangeTipo" placeholder="Seleccione el tipo de operación"></a-select>
+                        <a-form-item label="Cuenta" name="cuenta">
+                            <a-select ref="select" v-model:value="form.Cuenta" :options="optCuenta" @focus="focusCuenta"
+                                @change="handleChangeCuenta" placeholder="Seleccione la cuenta"></a-select>
                         </a-form-item>
                     </a-col>
 
-                </a-row>
-
-                <a-row :gutter="16" align="bottom" class="color">
-                    <a-col :span="9">
-                        <a-checkbox v-model:checked="form.checProvee"></a-checkbox>
-                        <a-form-item label="Proveedor" name="proveedor">
-                            <a-select placeholder="Seleccione el proveedor" v-model:value="form.proveedor" show-search
-                                :options="proveedor" :filter-option="filterOptionPro" @focus="handleFocusPro"
-                                @blur="handleBlurPro" @change="handleChangePro"></a-select>
-                        </a-form-item>
-                    </a-col>
-                    <a-col :span="6">
-                        <a-form-item label="Tipo de doc." name="tipDoc">
-                            <a-select placeholder="Seleccione el tipo de doc." v-model:value="form.tipDoc" show-search
+                    <a-col :span="7">
+                        <a-form-item label="Documento" name="tipDoc">
+                            <a-select placeholder="Ingrese el doc." v-model:value="form.tipDoc" show-search
                                 :options="tipDoc" :filter-option="filterOptionTipDoc" @focus="handleFocusTipDoc"
                                 @blur="handleBlurTipDoc" @change="handleChangeTipDoc"></a-select>
                         </a-form-item>
                     </a-col>
-                    <a-col :span="9">
-                        <a-form-item label="Nro Doc" name="NumDoc">
+                    <a-col :span="7">
+                        <a-form-item name="NumDoc">
                             <a-input v-model:value="form.NumDoc" placeholder="Ingrese el número de doc." />
                         </a-form-item>
                     </a-col>
-                    <a-col :span="9">
-                        <a-form-item>
-                        </a-form-item>
-                    </a-col>
-                    <a-col :span="6">
-                        <a-form-item label="Documento N°" name="tipDoc">
-                            <a-select v-model:value="form.tipDoc" show-search :options="tipDoc"
-                                :filter-option="filterOptionTipDoc" @focus="handleFocusTipDoc" @blur="handleBlurTipDoc"
-                                @change="handleChangeTipDoc" disabled="true"></a-select>
-                        </a-form-item>
-
-                    </a-col>
-                    <a-col :span="9">
-                        <a-form-item>
-                            <a-input disabled="" />
-                        </a-form-item>
-                    </a-col>
-                    <a-col :span="15">
-                        <a-form-item label="Detalle" name="detalle">
-                            <a-input v-model:value="form.detalle" placeholder="Ingrese el detalle" />
-                        </a-form-item>
-                    </a-col>
-                    <a-col :span="9">
-                        <a-checkbox v-model:checked="form.checFecVen"><a-typography-text strong>Sin fecha
-                                Vencto</a-typography-text></a-checkbox>
-                        <a-form-item label="Fecha Emisión / Vencto" name="fecha">
-                            <a-range-picker v-model:value="form['fecha']"
-                                :placeholder="['Fecha emisión', 'Fecha vencto']" />
-                        </a-form-item>
-                    </a-col>
-                    <a-col :span="7">
-                        <a-form-item label="Cta. Banco" name="ctaBanco">
-                            <a-input v-model:value="form.ctaBanco" placeholder="Ingrese  la cta. banco" />
-                        </a-form-item>
-                    </a-col>
-                    <a-col :span="4">
-                        <a-form-item>
-                            <a-checkbox v-model:checked="form.checReparo"><a-typography-text
-                                    strong>Reparo</a-typography-text></a-checkbox>
-                        </a-form-item>
-                    </a-col>
-                    <a-col :span="6">
-                        <a-form-item label="C. Costo" name="CCosto">
-                            <a-input v-model:value="form.CCosto" placeholder="Ingrese la C.Costo" />
-                        </a-form-item>
-                    </a-col>
-                    <a-col :span="7">
+                    <a-col :span="10">
                         <a-form-item label="Flujo Efec." name="FlujEfec">
                             <a-input v-model:value="form.FlujEfec" placeholder="Ingrese flujo Efec." />
                         </a-form-item>
                     </a-col>
+
+                    <a-col :span="7">
+                        <a-form-item label="Fecha Cobranza" name="fecha">
+                            <a-date-picker class="ancho" v-model:value="form.fecha" placeholder="Selecione la fecha" />
+                        </a-form-item>
+                    </a-col>
+
+
+
                     <a-col :span="7">
                         <a-form-item label="Tipo de cambio" name="TipCamb">
                             <a-input-number v-model:value="form.TipCamb" placeholder="Ingrese el tipo de cambio">
@@ -120,44 +71,129 @@
                             </a-input-number>
                         </a-form-item>
                     </a-col>
-                    <a-col :span="6">
-                        <a-form-item label="Debe" name="debe">
-                            <a-input v-model:value="form.debe" placeholder="Ingrese el debe" />
+                    <a-col :span="5">
+                        <a-form-item label="Monto a pagar" name="montoPagar">
+                            <a-input-number class="ancho" v-model:value="form.montoPagar"
+                                placeholder="Ingrese el monto a pagar" />
                         </a-form-item>
                     </a-col>
-                    <a-col :span="7">
-                        <a-form-item label="Haber" name="haber">
-                            <a-input v-model:value="form.haber" placeholder="Ingrese el haber" />
+                    <a-col :span="19">
+                        <a-form-item label="Detalle" name="detalle">
+                            <a-input v-model:value="form.detalle" placeholder="Ingrese el detalle" />
                         </a-form-item>
                     </a-col>
-                    <a-col :span="4">
-                        <a-form-item>
-                            <a-checkbox v-model:checked="form.checReparo"><a-typography-text strong>Retención
-                                    IGV</a-typography-text></a-checkbox>
-                        </a-form-item>
-                    </a-col>
-                    <a-col :span="9">
-                        <a-checkbox v-model:checked="form.checafectIGV"></a-checkbox>
-                        <a-form-item label="Afecto IGV(18%)" name="afectIGV">
-                            <a-input v-model:value="form.haber" placeholder="Ingrese" />
-                        </a-form-item>
-                    </a-col>
-                </a-row>
-                <a-row justify="center" class="ancho">
-                    <a-col>
-                        <a-button block :icon="h(EditOutlined)">Varios documentos</a-button>
-                    </a-col>
-
                 </a-row>
             </a-config-provider>
-            </a-form>
-        </a-modal>
+        </a-form>
 
+
+
+        <a-table bordered :data-source="data" :columns="columns" :pagination="{ pageSize: 5 }" :scroll="{ x: 1000 }"
+            size="small">
+            <template #headerCell="{ column }">
+                <template v-if="column.key === 'ruc'">
+                    <span style="color: #1890ff">RUC</span>
+                </template>
+            </template>
+            <template #customFilterDropdown="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }">
+                <div style="padding: 8px">
+                    <a-input ref="searchInput" :placeholder="`Buscar ${column.dataIndex}`" :value="selectedKeys[0]"
+                        style="width: 188px; margin-bottom: 8px; display: block"
+                        @change="e => setSelectedKeys(e.target.value ? [e.target.value] : [])"
+                        @pressEnter="handleSearch(selectedKeys, confirm, column.dataIndex)" />
+                    <a-button type="primary" size="small" style="width: 90px; margin-right: 8px"
+                        @click="handleSearch(selectedKeys, confirm, column.dataIndex)">
+                        <template #icon>
+                            <SearchOutlined />
+                        </template>
+                        Buscar
+                    </a-button>
+                    <a-button size="small" style="width: 90px" @click="handleReset(clearFilters)">
+                        Reiniciar
+                    </a-button>
+                </div>
+            </template>
+            <template #customFilterIcon="{ filtered }">
+                <search-outlined :style="{ color: filtered ? '#108ee9' : undefined }" />
+            </template>
+            <template #bodycell="{ text, column }">
+                <span v-if="stateAsRefs.searchText && stateAsRefs.searchedColumn === column.dataIndex">
+                    <template v-for="(fragment, i) in text
+                        .toString()
+                        .split(new RegExp(`(?<=${stateAsRefs.searchText})|(?=${stateAsRefs.searchText})`, 'i'))">
+                        <mark v-if="fragment.toLowerCase() === stateAsRefs.searchText.toLowerCase()" :key="i"
+                            class="highlight">
+                            {{ fragment }}
+                        </mark>
+
+                        <template v-else>{{ fragment }}</template>
+                    </template>
+
+                </span>
+
+            </template>
+            <template #bodyCell="{ column, record }">
+                <!-- Operaciones -->
+                <template v-if="column.dataIndex === 'operation'">
+                    <a-row>
+                        <a-popconfirm v-if="data.length" title="¿Seguro de eliminar?" ok-text="Sí" cancel-text="No"
+                            @confirm="onDelete(record.key)">
+                            <a-button class="btn-margin" type="primary" danger><template #icon>
+                                    <DeleteOutlined />
+                                </template> Eliminar</a-button>
+
+                        </a-popconfirm>
+
+                    </a-row>
+
+                </template>
+            </template>
+            <p>{{ message }}</p>
+        </a-table>
+        <a-row justify="end" class="margen-abajo">
+            
+            <a-col :span="8">
+                <a-button block :icon="h(CheckOutlined)">Actualizar valor a pagar</a-button>
+
+            </a-col>
+        
+    </a-row>
+    <a-row  :gutter="16" justify="end">
+        <a-col :span="6">
+            <a-form-item label="Monto total" name="montoTotal">
+                <a-input-number disabled="true" class="ancho" v-model:value="form.montoTotal" placeholder="Ingrese el monto total" />
+            </a-form-item>
+        </a-col>
+        <a-col :span="6">
+            <a-form-item label="Total a pagar" name="totalPagar">
+                <a-input-number disabled="true" class="ancho" v-model:value="form.montoPagar" placeholder="Ingrese el total a pagar" />
+            </a-form-item>
+        </a-col>
+    </a-row>
+        <a-row class="ancho color margen-abajo" justify="center">
+            <a-typography-text strong class="margen">Operación</a-typography-text>
+            <a-row :gutter="16" class="ancho" justify="center">
+                <a-col :span="5">
+                    <a-button block :icon="h(PlusOutlined)">Nuevo</a-button>
+
+                </a-col>
+                <a-col :span="5">
+                    <a-button type="dashed" block :icon="h(SaveOutlined)">Grabar</a-button>
+
+                </a-col>
+                <a-col :span="5">
+
+                    <a-button type="dashed" block :icon="h(ArrowLeftOutlined)">Volver</a-button>
+                </a-col>
+            </a-row>
+        </a-row>
+        
+    </a-modal>
 </template>
 
 <script setup>
-import { ref, reactive, h } from 'vue'
-import { PrinterOutlined, PlusOutlined, MinusOutlined, ArrowLeftOutlined, EditOutlined } from '@ant-design/icons-vue';
+import { ref, reactive, h, toRefs } from 'vue'
+import { PlusOutlined, ArrowLeftOutlined, SaveOutlined, DeleteOutlined, CheckOutlined } from '@ant-design/icons-vue';
 const componentSize = ref('middle');
 
 const value1 = ref();
@@ -176,7 +212,7 @@ const handleOk = (e) => {
 
 //datos modal
 const form = reactive({
-    ctaCont: null,
+    cliente: null,
     proveedor: null,
     checProvee: false,
     tipDoc: null,
@@ -185,22 +221,24 @@ const form = reactive({
     fecha: null,
     checFecVen: false,
     ctaBanco: null,
-    CCosto: null,
+    montoPagar: null,
+    montoTotal: null,
     FlujEfec: null,
     TipCamb: null,
     moneda: "PER",
     debe: null,
     haber: null,
     TipOper: null,
+    cuenta: null,
     checReparo: null,
     afectIGV: null,
     checafectIGV: false,
 });
 
 const rules = {
-    ctaCont: [{
+    cliente: [{
         required: true,
-        message: 'Ingrese la ctaCont',
+        message: 'Ingrese el cliente',
     }],
     proveedor: [{
         required: true,
@@ -226,9 +264,17 @@ const rules = {
         required: true,
         message: 'Escriba ela cta. Banco',
     }],
-    CCosto: [{
+    montoPagar: [{
         required: true,
-        message: 'Escriba la C. Costo',
+        message: 'Ingrese el monto a pagar',
+    }],
+    montoTotal: [{
+        required: true,
+        message: 'Ingrese el monto total',
+    }],
+    totalPagar: [{
+        required: true,
+        message: 'Ingrese el total a pagar',
     }],
     FlujEfec: [{
         required: true,
@@ -250,28 +296,32 @@ const rules = {
         required: true,
         message: 'Seleccione el tipo de operación',
     }],
+    cuenta: [{
+        required: true,
+        message: 'Seleccione la cuenta',
+    }],
 
 }
 
 
 
-//select ctaCont
-const ctaCont = ref([{
+//select cliente
+const cliente = ref([{
     value: '6211',
-    label: 'Cta. contable a',
+    label: 'Cliente a',
 }, {
     value: '43111',
-    label: 'Cta. contable b',
+    label: 'Cliente b',
 }, {
     value: '7312',
-    label: 'Cta. contable c',
+    label: 'Cliente c',
 }, {
     value: '6361',
-    label: 'Cta. contable d',
+    label: 'Cliente d',
 }]);
 
 const handleChange = value => {
-    console.log(`Seleccionado ${form.ctaCont}`);
+    console.log(`Seleccionado ${form.cliente}`);
 };
 const handleBlur = () => {
     console.log('blur');
@@ -284,35 +334,6 @@ const filterOption = (input, option) => {
     return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
 
-
-//select proveedor
-const proveedor = ref([{
-    value: '6211',
-    label: 'Proveedor a',
-}, {
-    value: '43111',
-    label: 'Proveedor b',
-}, {
-    value: '7312',
-    label: 'Proveedor c',
-}, {
-    value: '6361',
-    label: 'Proveedor d',
-}]);
-
-const handleChangePro = value => {
-    console.log(`Seleccionado ${form.proveedor}`);
-};
-const handleBlurPro = () => {
-    console.log('blur');
-};
-const handleFocusPro = () => {
-    console.log('focus');
-};
-const filterOptionPro = (input, option) => {
-    const inputValue = input.toLowerCase();
-    return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
-};
 
 
 //select tipo de doc.
@@ -369,6 +390,170 @@ const handleChangeTipo = value => {
     console.log(`Seleccionado ${value}`);
 };
 
+// select cuenta
+const optCuenta = ref([{
+    value: '001',
+    label: 'Caja',
+}, {
+    value: '002',
+    label: 'Selección 2',
+}, {
+    value: '003',
+    label: 'Selección 3',
+}, {
+    value: '004',
+    label: 'Selección 4',
+}]);
+
+const focusCuenta = () => {
+    console.log('focus');
+};
+const handleChangeCuenta = value => {
+    console.log(`Seleccionado ${value}`);
+};
+
+
+
+
+//tabla con los datos
+const data = ref([{
+    key: '1',
+    ruc: '2089874356',
+    cliente: 'Empresas de transportes el AGRO S.A',
+    codVenta: 'FAC',
+    nroDoc: '0004-000586',
+    fechaDoc: '02/06/2023',
+    deuda: 880.00,
+    amortizar: 0.00,
+
+}, {
+    key: '2',
+    ruc: '2089874356',
+    cliente: 'Empresas de transportes el AGRO S.A',
+    codVenta: 'FAC',
+    nroDoc: '0004-05475',
+    fechaDoc: '01/06/2023',
+    deuda: 700.00,
+    amortizar: 0.00,
+
+}, {
+    key: '3',
+    ruc: '2089874356',
+    cliente: 'Empresas de transportes el AGRO S.A',
+    codVenta: 'FAC',
+    nroDoc: '0004-00643',
+    fechaDoc: '01/06/2023',
+    deuda: 980.00,
+    amortizar: 0.00,
+
+}, {
+    key: '4',
+    ruc: '2089874356',
+    cliente: 'Empresas de transportes el AGRO S.A',
+    codVenta: 'FAC',
+    nroDoc: '0004-00566',
+    fechaDoc: '31/05/2023',
+    deuda: 1000.00,
+    amortizar: 0.00,
+
+}]);
+
+const state = reactive({
+    searchText: '',
+    searchedColumn: '',
+    selectedRowKeys: [],
+
+    loading: false,
+});
+const searchInput = ref();
+const columns = [{
+    title: 'RUC',
+    dataIndex: 'ruc',
+    key: 'ruc',
+    customFilterDropdown: true,
+    onFilter: (value, record) => record.ruc.toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: visible => {
+        if (visible) {
+            setTimeout(() => {
+                searchInput.value.focus();
+            }, 100);
+        }
+    },
+}, {
+    title: 'Cuenta Contable',
+    dataIndex: 'cliente',
+    key: 'cliente',
+    customFilterDropdown: true,
+    onFilter: (value, record) => record.cliente.toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: visible => {
+        if (visible) {
+            setTimeout(() => {
+                searchInput.value.focus();
+            }, 100);
+        }
+    },
+
+
+}, {
+    title: 'CódVenta',
+    dataIndex: 'codVenta',
+    key: 'codVenta',
+
+
+}, {
+    title: 'Nro. Docuemnto',
+    dataIndex: 'nroDoc',
+    key: 'nroDoc',
+
+
+}, {
+    title: 'Fecha Doc.',
+    dataIndex: 'fechaDoc',
+    key: 'fechaDoc',
+
+
+}, {
+    title: 'Deuda',
+    dataIndex: 'deuda',
+    key: 'deuda',
+
+
+}, {
+    title: 'Amortizar',
+    dataIndex: 'amortizar',
+    key: 'amortizar',
+
+
+}, {
+    title: 'Operaciones',
+    dataIndex: 'operation',
+
+
+}];
+
+//Buscar
+const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    state.searchText = selectedKeys[0];
+    state.searchedColumn = dataIndex;
+};
+
+//reiniciar
+const handleReset = clearFilters => {
+    clearFilters({
+        confirm: true,
+    });
+    state.searchText = '';
+};
+
+const stateAsRefs = toRefs(state)
+
+//Eliminar
+const onDelete = key => {
+    data.value = data.value.filter(item => item.key !== key);
+
+};
+
 
 
 </script>
@@ -384,7 +569,11 @@ const handleChangeTipo = value => {
     width: 100%;
 }
 
+.margen {
+    margin: 10px 0;
+}
+
 .margen-abajo {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 </style>
