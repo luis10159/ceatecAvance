@@ -13,6 +13,9 @@
         <MantenimientoBancos></MantenimientoBancos>
         <TipoCambio></TipoCambio>
         <BuscarDocumento></BuscarDocumento>
+        <InconsisComprobantes></InconsisComprobantes>
+        <LibroDiario></LibroDiario>
+        <BalanceComprobacion></BalanceComprobacion>
     </div>
     <div>
         <datos></datos>
@@ -38,21 +41,8 @@ const RegistrarCobranza = defineAsyncComponent(() => import('@/modules/Reportes/
 const MantenimientoBancos = defineAsyncComponent(() => import('@/modules/Reportes/components/MantenimientoBancos.vue'));
 const TipoCambio = defineAsyncComponent(() => import('@/modules/Reportes/components/TipoCambio.vue'));
 const BuscarDocumento = defineAsyncComponent(() => import('@/modules/Reportes/components/BuscarDocumento.vue'));
+const InconsisComprobantes = defineAsyncComponent(() => import('@/modules/Reportes/components/InconsisComprobantes.vue'));
+const LibroDiario = defineAsyncComponent(() => import('@/modules/Reportes/components/LibroDiario.vue'));
+const BalanceComprobacion = defineAsyncComponent(() => import('@/modules/Reportes/components/BalanceComprobacion.vue'));
 
 </script>
-
-<style lang="scss" scoped>
-.color {
-    border: 2px solid rgba(0, 89, 255, 0.080);
-    background-color: rgba(5, 170, 247, 0.024);
-    border-radius: 10px
-}
-
-.ancho {
-    width: 100%;
-}
-
-.margen-arriba {
-    margin-top: 30px;
-}
-</style>

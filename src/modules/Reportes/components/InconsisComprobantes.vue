@@ -1,25 +1,59 @@
 <template>
-    <a-button type="primary" @click="showModalPro">Buscar Documento</a-button>
+    <a-button type="primary" @click="showModalPro">Inconsistencias</a-button>
 
-    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px" title="Buscar Documento"
-        @ok="handleOkPro">
-        <a-row justify="center">
-            <a-col :span="8">
-                
-                <a-typography-text strong>Documento a buscar: </a-typography-text>
+    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px"
+        title="Inconsistencias de comprobantes" @ok="handleOkPro">
 
-                    <a-input-search v-model:value="buscador" placeholder="Ingrese el documento" enter-button
-                        @search="enbusca" />
-                
-            </a-col>
-        </a-row>
+        <a-form :model="form" :rules="rules" layout="vertical">
+            <a-row :gutter="16">
+
+                <a-col :span="24">
+                    <a-row :gutter="16" justify="center">
+                        <a-col :span="8">
+                            <a-form-item label="Desde el mes" name="mes">
+                                <a-date-picker v-model:value="form.mes" picker="month" placeholder="Mes" class="ancho" />
+                            </a-form-item>
+                        </a-col>
+                        <a-col :span="8">
+                            <a-form-item label="Hasta el mes" name="mes">
+                                <a-date-picker v-model:value="form.mes" picker="month" placeholder="Mes" class="ancho" />
+                            </a-form-item>
+                        </a-col>
+                        <a-col :span="8">
+                            <a-form-item label="Año contable" name="mes">
+                                <a-date-picker v-model:value="form.mes" picker="year" placeholder="Ingrese año contable"
+                                    class="ancho" />
+                            </a-form-item>
+                        </a-col>
+                        <a-col :span="24">
+                            <a-form-item label="Inconsistencias" name="inconsistencias">
+                                <a-select class="ancho" placeholder="Seleccione la inconsistencia"
+                                    v-model:value="form.inconsistencias" show-search :options="optInconsis"
+                                    :filter-option="filterOptionInconsis" @focus="handleFocusInconsis"
+                                    @blur="handleBlurInconsis" @change="handleChangeGrupA"></a-select>
+                            </a-form-item>
+                        </a-col>
+                        <a-col>
+                            <a-button type="primary" :icon="h(SearchOutlined)">Buscar</a-button>
+                        </a-col>
+                    </a-row>
+                </a-col>
+
+            </a-row>
+
+        </a-form>
+
+
+
+
+
         <a-row class="margen-arriba">
 
             <a-table bordered :data-source="data" :columns="columns" :pagination="{ pageSize: 5 }"
-                class="ancho margen-arriba" :row-selection="rowSelection" size="small" v-show="existeBusqueda">
+                class="ancho margen-arriba" :row-selection="rowSelection" size="small">
                 <template #headerCell="{ column }">
-                    <template v-if="column.key === 'tipDoc'">
-                        <span style="color: #1890ff">Tipo de Doc.</span>
+                    <template v-if="column.key === 'nroDoc'">
+                        <span style="color: #1890ff">Nro. Documento</span>
                     </template>
                 </template>
                 <template #customFilterDropdown="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }">
@@ -66,7 +100,7 @@
 
         <a-row class="margen-arriba" v-show="existe">
             <a-table bordered :data-source="datab" :columns="columnsb" :pagination="{ pageSize: 5 }" class="ancho"
-                :row-selection="rowSelectionb" :scroll="{ x: 1000 }" size="small">
+                :row-selection="rowSelectionb" :scroll="{ x: 1200 }" size="small">
                 <template #headerCell="{ column }">
                     <template v-if="column.key === 'cuenta'">
                         <span style="color: #1890ff">Cuenta</span>
@@ -108,7 +142,20 @@
                     </span>
                 </template>
                 <template #bodyCell="{ column, record }">
+                    <!-- Operaciones -->
+                    <template v-if="column.dataIndex === 'operation'">
+                        <a-row>
+                            <a-popconfirm v-if="data.length" title="¿Seguro de eliminar?" ok-text="Sí" cancel-text="No"
+                                @confirm="onDelete(record.key)">
+                                <a-button class="btn-margin" type="primary" danger><template #icon>
+                                        <DeleteOutlined />
+                                    </template> Eliminar</a-button>
 
+                            </a-popconfirm>
+
+                        </a-row>
+
+                    </template>
                 </template>
 
                 <p>{{ message }}</p>
@@ -118,7 +165,7 @@
 </template>
 
 <script setup>
-import { SearchOutlined } from '@ant-design/icons-vue';
+import { SearchOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 import { reactive, ref, toRefs, h } from 'vue';
 
 //  inicar modal
@@ -135,58 +182,47 @@ const handleOkPro = (e) => {
 
 
 
-const buscador = ref('')
-// buscar
-
-const existeBusqueda = ref(false)
-const enbusca = async () => {
-    try {
-        const foundObj = await datos.value.filter(obj => obj.nroDoc === buscador.value);
-
-        if (foundObj.length > 0) {
-            data.value = foundObj;
-            existeBusqueda.value = true;
-        }
-        console.log(data.value);
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-const datos = ref([{
+//tabla con los datos
+const data = ref([{
     key: '1',
-    tipDoc: '01',
+
     nroDoc: '000100057373',
-    fechDoc: '02/06/2023',
-    voucherReg: '047786098',
-    rucDNI: '20885665',
+    ctaRegistro: '12121',
+    debe: '9999',
+    haber: '03',
+    debeDolar: '0003-00238383',
+    haberDolar: '06/06/2023',
+    nro: '0.00'
 }, {
     key: '2',
-    tipDoc: '01',
-    nroDoc: '000100057373',
-    fechDoc: '02/06/2023',
-    voucherReg: '0473803293',
-    rucDNI: '20885665',
 
+    nroDoc: '000100057373',
+    ctaRegistro: '12121',
+    debe: '9999',
+    haber: '03',
+    debeDolar: '0003-00072272',
+    haberDolar: '06/06/2023',
+    nro: '0.00'
 }, {
     key: '3',
-    tipDoc: '01',
-    nroDoc: '000100046565',
-    fechDoc: '02/06/2023',
-    voucherReg: '0473803293',
-    rucDNI: '20885665',
 
+    nroDoc: '000100046565',
+    ctaRegistro: '12121',
+    debe: '9999',
+    haber: '03',
+    debeDolar: '0003-0064654',
+    haberDolar: '06/06/2023',
+    nro: '0.00'
 }, {
     key: '4',
-    tipDoc: '01',
     nroDoc: '000100056779',
-    fechDoc: '02/06/2023',
-    voucherReg: '0473545463',
-    rucDNI: '20885665',
-
+    ctaRegistro: '12121',
+    debe: '9999',
+    haber: '03',
+    debeDolar: '0003-00344445',
+    haberDolar: '06/06/2023',
+    nro: '0.00'
 }]);
-//tabla con los datos
-const data = ref([]);
 
 const state = reactive({
     searchText: '',
@@ -197,20 +233,6 @@ const state = reactive({
 });
 const searchInput = ref();
 const columns = [{
-    title: 'Tipo de Doc.',
-    dataIndex: 'tipDoc',
-    key: 'tipDoc',
-    customFilterDropdown: true,
-    onFilter: (value, record) => record.tipDoc.toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: visible => {
-        if (visible) {
-            setTimeout(() => {
-                searchInput.value.focus();
-            }, 100);
-        }
-    },
-
-}, {
     title: 'Nro. Docuemento',
     dataIndex: 'nroDoc',
     key: 'nroDoc',
@@ -224,22 +246,40 @@ const columns = [{
         }
     },
 
+}, {
+    title: 'Cta. Registro',
+    dataIndex: 'ctaRegistro',
+    key: 'ctaRegistro',
+    customFilterDropdown: true,
+    onFilter: (value, record) => record.ctaRegistro.toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: visible => {
+        if (visible) {
+            setTimeout(() => {
+                searchInput.value.focus();
+            }, 100);
+        }
+    },
+
 
 }, {
-    title: 'Fecha Doc.',
-    dataIndex: 'fechDoc',
-    key: 'fechDoc',
+    title: 'Debe',
+    dataIndex: 'debe',
+    key: 'debe',
 
 }, {
-    title: 'Voucher/Resgistro',
-    dataIndex: 'voucherReg',
-    key: 'voucherReg',
+    title: 'Haber',
+    dataIndex: 'haber',
+    key: 'haber',
 
 
 }, {
-    title: 'RUC/DNI',
-    dataIndex: 'rucDNI',
-    key: 'rucDNI',
+    title: 'Debe Dolar',
+    dataIndex: 'debeDolar',
+    key: 'debeDolar',
+}, {
+    title: 'Nro.',
+    dataIndex: 'nro',
+    key: 'nro',
 }];
 
 //Buscar
@@ -292,6 +332,10 @@ const datab = ref([{
     numero: '0001-00068743',
     tf: '01',
     numerob: '0001-00068743',
+    idCol: '378945',
+    proveedor: '999',
+    columnac: '-',
+    columnad: '-',
 }, {
     key: '2',
     cuenta: '87302',
@@ -305,6 +349,10 @@ const datab = ref([{
     numero: '0001-0003535',
     tf: '01',
     numerob: '0001-00068743',
+    idCol: '378945',
+    proveedor: '999',
+    columnac: '-',
+    columnad: '-',
 }, {
     key: '3',
     cuenta: '53127',
@@ -318,6 +366,10 @@ const datab = ref([{
     numero: '0001-0006343',
     tf: '01',
     numerob: '0001-00068743',
+    idCol: '378945',
+    proveedor: '999',
+    columnac: '-',
+    columnad: '-',
 }, {
     key: '4',
     cuenta: '2466',
@@ -331,6 +383,10 @@ const datab = ref([{
     numero: '0001-00035545',
     tf: '01',
     numerob: '0001-00068743',
+    idCol: '378945',
+    proveedor: '999',
+    columnac: '-',
+    columnad: '-',
 }]);
 
 const stateb = reactive({
@@ -409,6 +465,27 @@ const columnsb = [{
     title: 'Numero',
     dataIndex: 'numerob',
     key: 'numerob',
+}, {
+    title: 'Id',
+    dataIndex: 'idCol',
+    key: 'idCol',
+}, {
+    title: 'Proveedor',
+    dataIndex: 'proveedor',
+    key: 'proveedor',
+}, {
+    title: 'E...',
+    dataIndex: 'columnac',
+    key: 'columnac',
+}, {
+    title: 'U...',
+    dataIndex: 'columnad',
+    key: 'numerod',
+}, {
+    title: 'Operaciones',
+    dataIndex: 'operation',
+
+
 }];
 
 //Buscar b
@@ -428,6 +505,11 @@ const handleResetb = clearFilters => {
 
 const stateAsRefsb = toRefs(stateb)
 
+//Eliminar
+const onDelete = key => {
+    datab.value = datab.value.filter(item => item.key !== key);
+
+};
 
 
 // slección b
@@ -440,6 +522,75 @@ const rowSelectionb = {
     },
 
 };
+
+// ---------------------------------------
+
+
+
+
+//select inconsistencias
+const optInconsis = ref([{
+    value: '00',
+    label: 'Varias cancelaciones de un mismo documento',
+}, {
+    value: '01',
+    label: "Voucher's que no cuadran",
+}, {
+    value: '02',
+    label: 'Cancelaciones Automáticas sin provisiones',
+}, {
+    value: '03',
+    label: 'Ctas Contables Sin Nivel de Cuentas como Registro',
+}, {
+    value: '04',
+    label: 'Ctas de la Clase 6 sin destino',
+}]);
+
+const handleChangeGrupA = value => {
+    console.log(`Seleccionado ${form.inconsistencias}`);
+};
+const handleBlurInconsis = () => {
+    console.log('blur');
+};
+const handleFocusInconsis = () => {
+    console.log('focus');
+};
+const filterOptionInconsis = (input, option) => {
+    const inputValue = input.toLowerCase();
+    return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
+};
+
+
+//datos modal
+const form = reactive({
+
+    inconsistencias: null,
+    ano: null,
+    mes: null,
+    mesb: null,
+});
+
+const rules = {
+
+    inconsistencias: [{
+        required: true,
+        message: 'Selecione el grupo auxiliar',
+    }],
+    ano: [{
+        required: true,
+        message: 'Selecione el año',
+    }],
+    mes: [{
+        required: true,
+        message: 'Selecione el mes',
+    }],
+    mesb: [{
+        required: true,
+        message: 'Selecione el mes',
+    }],
+}
+
+
 
 
 

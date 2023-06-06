@@ -305,6 +305,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
+import { PlusOutlined } from '@ant-design/icons-vue';
 
 // mostar filas
 const mostrar = ref(false);

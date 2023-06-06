@@ -193,7 +193,7 @@
 
 <script setup>
 import { ref, reactive, h, toRefs } from 'vue'
-import { PlusOutlined, ArrowLeftOutlined, SaveOutlined, DeleteOutlined, CheckOutlined } from '@ant-design/icons-vue';
+import { PlusOutlined, ArrowLeftOutlined, SaveOutlined, DeleteOutlined, CheckOutlined, SearchOutlined } from '@ant-design/icons-vue';
 const componentSize = ref('middle');
 
 const value1 = ref();

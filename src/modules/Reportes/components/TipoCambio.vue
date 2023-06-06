@@ -77,7 +77,7 @@
 
 <script setup>
 import { ref, reactive, h } from 'vue'
-import { GlobalOutlined, PlusOutlined, MinusOutlined, SaveOutlined, EditOutlined } from '@ant-design/icons-vue';
+import { GlobalOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons-vue';
 
 // Buscador
 
@@ -194,28 +194,6 @@ const roles = {
     }]
 }
 
-// Select tipo
-
-const optClientProv = ref([{
-    value: '001',
-    label: 'Cliente/Proveedor',
-}, {
-    value: '002',
-    label: 'Selección 2',
-}, {
-    value: '003',
-    label: 'Selección 3',
-}, {
-    value: '004',
-    label: 'Selección 4',
-}]);
-
-const focusTipo = () => {
-    console.log('focus');
-};
-const handleChangeTipo = value => {
-    console.log(`Seleccionado ${value}`);
-};
 
 
 // Select moneda
@@ -244,11 +222,7 @@ const handleMoneda = value => {
 </script>
 
 <style lang="scss" scoped>
-.color {
-    border: 2px solid rgba(0, 89, 255, 0.080);
-    background-color: rgba(5, 170, 247, 0.024);
-    border-radius: 10px
-}
+
 
 .ancho {
     width: 100%;
