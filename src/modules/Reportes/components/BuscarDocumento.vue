@@ -192,7 +192,6 @@ const state = reactive({
     searchText: '',
     searchedColumn: '',
     selectedRowKeys: [],
-
     loading: false,
 });
 const searchInput = ref();
@@ -209,7 +208,6 @@ const columns = [{
             }, 100);
         }
     },
-
 }, {
     title: 'Nro. Docuemento',
     dataIndex: 'nroDoc',
@@ -224,7 +222,6 @@ const columns = [{
         }
     },
 
-
 }, {
     title: 'Fecha Doc.',
     dataIndex: 'fechDoc',
@@ -234,8 +231,6 @@ const columns = [{
     title: 'Voucher/Resgistro',
     dataIndex: 'voucherReg',
     key: 'voucherReg',
-
-
 }, {
     title: 'RUC/DNI',
     dataIndex: 'rucDNI',
@@ -259,8 +254,6 @@ const handleReset = clearFilters => {
 
 const stateAsRefs = toRefs(state)
 
-
-
 // selección
 
 const existe = ref(false);
@@ -274,8 +267,6 @@ const rowSelection = {
     },
 
 };
-
-
 
 
 //tabla con los datos b

@@ -438,7 +438,7 @@ const data = ref([{
 
 }, {
     key: '3',
-    ruc: '2089874356',
+    ruc: '2089874355',
     cliente: 'Empresas de transportes el AGRO S.A',
     codVenta: 'FAC',
     nroDoc: '0004-00643',
@@ -448,7 +448,7 @@ const data = ref([{
 
 }, {
     key: '4',
-    ruc: '2089874356',
+    ruc: '2089874351',
     cliente: 'Empresas de transportes el AGRO S.A',
     codVenta: 'FAC',
     nroDoc: '0004-00566',
@@ -480,7 +480,7 @@ const columns = [{
         }
     },
 }, {
-    title: 'Cuenta Contable',
+    title: 'Cliente',
     dataIndex: 'cliente',
     key: 'cliente',
     customFilterDropdown: true,

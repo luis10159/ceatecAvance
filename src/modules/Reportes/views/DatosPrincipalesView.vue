@@ -16,6 +16,9 @@
         <InconsisComprobantes></InconsisComprobantes>
         <LibroDiario></LibroDiario>
         <BalanceComprobacion></BalanceComprobacion>
+        <LibroRetenciones></LibroRetenciones>
+        <Daot></Daot>
+
     </div>
     <div>
         <datos></datos>
@@ -44,5 +47,7 @@ const BuscarDocumento = defineAsyncComponent(() => import('@/modules/Reportes/co
 const InconsisComprobantes = defineAsyncComponent(() => import('@/modules/Reportes/components/InconsisComprobantes.vue'));
 const LibroDiario = defineAsyncComponent(() => import('@/modules/Reportes/components/LibroDiario.vue'));
 const BalanceComprobacion = defineAsyncComponent(() => import('@/modules/Reportes/components/BalanceComprobacion.vue'));
+const LibroRetenciones = defineAsyncComponent(() => import('@/modules/Reportes/components/LibroRetenciones.vue'));
+const Daot = defineAsyncComponent(() => import('@/modules/Reportes/components/Daot.vue'));
 
 </script>

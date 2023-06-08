@@ -1,5 +1,4 @@
 <template>
-    
     <article>
         <a-layout class="layout">
             <dashsidebar></dashsidebar>
@@ -17,10 +16,10 @@
                     </div>
                 </a-layout-content>
                 <dashfooter></dashfooter>
+                
             </a-layout>
         </a-layout>
     </article>
-
 </template>
   
 <script setup>

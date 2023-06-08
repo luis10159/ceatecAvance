@@ -1,80 +1,67 @@
 <template>
-    <a-button type="primary" @click="showModalPro">Balance de comprobación</a-button>
+    <a-button type="primary" @click="showModalPro">Libro de Retenciones</a-button>
 
-    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px" title="Balance de comprobación"
+    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="800px" title="Balance de comprobación"
         @ok="handleOkPro">
         <a-form :model="form" :rules="roles" layout="vertical">
             <a-row class="margen-arriba" :gutter="16" align="middle">
-                <a-col :span="8">
+                <a-col :span="10">
                     <a-row class="padd">
                         <a-tree-select v-model:value="form.valorSucursal" show-search class="ancho"
-                            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }" placeholder="Seleccione la zona"
-                            allow-clear tree-default-expand-all :tree-data="zonas">
+                            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }" placeholder="Seleccione la sucursal"
+                            allow-clear tree-default-expand-all :tree-data="sucursales">
                         </a-tree-select>
                     </a-row>
                     <a-row class="padd">
                         <a-tree-select v-model:value="form.valorDeparta" show-search class="ancho margen-arriba"
-                            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }" placeholder="Seleccione la unidad"
-                            allow-clear tree-default-expand-all :tree-data="unidades">
+                            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+                            placeholder="Seleccione el departamento" allow-clear tree-default-expand-all
+                            :tree-data="departamentos">
 
                         </a-tree-select>
                     </a-row>
 
 
                 </a-col>
-                <a-col :span="16">
+                <a-col :span="14">
                     <a-row :gutter="16" justify="center">
-                        <a-col :span="24">
-                            <a-form-item label="Opciones" name="opciones">
-                                <a-select v-model:value="form.opciones" mode="multiple" class="ancho"
-                                    placeholder="Seleccione las opciones" max-tag-count="responsive"
-                                    :options="options"></a-select>
-                            </a-form-item>
-                        </a-col>
+                        <a-row :gutter="16" class="ancho margen-abajo" justify="end">
+                            <a-col :span="24">
+                                <a-typography-text strong>Requiere</a-typography-text>
+                            </a-col>
+                            <a-col :span="8">
+
+                                <a-checkbox v-model:checked="form.checkApertura">Solo apertura</a-checkbox>
+
+                            </a-col>
+                        </a-row>
+
                         <a-row :gutter="16" class="color">
                             <a-col :span="24">
                                 <a-typography-text strong>Parámetros</a-typography-text>
                             </a-col>
-                            <a-col :span="6">
+                            <a-col :span="8">
                                 <a-form-item label="Desde el mes" name="mes">
                                     <a-date-picker v-model:value="form.mes" picker="month" placeholder="Mes"
                                         class="ancho" />
                                 </a-form-item>
                             </a-col>
-                            <a-col :span="6">
+                            <a-col :span="8">
                                 <a-form-item label="Hasta el mes" name="mes">
                                     <a-date-picker v-model:value="form.mesb" picker="month" placeholder="Mes"
                                         class="ancho" />
                                 </a-form-item>
                             </a-col>
-                            <a-col :span="6">
+                            <a-col :span="8">
                                 <a-form-item label="Año contable" name="mes">
                                     <a-date-picker v-model:value="form.ano" picker="year" placeholder="Ingrese año contable"
                                         class="ancho" />
                                 </a-form-item>
                             </a-col>
-                            <a-col :span="6">
-                                <a-form-item label="Dihitos" name="digitos">
-                                    <a-input-number class="ancho" v-model:value="form.digitos" :min="1" :max="10" />
-                                </a-form-item>
-                            </a-col>
-
-                            <a-col :span="24">
-                                <a-row justify="center" class="margen-abajo ancho">
-
-                                    <a-col :span="5">
-                                        <a-checkbox v-model:checked="form.checkPleDiar">PLE Diario</a-checkbox>
-                                    </a-col>
-                                </a-row>
-
-                            </a-col>
                         </a-row>
-
                     </a-row>
-
                 </a-col>
             </a-row>
-
         </a-form>
     </a-modal>
 </template>
@@ -115,6 +102,7 @@ const form = reactive({
     checkPleDiar: false,
     checkCuentas: false,
     opciones: [],
+    checkApertura: false,
 });
 
 const roles = {
@@ -140,55 +128,35 @@ const roles = {
 }
 
 
-// opciones
-
-const options = ref([{
-    label: 'Solo apertura',
-    value: '01',
-}, {
-    label: 'Con Mov. Mensual',
-    value: '02',
-}, {
-    label: 'Incluye Saldo Anteriores',
-    value: '03',
-}, {
-    label: 'Incluye Secuentas de cierre',
-    value: '04',
-}, {
-    label: 'Calc. Asiento Aut. T.Cambio',
-    value: '05',
-}]);
 
 
-
-
-//zonas
-const zonas = ref([{
-    title: 'Todas las zonas',
+//sucursales
+const sucursales = ref([{
+    title: 'Todas las sucursales',
     value: 'todas',
     children: [{
         title: 'Lino SAC',
-        value: 'zona-a',
+        value: 'sucursal-a',
     }, {
         title: 'Zona b',
-        value: 'zona-b',
+        value: 'sucursal-b',
     }],
 }]);
 watch(() => form.valorSucursal, (newValue) => {
     console.log(newValue);
 });
 
-// unidades
+// departamentos
 
-const unidades = ref([{
-    title: 'Todos las unidades',
+const departamentos = ref([{
+    title: 'Todos las departamentos',
     value: 'todas',
     children: [{
         title: 'Lino SAC',
-        value: 'unidad-a',
+        value: 'departamento-a',
     }, {
         title: 'Unidad b',
-        value: 'unidad-b',
+        value: 'departamento-b',
     }],
 }]);
 watch(() => form.valorDeparta, (newValue) => {
