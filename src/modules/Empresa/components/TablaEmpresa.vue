@@ -1,9 +1,7 @@
 <template>
   <!-- editar -->
-
   <a-row class="row-btn">
-
-    <!-- Formulario para editar -->
+    <!-- Drawer para editar empresa-->
     <a-drawer title="Editar empresa" :width="520" :open="visibleE" :body-style="{ paddingBottom: '80px' }"
       :footer-style="{ textAlign: 'right' }" @close="onCloseE">
       <a-form :model="formEditar" :rules="rulesE" layout="vertical" class="row-btn">
@@ -18,19 +16,16 @@
               <a-input v-model:value="formEditar.razonSocial" placeholder="Ingrese la razón social" />
             </a-form-item>
           </a-col>
-
           <a-col :span="12" class="columnas">
             <a-form-item label="Actividad" name="rubro">
               <a-input v-model:value="formEditar.rubro" placeholder="Ingrese la actividad" />
             </a-form-item>
           </a-col>
-
           <a-col :span="12" class="columnas">
             <a-form-item label="Teléfono" name="telefono">
               <a-input v-model:value="formEditar.telefono" placeholder="Ingrese el teléfono" />
             </a-form-item>
           </a-col>
-
           <a-col :span="12" class="columnas">
             <a-form-item label="Dirección" name="direccion">
               <a-input v-model:value="formEditar.direccion" placeholder="Ingrese la dirrección" />
@@ -62,9 +57,8 @@
             <a-row>
               <a-col :span="12">
                 <a-form-item label="Año inicio" name="ano">
-
-                  <a-input-number style="width: 100%" id="inputNumber" v-model:value="formEditar.ano" :min="1"
-                    :max="10" placeholder="Ingrese el año de inicio"/>
+                  <a-input-number style="width: 100%" id="inputNumber" v-model:value="formEditar.ano" :min="1" :max="10"
+                    placeholder="Ingrese el año de inicio" />
                 </a-form-item>
               </a-col>
               <a-col :span="12">
@@ -84,11 +78,10 @@
             </a-radio-group>
           </a-col>
           <a-col :span="12" v-if="formEditar.planes == 'c'">
-            <a-select v-model:value="valorE" label-in-value style="width: 120px" :options="opcionesE"
-              @change="handleChangeE"></a-select>
+            <a-select v-model:value="formEditar.impOpciones" label-in-value style="width: 120px" :options="opcionesE"
+              @change="handleChangeE" placeholder="Seleccione"></a-select>
           </a-col>
         </a-row>
-
       </a-form>
       <template #extra>
         <a-space>
@@ -98,17 +91,15 @@
       </template>
     </a-drawer>
   </a-row>
-
-  <!-- tabla -->
+  <!-- tabla con los datos de las empresas -->
   <a-table bordered :data-source="data" :columns="columns" :pagination="{ pageSize: 5 }">
+    <!-- Celda superior - RUC -->
     <template #headerCell="{ column }">
       <template v-if="column.key === 'ruc'">
         <span style="color: #1890ff">RUC</span>
-
       </template>
-
     </template>
-
+    <!-- Busqueda -->
     <template #customFilterDropdown="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }">
       <div style="padding: 8px">
         <a-input ref="searchInput" :placeholder="`Buscar ${column.dataIndex}`" :value="selectedKeys[0]"
@@ -130,6 +121,7 @@
     <template #customFilterIcon="{ filtered }">
       <search-outlined :style="{ color: filtered ? '#108ee9' : undefined }" />
     </template>
+    <!-- Se muestras las columnas -->
     <template #bodycell="{ text, column }">
       <span v-if="stateAsRefs.searchText && stateAsRefs.searchedColumn === column.dataIndex">
         <template v-for="(fragment, i) in text
@@ -138,23 +130,19 @@
           <mark v-if="fragment.toLowerCase() === stateAsRefs.searchText.toLowerCase()" :key="i" class="highlight">
             {{ fragment }}
           </mark>
-
           <template v-else>{{ fragment }}</template>
         </template>
-
       </span>
-
     </template>
+    <!-- Operaciones editar - eliminar -->
     <template #bodyCell="{ column, record }">
-
-      <template v-if="column.dataIndex === 'operation'">
+      <template v-if="column.dataIndex === 'operacion'">
         <a-row>
           <a-popconfirm v-if="data.length" title="¿Seguro de eliminar?" ok-text="Sí" cancel-text="No"
             @confirm="onDelete(record.key)">
             <a-button class="btn-margin" type="primary" danger><template #icon>
                 <DeleteOutlined />
               </template> Eliminar</a-button>
-
           </a-popconfirm>
           <a-popconfirm v-if="data.length" title="¿Seguro de editar?" ok-text="Sí" cancel-text="No"
             @confirm="showDrawerE">
@@ -163,16 +151,17 @@
               </template> Editar</a-button>
           </a-popconfirm>
         </a-row>
-
       </template>
     </template>
   </a-table>
 </template>
 
 <script setup>
+// Importar iconos de ant design vue
 import { SearchOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
+// Importar funciones de vue
 import { reactive, ref, toRefs } from 'vue';
-
+//Datos
 const data = ref([{
   key: '1',
   ruc: '001',
@@ -223,16 +212,16 @@ const data = ref([{
   telefono: '93485327',
   direccion: 'Jr. Dirección xxxxx',
 }]);
-
-
+// Objeto reactivo que guarda las filas encontradas, el texto a buscar y la columna que se busca
 const state = reactive({
   searchText: '',
   searchedColumn: '',
   selectedRowKeys: [],
-
   loading: false,
 });
+//Variable que guarda la entrada del buscador
 const searchInput = ref();
+//Definición de las columnas
 const columns = [{
   title: 'ruc',
   dataIndex: 'ruc',
@@ -273,32 +262,29 @@ const columns = [{
   key: 'direccion',
 }, {
   title: 'Operaciones',
-  dataIndex: 'operation',
+  dataIndex: 'operacion',
 }];
+//Función que se ejecuta después del enter y click al buscar
 const handleSearch = (selectedKeys, confirm, dataIndex) => {
   confirm();
   state.searchText = selectedKeys[0];
   state.searchedColumn = dataIndex;
 };
+//Función para formatear, se ejcuta después del click en reiniciar
 const handleReset = clearFilters => {
   clearFilters({
     confirm: true,
   });
   state.searchText = '';
 };
-
+//Contienen las datos a tener en cuenta para la busqueda
 const stateAsRefs = toRefs(state)
-
+//Elimina un elemento
 const onDelete = key => {
   data.value = data.value.filter(item => item.key !== key);
 
 };
-
-
-// ----------------------editar
-
-
-
+// ----------------------Editar empresa
 // Objeto reactivo que va a capturar los campos en el formulario
 const formEditar = reactive({
   ruc: '',
@@ -310,9 +296,9 @@ const formEditar = reactive({
   regimen: null,
   ano: null,
   planes: '',
-  impOpciones: '',
+  impOpciones: null,
 });
-// detalle de los campos
+// Detalle de los campos
 const rulesE = {
   ruc: [{
     required: true,
@@ -358,20 +344,18 @@ const rulesE = {
     required: true,
     message: 'Selecione las opciones',
   }]
-
 };
-
+// Variable que controla la visibilidad del drawer
 const visibleE = ref(false);
-// Mostrar crear cuenta
+// Función que muestra crear empresa
 const showDrawerE = () => {
   visibleE.value = true;
 };
-// Cerrar crear cuenta
+// Función que cierra crear empresa
 const onCloseE = () => {
   visibleE.value = false;
 };
-// select
-
+// Opciones - importar desde
 const opcionesE = ref([{
   value: 'opciona',
   label: 'Opción A',
@@ -379,32 +363,26 @@ const opcionesE = ref([{
   value: 'opcionb',
   label: 'Opción B',
 }]);
+// Imprimir valor cambiado
 const handleChangeE = value => {
-  console.log(value); // { key: "lucy", label: "Lucy (101)" }
+  console.log(value);
 };
-
-const valorE = ref('Seleccione');
-
-
 </script>
 <style lang="scss" scoped>
 .btn-margin {
   margin-right: 15px;
-
 }
 
 .row-btn {
   margin-bottom: 20px;
 }
 
-
 .btn-margin {
   margin-right: 15px;
-
 }
 
 .margen {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 .columnas {

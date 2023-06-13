@@ -38,8 +38,10 @@
         <a-menu-item key="20"><check-square-outlined /> Diario simplificado</a-menu-item>
         <a-menu-item key="21"><check-square-outlined /> Libro mayor</a-menu-item>
         <a-menu-item key="22"><check-square-outlined /> Libro Caja y Bancos</a-menu-item>
-        <a-menu-item key="23"><check-square-outlined /> <router-link :to="{ name: 'registro-compras' }"> Registro de compras</router-link></a-menu-item>
-        <a-menu-item key="24"><check-square-outlined /> <router-link :to="{ name: 'datos-principales' }"> opciones</router-link></a-menu-item>
+        <a-menu-item key="23"><check-square-outlined /> <router-link :to="{ name: 'registro-compras' }"> Registro de
+            compras</router-link></a-menu-item>
+        <a-menu-item key="24"><check-square-outlined /> <router-link :to="{ name: 'datos-principales' }">
+            opciones</router-link></a-menu-item>
         <a-menu-item key="25"><check-square-outlined /> Registro de ventas</a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="sub4">
@@ -49,7 +51,8 @@
             <span strong>Herramientas</span>
           </span>
         </template>
-        <a-menu-item key="30"><check-square-outlined /> <router-link :to="{ name: 'parametros' }"> Parametros</router-link></a-menu-item>
+        <a-menu-item key="30"><check-square-outlined /> <router-link :to="{ name: 'parametros' }">
+            Parametros</router-link></a-menu-item>
         <a-menu-item key="31"><check-square-outlined /> Abrir mes proceso</a-menu-item>
         <a-menu-item key="32"><check-square-outlined /> Cerrar mes proceso</a-menu-item>
         <a-menu-item key="33"><check-square-outlined /> Reabrir mes proceso</a-menu-item>
@@ -68,16 +71,16 @@
             zona</router-link></a-menu-item>
         <a-menu-item key="44"><check-square-outlined /> <router-link :to="{ name: 'crear-unidad' }"> Crear
             Unidad</router-link></a-menu-item>
-        <a-menu-item key="45"><check-square-outlined /> <router-link
-            :to="{ name: 'mes-proceso' }"> Aperturar mes proceso</router-link></a-menu-item>
+        <a-menu-item key="45"><check-square-outlined /> <router-link :to="{ name: 'mes-proceso' }"> Aperturar mes
+            proceso</router-link></a-menu-item>
       </a-sub-menu>
     </a-menu>
   </a-layout-sider>
 </template>
 
 <script setup>
+// importar iconos de ant design vue
 import {
-
   TableOutlined,
   ContainerOutlined,
   BankOutlined,
@@ -85,10 +88,11 @@ import {
   EditOutlined,
   CheckSquareOutlined,
 } from "@ant-design/icons-vue";
+// Importar componentes de vue
 import { ref } from 'vue'
-
+// Modo desplegable
 const collapsed = ref(false);
-
+// Menús selccionados
 const selectedKeys = ref([""]);
 </script>
 
@@ -99,4 +103,5 @@ const selectedKeys = ref([""]);
   background: rgba(255, 255, 255, 0.3);
   text-align: center;
   border-radius: 15px;
-}</style>
+}
+</style>

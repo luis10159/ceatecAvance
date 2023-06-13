@@ -1,18 +1,22 @@
 <template>
     <a-row class="row-btn">
         <a-col :span="24" class="flex">
+            <!-- Botón para mostrar el drawer crear empresa -->
             <a-button type="primary" @click="showDrawer" class="btn-margin">
                 <template #icon>
                     <PlusOutlined />
                 </template>
                 Crear Empresa
             </a-button>
-            <a-button type="primary" @click="showModal"><template #icon>
+            <!-- Botón para mostrar el modal asignar empresa -->
+            <a-button type="primary" @click="showModal">
+                <template #icon>
                     <CheckCircleOutlined />
-                </template> Asignar empresa</a-button>
+                </template>
+                Asignar empresa
+            </a-button>
         </a-col>
         <!-- Modal asignar empresa -->
-
         <a-modal v-model:open="open" title="Asignar Empresa" @ok="handleOk" width="720px" ok-text="Aceptar"
             cancel-text="Cancelar">
             <a-form-item label="Usuario" class="margen-user">
@@ -21,7 +25,7 @@
                     <a-select-option value="userb">Usuario B</a-select-option>
                 </a-select>
             </a-form-item>
-            <a-row class="margen-title">
+            <a-row class="margen-titulo">
                 <a-col :span="13">
                     <a-typography-text strong>Empresas disponibles</a-typography-text>
                 </a-col>
@@ -29,20 +33,23 @@
                     <a-typography-text strong>Empresas asigandas actualmente</a-typography-text>
                 </a-col>
             </a-row>
+            <!-- Componente para transferir elementos -->
             <a-transfer v-model:target-keys="targetKeysModel" :data-source="mockDataModel" show-search
                 :filter-option="filterOptionModel" :list-style="{
                     width: '360px',
                     height: '300px',
                 }" :render="item => item.title" @change="handleChangeModel" @search="handleSearchModel" />
         </a-modal>
-        <!-- Formulario para crear -->
+        <!-- Drawer para crear una empresa-->
         <a-drawer title="Crear una empresa" :width="520" :open="visible" :body-style="{ paddingBottom: '80px' }"
             :footer-style="{ textAlign: 'right' }" @close="onClose">
             <a-form :model="form" :rules="rules" layout="vertical" class="row-btn">
                 <a-row>
                     <a-col :span="12" class="columnas">
                         <a-form-item label="RUC" name="ruc">
-                            <a-input v-model:value="form.ruc" placeholder="Ingrese el ruc" />
+                                <a-tooltip placement="topLeft" title="RUC" :get-popup-container="getPopupContainer" color="blue">
+                                    <a-input v-model:value="form.ruc" placeholder="Ingrese el ruc" />
+                                </a-tooltip>
                         </a-form-item>
                     </a-col>
                     <a-col :span="12" class="columnas">
@@ -50,19 +57,16 @@
                             <a-input v-model:value="form.razonSocial" placeholder="Ingrese la razón social" />
                         </a-form-item>
                     </a-col>
-
                     <a-col :span="12" class="columnas">
                         <a-form-item label="Actividad" name="rubro">
                             <a-input v-model:value="form.rubro" placeholder="Ingrese la actividad" />
                         </a-form-item>
                     </a-col>
-
                     <a-col :span="12" class="columnas">
                         <a-form-item label="Teléfono" name="telefono">
                             <a-input v-model:value="form.telefono" placeholder="Ingrese el teléfono" />
                         </a-form-item>
                     </a-col>
-
                     <a-col :span="12" class="columnas">
                         <a-form-item label="Dirección" name="direccion">
                             <a-input v-model:value="form.direccion" placeholder="Ingrese la dirrección" />
@@ -74,7 +78,6 @@
                         </a-form-item>
                     </a-col>
                     <a-col :span="12" class="columnas">
-
                         <a-row>
                             <a-col :span="14">
                                 <a-form-item label="Regimen" name="regimen">
@@ -86,17 +89,15 @@
                                 </a-form-item>
                             </a-col>
                             <a-col :span="5" class="margen">
-                                <a-input-number v-model:value="value2" :min="0" :max="100" :formatter="value => `${value}%`"
-                                    :parser="value => value.replace('%', '')" />
+                                <a-input-number v-model:value="form.porcRegimen" :min="0" :max="100"
+                                    :formatter="value => `${value}%`" :parser="value => value.replace('%', '')" />
                             </a-col>
                         </a-row>
-
                     </a-col>
                     <a-col :span="12" class="columnas">
                         <a-row>
                             <a-col :span="12">
                                 <a-form-item label="Año inicio" name="ano">
-
                                     <a-input-number style="width: 100%" id="inputNumber" v-model:value="form.ano" :min="1"
                                         :max="10" placeholder="ingrese el año de inicio" />
                                 </a-form-item>
@@ -119,11 +120,10 @@
                         </a-radio-group>
                     </a-col>
                     <a-col :span="12" v-if="form.planes == 'c'">
-                        <a-select v-model:value="valor" label-in-value style="width: 120px" :options="opciones"
-                            @change="handleChange"></a-select>
+                        <a-select v-model:value="form.impOpciones" label-in-value style="width: 120px" :options="opciones"
+                            @change="handleChange" placeholder="Seleccione"></a-select>
                     </a-col>
                 </a-row>
-
             </a-form>
             <template #extra>
                 <a-space>
@@ -136,9 +136,9 @@
 </template>
 
 <script setup>
-// Importar iconos
+// Importar iconos de ant design vue
 import { PlusOutlined, CheckCircleOutlined } from '@ant-design/icons-vue';
-
+// Importar funciones de vue
 import { reactive, ref, onMounted } from 'vue';
 
 // Objeto reactivo que va a capturar los campos en el formulario
@@ -152,9 +152,11 @@ const form = reactive({
     regimen: null,
     ano: null,
     planes: '',
-    impOpciones: '',
+    impOpciones: null,
+    porcRegimen: null,
 });
-// detalle de los campos
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const rules = {
     ruc: [{
         required: true,
@@ -200,21 +202,18 @@ const rules = {
         required: true,
         message: 'Selecione las opciones',
     }]
-
 };
-
-
+// Variable que controla la visibilidad del drawer
 const visible = ref(false);
-// Mostrar crear cuenta
+// Función que muestra crear empresa
 const showDrawer = () => {
     visible.value = true;
 };
-// Cerrar crear cuenta
+// Función que cierra crear empresa
 const onClose = () => {
     visible.value = false;
 };
-// select
-
+// Opciones - importar desde
 const opciones = ref([{
     value: 'opciona',
     label: 'Opción A',
@@ -222,33 +221,29 @@ const opciones = ref([{
     value: 'opcionb',
     label: 'Opción B',
 }]);
+// Imprimir valor cambiado
 const handleChange = value => {
-    console.log(value); // { key: "lucy", label: "Lucy (101)" }
+    console.log(value);
 };
-
-const valor = ref('Seleccione');
-
-
-const value2 = ref(0)
-
-//modal
-
+// Variable que controla la visibilidad del modal asignar empresa
 const open = ref(false);
-
+// Función que muestra asignar empresa
 const showModal = () => {
     open.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en asignar empresa
 const handleOk = (e) => {
     console.log(e);
     open.value = false;
 };
-//tranferencia de elementos
+//Almacena los elementos transferidos
 const mockDataModel = ref([]);
 const targetKeysModel = ref([]);
+//Función a ejecutar cuando se ha montado la aplicación
 onMounted(() => {
     getMock();
 });
+//Función que genera y asigana los elementos que se utilizarán en el componente transfer
 const getMock = () => {
     const keys = [];
     const mData = [];
@@ -267,22 +262,27 @@ const getMock = () => {
     mockDataModel.value = mData;
     targetKeysModel.value = keys;
 };
+//Realiza una busqueda
 const filterOptionModel = (inputValue, option) => {
     return option.description.indexOf(inputValue) > -1;
 };
+//Imprime elementos cuando es cambiado
 const handleChangeModel = (keys, direction, moveKeys) => {
     console.log(keys, direction, moveKeys);
 };
+//Imprime el texto a bsucar
 const handleSearchModel = (dir, value) => {
     console.log('search:', dir, value);
 };
-
+//Tooltip
+const getPopupContainer = trigger => {
+  return trigger.parentElement;
+};
 </script>
 
 <style lang="scss" scoped>
 .btn-margin {
     margin-right: 15px;
-
 }
 
 .row-btn {
@@ -297,7 +297,7 @@ const handleSearchModel = (dir, value) => {
     margin-top: 30px;
 }
 
-.margen-title {
+.margen-titulo {
     margin-top: 25px;
     margin-bottom: 15px;
 }

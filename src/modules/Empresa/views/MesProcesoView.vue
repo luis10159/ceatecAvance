@@ -1,11 +1,13 @@
 <template>
     <a-row justify="center" class="margen-abajo">
-    <a-col>
-      <a-typography-title :level="3">Aperturar mes proceso</a-typography-title>
-    </a-col>
-  </a-row>
+        <a-col>
+            <!-- Título -->
+            <a-typography-title :level="3">Aperturar mes proceso</a-typography-title>
+        </a-col>
+    </a-row>
     <a-row justify="center">
         <a-col :span="18">
+            <!-- Formulario -->
             <a-form :label-col="labelCol" :wrapper-col="wrapperCol">
                 <a-form-item has-feedback label="Mes de proceso" name="mes" v-bind="validateInfos.mes">
                     <a-input-number v-model:value="modelRef.mes" />
@@ -35,21 +37,29 @@
 </template>
 
 <script setup>
+// Importar funciones de vue
 import { reactive, toRaw } from 'vue';
+// Importar la función for de ant design vue
 import { Form } from 'ant-design-vue';
+// Se  está estrayendo la funcion useForm para gestionar formularios
 const useForm = Form.useForm;
+// Espacio para el label
 const labelCol = {
     span: 4,
 };
+// Espacio para el wrapper
 const wrapperCol = {
     span: 14,
 };
+// Objeto reactivo que va a capturar los campos en el formulario
 const modelRef = reactive({
     mes: null,
     sucursal: null,
     ano: null,
     departamento: null,
 });
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const rulesRef = reactive({
     mes: [{
         required: true,
@@ -72,6 +82,7 @@ const rulesRef = reactive({
         message: 'Por favor, ingrese el departamento',
     }],
 });
+// se extraen las variables de la respuesta de la función useForm
 const {
     resetFields,
     validate,
@@ -79,6 +90,7 @@ const {
 } = useForm(modelRef, rulesRef, {
     onValidate: (...args) => console.log(...args),
 });
+// La función se ejecuta cuando se envía el formulario
 const onSubmit = () => {
     validate().then(() => {
         console.log(toRaw(modelRef));
@@ -86,7 +98,6 @@ const onSubmit = () => {
         console.log('error', err);
     });
 };
-
 </script>
 
 <style lang="scss" scoped>

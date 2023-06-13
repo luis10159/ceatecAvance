@@ -1,15 +1,14 @@
 <template>
     <!-- Editar -->
     <a-row class="row-btn">
-        <!-- Formulario eeditar cuenta -->
+        <!-- Drawer editar unidad -->
         <a-drawer title="Editar Unidad" :width="520" :open="visibleEdit" :body-style="{ paddingBottom: '80px' }"
             :footer-style="{ textAlign: 'right' }" @close="onCloseE">
             <a-form :model="formEdit" :rules="rulesEdit" layout="vertical" class="row-btn">
                 <a-row :gutter="16">
                     <a-col :span="12">
                         <a-form-item label="Código" name="codigo">
-                            <a-input v-model:value="formEdit.codigo"
-                                placeholder="Por favor, ingrese el código" />
+                            <a-input v-model:value="formEdit.codigo" placeholder="Por favor, ingrese el código" />
                         </a-form-item>
                     </a-col>
                     <a-col :span="12">
@@ -45,16 +44,15 @@
             </template>
         </a-drawer>
     </a-row>
-
-
-
-    <!-- tabla con los datos -->
+    <!-- Tabla con los datos de las unidades -->
     <a-table bordered :data-source="data" :columns="columns" :pagination="{ pageSize: 5 }">
+        <!-- Celda superior - código -->
         <template #headerCell="{ column }">
             <template v-if="column.key === 'codigo'">
                 <span style="color: #1890ff">Código</span>
             </template>
         </template>
+        <!-- Busqueda -->
         <template #customFilterDropdown="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }">
             <div style="padding: 8px">
                 <a-input ref="searchInput" :placeholder="`Buscar ${column.dataIndex}`" :value="selectedKeys[0]"
@@ -76,6 +74,7 @@
         <template #customFilterIcon="{ filtered }">
             <search-outlined :style="{ color: filtered ? '#108ee9' : undefined }" />
         </template>
+        <!-- Se muestras las columnas -->
         <template #bodycell="{ text, column }">
             <span v-if="stateAsRefs.searchText && stateAsRefs.searchedColumn === column.dataIndex">
                 <template v-for="(fragment, i) in text
@@ -84,15 +83,12 @@
                     <mark v-if="fragment.toLowerCase() === stateAsRefs.searchText.toLowerCase()" :key="i" class="highlight">
                         {{ fragment }}
                     </mark>
-
                     <template v-else>{{ fragment }}</template>
                 </template>
-
             </span>
-
         </template>
+        <!-- Operaciones editar - eliminar -->
         <template #bodyCell="{ column, record }">
-            <!-- Operaciones -->
             <template v-if="column.dataIndex === 'operation'">
                 <a-row>
                     <a-popconfirm v-if="data.length" title="¿Seguro de eliminar?" ok-text="Sí" cancel-text="No"
@@ -100,7 +96,6 @@
                         <a-button class="btn-margin" type="primary" danger><template #icon>
                                 <DeleteOutlined />
                             </template> Eliminar</a-button>
-
                     </a-popconfirm>
                     <a-popconfirm v-if="data.length" title="¿Seguro de editar?" ok-text="Sí" cancel-text="No"
                         @confirm="showDrawerE">
@@ -109,7 +104,6 @@
                             </template> Editar</a-button>
                     </a-popconfirm>
                 </a-row>
-
             </template>
         </template>
         <p>{{ message }}</p>
@@ -117,57 +111,50 @@
 </template>
 
 <script setup>
+// Importar iconos de ant design vue
 import { SearchOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
+// Importar funciones de vue
 import { reactive, ref, toRefs } from 'vue';
-
-
-
-//tabla con los datos
+//Datos
 const data = ref([{
     key: '1',
     codigo: 'Código...a',
     descLarga: 'Descripción Larga...a',
- 
 }, {
     key: '2',
     codigo: 'Código...b',
     descLarga: 'Descripción Larga...b',
-   
 }, {
     key: '3',
     codigo: 'Código...c',
     descLarga: 'Descripción Larga...c',
-    
 }, {
     key: '4',
     codigo: 'Código...d',
     descLarga: 'Descripción Larga...d',
-   
 }, {
     key: '5',
     codigo: 'Código...e',
     descLarga: 'Descripción Larga...e',
-
 }, {
     key: '6',
     codigo: 'Código...f',
     descLarga: 'Descripción Larga...f',
-    
 }, {
     key: '7',
     codigo: 'Código...g',
     descLarga: 'Descripción Larga...g',
-    
 }]);
-
+// Objeto reactivo que guarda las filas encontradas, el texto a buscar y la columna que se busca
 const state = reactive({
     searchText: '',
     searchedColumn: '',
     selectedRowKeys: [],
-
     loading: false,
 });
+//Variable que guarda la entrada del buscador
 const searchInput = ref();
+//Definición de las columnas
 const columns = [{
     title: 'codigo',
     dataIndex: 'codigo',
@@ -194,49 +181,38 @@ const columns = [{
             }, 100);
         }
     },
-
-
 }, {
     title: 'Operaciones',
     dataIndex: 'operation',
-
-
 }];
 
-//Buscar
+//Función que se ejecuta después del enter y click al buscar
 const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     state.searchText = selectedKeys[0];
     state.searchedColumn = dataIndex;
 };
-
-//reiniciar
+//Función para formatear, se ejcuta después del click en reiniciar
 const handleReset = clearFilters => {
     clearFilters({
         confirm: true,
     });
     state.searchText = '';
 };
-
+//Contienen las datos a tener en cuenta para la busqueda
 const stateAsRefs = toRefs(state)
-
-//Eliminar
+//Elimina un elemento
 const onDelete = key => {
     data.value = data.value.filter(item => item.key !== key);
-
 };
-
-// -------------------Editar
-
-// Objeto reactivo que captura los cambios
+// -------------------Editar Unidad
+// Objeto reactivo que captura los datos
 const formEdit = reactive({
     codigo: '',
     sucursal: null,
     desCorta: '',
     descLarga: '',
-
 });
-
 // Detalle de los campos
 const rulesEdit = {
     codigo: [{
@@ -256,7 +232,6 @@ const rulesEdit = {
         message: 'Ingrese la descripción larga',
     }]
 };
-
 const visibleEdit = ref(false);
 // Mostrar editar
 const showDrawerE = () => {
@@ -266,17 +241,13 @@ const showDrawerE = () => {
 const onCloseE = () => {
     visibleEdit.value = false;
 };
-
 </script>
-
 <style lang="scss" scoped>
 .btn-margin {
     margin-right: 15px;
-
 }
 
 .row-btn {
     margin-bottom: 20px;
 }
-
 </style>

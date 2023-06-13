@@ -15,8 +15,7 @@
       <a-col :span="4" class="derecha">
         <a-row justify="space-between">
           <a-switch checked-children="Oscuro" un-checked-children="Claro" class="color arriba" />
-
-
+          <!-- Menú de opciones del usuario -->
           <a-dropdown-button>
             Hector Luis
             <template #overlay>
@@ -39,19 +38,14 @@
               <UserOutlined />
             </template>
           </a-dropdown-button>
-          <!-- Menú de opciones del usuario -->
+
         </a-row>
-
-
-
-
-
       </a-col>
-
     </a-row>
   </a-layout-header>
 </template>
 <script setup>
+// Importar iconos de ant design vue
 import {
   UserOutlined,
   EditOutlined,
@@ -59,9 +53,10 @@ import {
   DownCircleOutlined
 
 } from "@ant-design/icons-vue";
+// Importar componentes de vue
 import { h, ref } from "vue";
 const value = ref(null);
-//select
+//Empresas - opciones
 const options = ref([{
   value: 'empresaa',
   label: 'Empresa A',
@@ -72,7 +67,7 @@ const options = ref([{
   value: 'empresac',
   label: 'Empresa C',
 }]);
-
+// Imprimir en diferentes estados del input
 const handleChange = value => {
   console.log(`selected ${value}`);
 };
@@ -82,17 +77,15 @@ const handleBlur = () => {
 const handleFocus = () => {
   console.log('focus');
 };
+// Buscador
 const filterOption = (input, option) => {
   return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
-
-//Menú de usuario
+//Desplegar el menú de usuario
 const handleMenuClick = e => {
   console.log('click', e);
 };
-
-//menu general
-
+//Menu general
 const current = ref(['']);
 const items = ref([{
   key: 'movimiento',
@@ -367,15 +360,12 @@ const items = ref([{
     key: 'config:264',
   }],
 }]);
-
-
 </script>
 
 <style lang="scss" scoped>
 // * {
 //   border: 1px solid red;
 // }
-
 .color {
   background: rgb(76, 84, 129);
 }
@@ -390,6 +380,5 @@ const items = ref([{
 
 .ancho {
   width: 100%;
-
 }
 </style>

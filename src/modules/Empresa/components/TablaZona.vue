@@ -1,7 +1,7 @@
 <template>
     <!-- Editar -->
     <a-row class="row-btn">
-        <!-- Formulario eeditar cuenta -->
+        <!-- drawer para editar cuenta -->
         <a-drawer title="Editar zona" :width="520" :open="visibleEdit" :body-style="{ paddingBottom: '80px' }"
             :footer-style="{ textAlign: 'right' }" @close="onCloseE">
             <a-form :model="formEdit" :rules="rulesEdit" layout="vertical" class="row-btn">
@@ -28,16 +28,15 @@
             </template>
         </a-drawer>
     </a-row>
-
-
-
-    <!-- tabla con los datos -->
+    <!-- tabla con los datos de las zonas-->
     <a-table bordered :data-source="data" :columns="columns" :pagination="{ pageSize: 5 }">
+        <!-- Celda superior - Código -->
         <template #headerCell="{ column }">
             <template v-if="column.key === 'descCorta'">
                 <span style="color: #1890ff">Código</span>
             </template>
         </template>
+        <!-- Busqueda -->
         <template #customFilterDropdown="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }">
             <div style="padding: 8px">
                 <a-input ref="searchInput" :placeholder="`Buscar ${column.dataIndex}`" :value="selectedKeys[0]"
@@ -59,6 +58,7 @@
         <template #customFilterIcon="{ filtered }">
             <search-outlined :style="{ color: filtered ? '#108ee9' : undefined }" />
         </template>
+        <!-- Se muestras las columnas -->
         <template #bodycell="{ text, column }">
             <span v-if="stateAsRefs.searchText && stateAsRefs.searchedColumn === column.dataIndex">
                 <template v-for="(fragment, i) in text
@@ -67,15 +67,12 @@
                     <mark v-if="fragment.toLowerCase() === stateAsRefs.searchText.toLowerCase()" :key="i" class="highlight">
                         {{ fragment }}
                     </mark>
-
                     <template v-else>{{ fragment }}</template>
                 </template>
-
             </span>
-
         </template>
         <template #bodyCell="{ column, record }">
-            <!-- Operaciones -->
+            <!-- Operaciones editar - eliminar -->
             <template v-if="column.dataIndex === 'operation'">
                 <a-row>
                     <a-popconfirm v-if="data.length" title="¿Seguro de eliminar?" ok-text="Sí" cancel-text="No"
@@ -92,7 +89,6 @@
                             </template> Editar</a-button>
                     </a-popconfirm>
                 </a-row>
-
             </template>
         </template>
         <p>{{ message }}</p>
@@ -100,57 +96,50 @@
 </template>
 
 <script setup>
+// Importar iconos de ant design vue
 import { SearchOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
+// Importar funciones de vue
 import { reactive, ref, toRefs } from 'vue';
-
-
-
-//tabla con los datos
+//Datos
 const data = ref([{
     key: '1',
     descCorta: 'Descripción corta...a',
     descLarga: 'Descripción Larga...a',
- 
 }, {
     key: '2',
     descCorta: 'Descripción corta...b',
     descLarga: 'Descripción Larga...b',
-   
 }, {
     key: '3',
     descCorta: 'Descripción corta...c',
     descLarga: 'Descripción Larga...c',
-    
 }, {
     key: '4',
     descCorta: 'Descripción corta...d',
     descLarga: 'Descripción Larga...d',
-   
 }, {
     key: '5',
     descCorta: 'Descripción corta...e',
     descLarga: 'Descripción Larga...e',
-
 }, {
     key: '6',
     descCorta: 'Descripción corta...f',
     descLarga: 'Descripción Larga...f',
-    
 }, {
     key: '7',
     descCorta: 'Descripción corta...g',
     descLarga: 'Descripción Larga...g',
-    
 }]);
-
+// Objeto reactivo que guarda las filas encontradas, el texto a buscar y la columna que se busca
 const state = reactive({
     searchText: '',
     searchedColumn: '',
     selectedRowKeys: [],
-
     loading: false,
 });
+//Variable que guarda la entrada del buscador
 const searchInput = ref();
+//Definición de las columnas
 const columns = [{
     title: 'descCorta',
     dataIndex: 'descCorta',
@@ -177,47 +166,36 @@ const columns = [{
             }, 100);
         }
     },
-
-
 }, {
     title: 'Operaciones',
     dataIndex: 'operation',
-
-
 }];
-
-//Buscar
+//Función que se ejecuta después del enter y click al buscar
 const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     state.searchText = selectedKeys[0];
     state.searchedColumn = dataIndex;
 };
-
-//reiniciar
+//Función para formatear, se ejcuta después del click en reiniciar
 const handleReset = clearFilters => {
     clearFilters({
         confirm: true,
     });
     state.searchText = '';
 };
-
+//Contienen las datos a tener en cuenta para la busqueda
 const stateAsRefs = toRefs(state)
-
-//Eliminar
+//Elimina un elemento
 const onDelete = key => {
     data.value = data.value.filter(item => item.key !== key);
-
 };
-
-// -------------------Editar
-
-// Objeto reactivo que captura los cambios
+// -------------------Editar empresa
+// Objeto reactivo que captura los compors en el formulario
 const formEdit = reactive({
     descCorta: '',
     descLarga: '',
 
 });
-
 // Detalle de los campos
 const rulesEdit = {
     descCorta: [{
@@ -229,27 +207,24 @@ const rulesEdit = {
         message: 'Ingrese la decripción larga',
     }]
 };
-
+// Variable que controla la visibilidad del drawer
 const visibleEdit = ref(false);
-// Mostrar editar
+// Función que muestra crear empresa
 const showDrawerE = () => {
     visibleEdit.value = true;
 };
-// cerrar Editar
+// Función que cierra crear empresa
 const onCloseE = () => {
     visibleEdit.value = false;
 };
-
 </script>
 
 <style lang="scss" scoped>
 .btn-margin {
     margin-right: 15px;
-
 }
 
 .row-btn {
     margin-bottom: 20px;
 }
-
 </style>

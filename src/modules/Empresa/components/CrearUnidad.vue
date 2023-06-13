@@ -8,9 +8,10 @@
                 Crear Unidad
             </a-button>
         </a-col>
-        <!-- Formulario para editar -->
+        <!-- Drawer para crear unidad-->
         <a-drawer title="Crear Unidad" :width="520" :open="visible" :body-style="{ paddingBottom: '80px' }"
             :footer-style="{ textAlign: 'right' }" @close="onClose">
+            <!-- Formulario -->
             <a-form :model="form" :rules="rules" layout="vertical" class="row-btn">
                 <a-row :gutter="16">
                     <a-col :span="12">
@@ -40,9 +41,7 @@
                         </a-form-item>
                     </a-col>
                 </a-row>
-
             </a-form>
-
             <template #extra>
                 <a-space>
                     <a-button @click="onClose">Cancelar</a-button>
@@ -54,11 +53,10 @@
 </template>
 
 <script setup>
+//Importar iconos de ant design vue
 import { PlusOutlined } from '@ant-design/icons-vue';
-
+//Impotar funciones de vue
 import { reactive, ref } from 'vue';
-
-
 // Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     codigo: '',
@@ -70,7 +68,7 @@ const form = reactive({
 const rules = {
     codigo: [{
         required: true,
-        message: 'Ingrese el códigp',
+        message: 'Ingrese el código',
     }],
     sucursal: [{
         required: true,
@@ -85,23 +83,21 @@ const rules = {
         message: 'Ingrese la descripción larga',
     }]
 };
-
+// Variable que controla la visibilidad del drawer
 const visible = ref(false);
-// Mostrar crear zona
+// Función que muestra crear zona
 const showDrawer = () => {
     visible.value = true;
 };
-// Cerrar crear zona
+// Función que cierra crear zona
 const onClose = () => {
     visible.value = false;
 };
-
 </script>
 
 <style lang="scss" scoped>
 .btn-margin {
     margin-right: 15px;
-
 }
 
 .row-btn {
