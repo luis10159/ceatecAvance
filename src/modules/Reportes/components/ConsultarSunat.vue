@@ -18,8 +18,6 @@
                     <a-button type="primary" block :icon="h(GlobalOutlined)">Captcha</a-button>
                 </a-col>
             </a-row>
-
-
             <a-row :gutter="16" align="bottom" class="color">
                 
                 <a-col :span="12">

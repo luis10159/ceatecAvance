@@ -6,20 +6,13 @@
   </a-row>
   <!-- Componente para crear cuenta-->
   <CrearCuenta></CrearCuenta>
-
-
   <!-- Componente tabla-->
   <TablaCuenta></TablaCuenta>
 </template>
 
 <script setup>
-
 import { defineAsyncComponent } from 'vue';
 // importando los componentes
 const CrearCuenta = defineAsyncComponent(() => import('@/modules/Tabla/components/CrearCuenta.vue'));
 const TablaCuenta = defineAsyncComponent(() => import('@/modules/Tabla/components/TablaCuenta.vue'));
-
-
 </script>
-
-<style lang="scss" scoped></style>

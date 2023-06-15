@@ -298,7 +298,8 @@ const formEditar = reactive({
   planes: '',
   impOpciones: null,
 });
-// Detalle de los campos
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const rulesE = {
   ruc: [{
     required: true,

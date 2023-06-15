@@ -1,7 +1,7 @@
 <template>
     <!-- Editar -->
     <a-row class="row-btn">
-        <!-- Formulario eeditar cuenta -->
+        <!-- Drawer para editar empresa-->
         <a-drawer title="Editar una cuenta" :width="520" :open="visibleEdit" :body-style="{ paddingBottom: '80px' }"
             :footer-style="{ textAlign: 'right' }" @close="onCloseE">
             <a-form :model="formEdit" :rules="rulesEdit" layout="vertical" class="row-btn">
@@ -29,7 +29,6 @@
                             </a-select>
                         </a-form-item>
                     </a-col>
-
                     <a-col :span="12">
                         <a-form-item label="Tipo de cuenta" name="tipoCuenta">
                             <a-select v-model:value="formEdit.tipoCuenta" placeholder="Seleccione el tipo de cuenta">
@@ -56,7 +55,6 @@
                         </a-form-item>
                     </a-col>
                 </a-row>
-
                 <a-row class="row-btn" v-if="formEdit.nivelCuenta == 'registro' || formEdit.nivelCuenta == 'subCuenta'">
                     <a-col :span="20">
                         <a-col :span="24" class="row-btn"
@@ -64,22 +62,18 @@
                             Cta. (Debe): <a-input-number id="inputNumber" :min="1" /> <a-input-number id="inputNumber"
                                 v-on:change="suma" v-model:value="porcentajesE[0]" :min="0" :max="100"
                                 :formatter="value => `${value}%`" :parser="value => value.replace('%', '')" />
-
                         </a-col>
-
                         <a-col class="row-btn" :span="24"
                             v-if="(porcentajesE[0] != 0 && (sum != 100 && sum < 100)) || (porcentajesE[1] || porcentajesE[2] || porcentajesE[3]) != 0">
                             Cta. (Debe): <a-input-number id="inputNumber" :min="1" /> <a-input-number id="inputNumber"
                                 v-on:change="suma" v-model:value="porcentajesE[1]" :min="0" :max="100"
                                 :formatter="value => `${value}%`" :parser="value => value.replace('%', '')" />
                         </a-col>
-
                         <a-col class="row-btn" :span="24"
                             v-if="(porcentajesE[1] != 0 && (sum != 100 && sum < 100)) || (porcentajesE[2] || porcentajesE[3] != 0)">
                             Cta. (Debe): <a-input-number id="inputNumber" :min="1" /> <a-input-number id="inputNumber"
                                 v-on:change="suma" v-model:value="porcentajesE[2]" :min="0" :max="100"
                                 :formatter="value => `${value}%`" :parser="value => value.replace('%', '')" />
-
                         </a-col>
                         <a-col class="row-btn" :span="24"
                             v-if="(porcentajesE[2] != 0 && (sum != 100 && sum < 100)) || (porcentajesE[3] != 0)">
@@ -89,18 +83,13 @@
                         </a-col>
                     </a-col>
                     <a-col :span="4">
-
                         Cta. (Haber): <a-input-number class="row-btn" id="inputNumber" :min="1" />
-
                         Cta. (Cierre): <a-input-number class="row-btn" id="inputNumber" :min="1" />
-
                         <a-form-item label="Auxiliar" name="auxiliar">
                             <a-input v-model:value="formEdit.auxiliar" placeholder="Por favor, ingrese..." />
                         </a-form-item>
                     </a-col>
                 </a-row>
-
-
             </a-form>
             <a-row v-if="sum > 100" :span="24">
                 <a-alert description="El porcentaje total no es valido, excede el 100%" type="error" show-icon
@@ -118,16 +107,15 @@
             </template>
         </a-drawer>
     </a-row>
-
-
-
-    <!-- tabla con los datos -->
+    <!-- tabla con los datos de las empresas -->
     <a-table bordered :data-source="data" :columns="columns" :pagination="{ pageSize: 5 }">
+        <!-- Celda superior - Código -->
         <template #headerCell="{ column }">
             <template v-if="column.key === 'codigo'">
                 <span style="color: #1890ff">Código</span>
             </template>
         </template>
+        <!-- Busqueda -->
         <template #customFilterDropdown="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }">
             <div style="padding: 8px">
                 <a-input ref="searchInput" :placeholder="`Buscar ${column.dataIndex}`" :value="selectedKeys[0]"
@@ -149,6 +137,7 @@
         <template #customFilterIcon="{ filtered }">
             <search-outlined :style="{ color: filtered ? '#108ee9' : undefined }" />
         </template>
+        <!-- Se muestras las columnas -->
         <template #bodycell="{ text, column }">
             <span v-if="stateAsRefs.searchText && stateAsRefs.searchedColumn === column.dataIndex">
                 <template v-for="(fragment, i) in text
@@ -157,15 +146,12 @@
                     <mark v-if="fragment.toLowerCase() === stateAsRefs.searchText.toLowerCase()" :key="i" class="highlight">
                         {{ fragment }}
                     </mark>
-
                     <template v-else>{{ fragment }}</template>
                 </template>
-
             </span>
-
         </template>
         <template #bodyCell="{ column, record }">
-            <!-- Operaciones -->
+            <!-- Operaciones editar - eliminar -->
             <template v-if="column.dataIndex === 'operation'">
                 <a-row>
                     <a-popconfirm v-if="data.length" title="¿Seguro de eliminar?" ok-text="Sí" cancel-text="No"
@@ -190,12 +176,11 @@
 </template>
 
 <script setup>
+// Importar iconos de ant design vue
 import { SearchOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons-vue';
+// Importar funciones de vue
 import { reactive, ref, toRefs } from 'vue';
-
-
-
-//tabla con los datos
+//Datos
 const data = ref([{
     key: '1',
     codigo: '001',
@@ -239,7 +224,7 @@ const data = ref([{
     columnaa: '32',
     columnab: 'Columna B',
 }]);
-
+// Objeto reactivo que guarda las filas encontradas, el texto a buscar y la columna que se busca
 const state = reactive({
     searchText: '',
     searchedColumn: '',
@@ -247,7 +232,9 @@ const state = reactive({
 
     loading: false,
 });
+//Variable que guarda la entrada del buscador
 const searchInput = ref();
+//Definición de las columnas
 const columns = [{
     title: 'codigo',
     dataIndex: 'codigo',
@@ -274,53 +261,41 @@ const columns = [{
             }, 100);
         }
     },
-
-
 }, {
     title: 'Columna A',
     dataIndex: 'columnaa',
     key: 'columnaa',
-
-
 }, {
     title: 'Columna B',
     dataIndex: 'columnab',
     key: 'columnab',
-
-
 }, {
     title: 'Operaciones',
     dataIndex: 'operation',
-
-
 }];
 
-//Buscar
+//Función que se ejecuta después del enter y click al buscar
 const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     state.searchText = selectedKeys[0];
     state.searchedColumn = dataIndex;
 };
-
-//reiniciar
+//Función para formatear, se ejcuta después del click en reiniciar
 const handleReset = clearFilters => {
     clearFilters({
         confirm: true,
     });
     state.searchText = '';
 };
-
+//Contienen las datos a tener en cuenta para la busqueda
 const stateAsRefs = toRefs(state)
-
-//Eliminar
+//Elimina un elemento
 const onDelete = key => {
     data.value = data.value.filter(item => item.key !== key);
 
 };
-
-// -------------------Editar
-
-// Objeto reactivo que captura los cambios
+// ----------------------Editar cuenta
+// Objeto reactivo que va a capturar los campos en el formulario
 const formEdit = reactive({
     codigo: '',
     cuentaContable: '',
@@ -331,7 +306,8 @@ const formEdit = reactive({
     auxiliar: '',
 });
 
-// Detalle de los campos
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const rulesEdit = {
     codigo: [{
         required: true,
@@ -362,18 +338,17 @@ const rulesEdit = {
         message: 'Ingresa el auxiliar',
     }],
 };
-
+// Variable que controla la visibilidad del drawer
 const visibleEdit = ref(false);
-// Mostrar editar
+// Función que muestra crear cuenta
 const showDrawerE = () => {
     visibleEdit.value = true;
 };
-// cerrar Editar
+// Función que cierra crear cuenta
 const onCloseE = () => {
     visibleEdit.value = false;
 };
-
-//select optiones
+//Selector de opciones
 const optionsE = ref([]);
 for (let i = 1; i < 5; i++) {
     const value = i.toString(10) + i;
@@ -382,23 +357,20 @@ for (let i = 1; i < 5; i++) {
         value,
     });
 }
-//Campos -porcentajesE
+//procentajes - sum=contiene la suma de los porcentajes, suma=función que realiza la suma
 const porcentajesE = reactive([0, 0, 0, 0]);
 let sum = ref(0);
 let suma = () => {
     sum.value = 0;
     for (let i = 0; i < 4; i++) {
         sum.value = sum.value + porcentajesE[i];
-
     }
 }
-
 </script>
 
 <style lang="scss" scoped>
 .btn-margin {
     margin-right: 15px;
-
 }
 
 .row-btn {

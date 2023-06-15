@@ -1,8 +1,10 @@
 <template>
   <a-row justify="center" class="login">
     <a-col :xs="15" :sm="13" :md="11" :lg="9" :xl="7">
+      <!-- Formulario de inicio de sesión -->
       <a-form :model="formState" name="normal_login" class="login-form" :label-col="{ xs: 9, sm: 8, md: 7, lg: 6, xl: 5 }"
         @finish="onFinish" @finishFailed="onFinishFailed">
+        <!-- Incono avatar en la parte superior -->
         <a-row justify="center" class="avatar">
           <a-avatar :size="{ xs: 75, sm: 80, md: 85, lg: 90, xl: 95, xxl: 100 }">
             <template #icon>
@@ -13,16 +15,18 @@
         <a-row justify="center" class="avatar">
           <h2>Identificación del usuario</h2>
         </a-row>
-        <a-form-item label="Gmail" name="username" :rules="[
-            { type: 'email', required: true, message: 'No es un correo electrónico válido' },
-          ]">
-          <a-input v-model:value="formState.username" placeholder="Ingrese su gmail">
+        <!-- Items del formuario -->
+        <a-form-item label="Email" name="username" :rules="[
+          { type: 'email', required: true, message: 'No es un correo electrónico válido' },
+        ]">
+          <a-input v-model:value="formState.username" placeholder="Ingrese su email">
             <template #prefix>
               <MailOutlined class="site-form-item-icon" />
             </template>
           </a-input>
         </a-form-item>
-<!-- 
+        <!-- Usuario -->
+        <!-- 
         <a-form-item label="Usuario" name="username" :rules="[
             { type: 'email', required: true, message: 'Por favor, ingresa tu usuario!' },
           ]">
@@ -32,10 +36,9 @@
             </template>
           </a-input>
         </a-form-item> -->
-
         <a-form-item label="Contraseña" name="password" :rules="[
-            { required: true, message: 'Por favor, ingresa tu contraseña!' },
-          ]">
+          { required: true, message: 'Por favor, ingresa tu contraseña!' },
+        ]">
           <a-input-password v-model:value="formState.password" placeholder="Ingrese su contraseña">
             <template #prefix>
               <LockOutlined class="site-form-item-icon" />
@@ -44,7 +47,7 @@
         </a-form-item>
         <a-form-item label="Plataforma" name="platform">
           <a-select placeholder="Seleccione la plataforma" v-model:value="formState.platform">
-            <a-select-option value="plataformaa" >Plataforma a</a-select-option>
+            <a-select-option value="plataformaa">Plataforma a</a-select-option>
             <a-select-option value="plataforma">Plataforma b</a-select-option>
           </a-select>
         </a-form-item>
@@ -54,14 +57,12 @@
             <a-select-option value="2023">202x</a-select-option>
           </a-select>
         </a-form-item>
-
         <a-form-item>
           <a-form-item name="remember" no-style>
             <a-checkbox v-model:checked="formState.remember">Recuérdame</a-checkbox>
           </a-form-item>
           <a class="login-form-forgot" href="">Olvidé mi contraseña</a>
         </a-form-item>
-
         <a-form-item>
           <a-button :disabled="disabled" type="primary" html-type="submit" class="login-form-button borde-redondo">
             Iniciar
@@ -73,9 +74,10 @@
 </template>
 
 <script setup>
+// Importar funciones de vue
 import { reactive, computed } from "vue";
+// Importar iconos de ant design vue
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons-vue";
-
 // variables sincronizadas con las entradas
 const formState = reactive({
   username: "",
@@ -112,7 +114,7 @@ const disabled = computed(() => {
   padding: 18px;
   border-radius: 10px;
   background-color: #fcfdff98;
-  box-shadow:  14px 14px 12px #f0f0f063;
+  box-shadow: 14px 14px 12px #f0f0f063;
 }
 
 .login-form-forgot {
@@ -126,5 +128,4 @@ const disabled = computed(() => {
 .avatar {
   margin-bottom: 30px;
 }
-
 </style>

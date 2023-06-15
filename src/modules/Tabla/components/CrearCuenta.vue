@@ -1,20 +1,22 @@
 <template>
     <a-row class="row-btn">
         <a-col :span="24" class="flex">
+            <!-- Botón para mostrar el drawer crear cuenta -->
             <a-button type="primary" @click="showDrawer" class="btn-margin">
                 <template #icon>
                     <PlusOutlined />
                 </template>
                 Crear cuenta
             </a-button>
+            <!-- Selector de años -->
             <a-select placeholder="Seleccione el año" class="hola">
                 <a-select-option value="2021">2021</a-select-option>
                 <a-select-option value="2022">2022</a-select-option>
                 <a-select-option value="2023">2023</a-select-option>
             </a-select>
         </a-col>
-        <!-- Formulario para editar -->
-        <a-drawer title="Crear una cuenta" :width="520" :open="visible" :body-style="{ paddingBottom: '80px' }"
+        <!-- Drawer para crear una cuenta -->
+        <a-drawer title="Crear cuenta" :width="520" :open="visible" :body-style="{ paddingBottom: '80px' }"
             :footer-style="{ textAlign: 'right' }" @close="onClose">
             <a-form :model="form" :rules="rules" layout="vertical" class="row-btn">
                 <a-row :gutter="16">
@@ -66,7 +68,6 @@
                         </a-form-item>
                     </a-col>
                 </a-row>
-
                 <a-row class="row-btn" v-if="form.nivelCuenta == 'registro' || form.nivelCuenta == 'subCuenta'">
                     <a-col :span="20">
                         <a-col :span="24" class="row-btn"
@@ -74,9 +75,7 @@
                             Cta. (Debe): <a-input-number id="inputNumber" :min="1" v-model:value="form.debe[0]" />
                             <a-input-number id="inputNumber" v-on:change="suma" v-model:value="form.porcentajes[0]" :min="0"
                                 :max="100" :formatter="value => `${value}%`" :parser="value => value.replace('%', '')" />
-
                         </a-col>
-
                         <a-col class="row-btn" :span="24"
                             v-if="(form.porcentajes[0] != 0 && (sum != 100 && sum < 100)) || (form.porcentajes[1] || form.porcentajes[2] || form.porcentajes[3]) != 0">
                             Cta. (Debe): <a-input-number id="inputNumber" :min="1" v-model:value="form.debe[1]" />
@@ -108,8 +107,7 @@
                         </a-form-item>
                     </a-col>
                     <a-button type="primary" @click="mostrarObjeto" class="btn-margin">
-                        
-                     datos
+                        datos
                     </a-button>
                 </a-row>
             </a-form>
@@ -132,12 +130,10 @@
 </template>
 
 <script setup>
-// Importar iconos
+// Importar iconos de ant design vue
 import { PlusOutlined } from '@ant-design/icons-vue';
-
+// Importar funciones de vue
 import { reactive, ref } from 'vue';
-
-
 // Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     codigo: '',
@@ -152,7 +148,8 @@ const form = reactive({
     cierre: null,
     debe: [0, 0, 0, 0],
 });
-// detalle de los campos
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const rules = {
     codigo: [{
         required: true,
@@ -186,19 +183,17 @@ const rules = {
         message: 'Selecione las opciones que necesite',
         type: 'array',
     }]
-
 };
-
+// Variable que controla la visibilidad del drawer
 const visible = ref(false);
-// Mostrar crear cuenta
+// Función que muestra crear cuenta
 const showDrawer = () => {
     visible.value = true;
 };
-// Cerrar crear cuenta
+// Función que cierra crear cuenta
 const onClose = () => {
     visible.value = false;
 };
-
 //Opciones de selección multiple
 const options = ref([]);
 for (let i = 1; i < 5; i++) {
@@ -208,10 +203,7 @@ for (let i = 1; i < 5; i++) {
         value,
     });
 }
-
-//procentajes
-
-
+//procentajes - sum=contiene la suma de los porcentajes, suma=función que realiza la suma
 let sum = ref(0);
 let suma = () => {
     sum.value = 0;
@@ -219,12 +211,10 @@ let suma = () => {
         sum.value = sum.value + form.porcentajes[i];
     }
 }
-
-// mostrar objeto
+// mostrar objeto con la entredas, es olo para prueba
 const mostrarObjeto = () => {
     console.log(form);
 }
-
 </script>
 
 <style lang="scss" scoped>
@@ -253,4 +243,5 @@ const mostrarObjeto = () => {
 .flex {
     display: flex;
     justify-content: space-between;
-}</style>
+}
+</style>

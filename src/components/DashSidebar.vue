@@ -1,6 +1,11 @@
 <template>
   <a-layout-sider v-model:collapsed="collapsed" collapsible>
-    <h2 class="logo"><a-typography-text strong>Logo</a-typography-text></h2>
+    <!-- Logo -->
+    <h2 class="logo">
+      <a-typography-title :level="4" v-if="logo" strong class="letra_color">Ceatec Soft</a-typography-title>
+      <a-typography-title :level="4" v-else strong class="letra_color">C.S</a-typography-title>
+    </h2>
+    <!-- Menú de opciones laterales -->
     <a-menu v-model:selectedKeys="selectedKeys" mode="inline" theme="dark">
       <a-sub-menu key="sub1">
         <template #title>
@@ -89,19 +94,46 @@ import {
   CheckSquareOutlined,
 } from "@ant-design/icons-vue";
 // Importar componentes de vue
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 // Modo desplegable
 const collapsed = ref(false);
 // Menús selccionados
 const selectedKeys = ref([""]);
+//Mostrar logo
+const logo = ref(true);
+//Función que de acuerdo al ancho de la ventana ejecuta el código
+const handleResize = () => {
+  if (window.innerWidth <= 1200) {
+    // Aquí puedes llamar a tu función
+    collapsed.value = true;
+    logo.value = false;
+  }
+  if (window.innerWidth > 1200) {
+    // Aquí puedes llamar a tu función
+    collapsed.value = false;
+    logo.value = true;
+  }
+}
+// Se utiliza para agregar el evento resize cuando el componente se monta
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+// Se usa para eliminar el evento antes de que el componente se desmonte para evitar fugas de memoria
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize)
+})
 </script>
 
 <style lang="scss" scoped>
 .logo {
   min-height: 32px;
   margin: 16px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(41, 50, 88, 0.3);
   text-align: center;
   border-radius: 15px;
+  color: white;
+}
+.letra_color {
+  color: white;
 }
 </style>
