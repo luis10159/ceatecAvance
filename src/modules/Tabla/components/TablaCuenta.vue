@@ -229,7 +229,6 @@ const state = reactive({
     searchText: '',
     searchedColumn: '',
     selectedRowKeys: [],
-
     loading: false,
 });
 //Variable que guarda la entrada del buscador
@@ -273,7 +272,6 @@ const columns = [{
     title: 'Operaciones',
     dataIndex: 'operation',
 }];
-
 //Función que se ejecuta después del enter y click al buscar
 const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();

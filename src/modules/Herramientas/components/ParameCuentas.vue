@@ -6,11 +6,8 @@
                     <a-select placeholder="Seleccione una cuenta IGV" v-model:value="form.cuentaIGV" show-search
                         :options="optionsIGV" :filter-option="filterOptionIGV" @focus="handleFocusIGV" @blur="handleBlurIGV"
                         @change="handleChangeIGV"></a-select>
-
                 </a-form-item>
             </a-col>
-
-
             <a-col :span="5">
                 <a-form-item label="Cuenta ISC" name="cuentaISC">
                     <a-select placeholder="Seleccione la cuenta ISC" v-model:value="form.cuentaISC" show-search
@@ -18,14 +15,11 @@
                         @change="handleChangeISC"></a-select>
                 </a-form-item>
             </a-col>
-
-
             <a-col :span="5">
                 <a-form-item label="Cuenta IES" name="cuentaIES">
                     <a-input class="ancho" v-model:value="form.cuentaIES" placeholder="Ingrese cuenta IES" />
                 </a-form-item>
             </a-col>
-
         </a-row>
         <a-row align="middle" justify="space-around">
             <a-col :span="5">
@@ -35,16 +29,13 @@
                         @blur="handleBlurPercep" @change="handleChangePercep"></a-select>
                 </a-form-item>
             </a-col>
-
             <a-col :span="5">
                 <a-form-item label="Detracciones" name="detracciones">
                     <a-select placeholder="Seleccione las detracciones" v-model:value="form.detracciones" show-search
                         :options="optionsDetra" :filter-option="filterOptionDetra" @focus="handleFocusDetra"
                         @blur="handleBlurDetra" @change="handleChangeDetra"></a-select>
-
                 </a-form-item>
             </a-col>
-
             <a-col :span="5">
                 <a-form-item label="Cierre Compras" name="cierreCompras">
                     <a-select placeholder="Seleccione el cierre de compras" v-model:value="form.cierreCompras" show-search
@@ -52,7 +43,6 @@
                         @blur="handleBlurCComp" @change="handleChangeCComp"></a-select>
                 </a-form-item>
             </a-col>
-
         </a-row>
         <a-row align="middle" justify="space-around">
             <a-col :span="5">
@@ -62,24 +52,19 @@
                         @blur="handleBlurCVent" @change="handleChangeCVent"></a-select>
                 </a-form-item>
             </a-col>
-
             <a-col :span="5">
                 <a-form-item label="Difer. Cambio (+)" name="diferCambioP">
-
                     <a-input-number class="ancho" v-model:value="form.diferCambioP"
                         placeholder="Ingrese Difer. Cambio (+)" />
                 </a-form-item>
             </a-col>
-
             <a-col :span="5">
                 <a-form-item label="Difer. Cambio (-)" name="diferCambioN">
                     <a-select placeholder="Seleccione  Difer. Cambio (-)" v-model:value="form.diferCambioN" show-search
                         :options="optionsDifCamNe" :filter-option="filterOptionDifCamNe" @focus="handleFocusDifCamNe"
                         @blur="handleBlurDifCamNe" @change="handleChangeDifCamNe"></a-select>
-
                 </a-form-item>
             </a-col>
-
         </a-row>
         <a-row align="middle" justify="space-around">
             <a-col :span="5">
@@ -89,20 +74,17 @@
                         @blur="handleBlurCuenRet" @change="handleChangeCuenRet"></a-select>
                 </a-form-item>
             </a-col>
-
             <a-col :span="5">
                 <a-form-item label="Cuenta IVAP" name="cuentaIVAP">
                     <a-input-number class="ancho" v-model:value="form.cuentaIVAP" placeholder="Ingrese cierre ventas" />
                 </a-form-item>
             </a-col>
-
             <a-col :span="5">
                 <a-form-item label="Cuenta Auxiliar" name="cuentaAuxiliar">
                     <a-input-number class="ancho" v-model:value="form.cuentaAuxiliar"
                         placeholder="Ingrese cuenta axiliar" />
                 </a-form-item>
             </a-col>
-
         </a-row>
     </a-form>
     <a-button type="primary" @click="consola">Datos en consola</a-button>
@@ -110,8 +92,6 @@
 
 <script setup>
 import { ref, reactive, computed } from 'vue'
-import { DropboxOutlined, PlusOutlined } from '@ant-design/icons-vue';
-
 // Parámetros de cuentas
 const form = reactive({
     cuentaIGV: null,
@@ -126,7 +106,6 @@ const form = reactive({
     cuentaReten: null,
     cuentaIVAP: null,
     cuentaAuxiliar: null,
-
 });
 // detalle de los campos
 const rules = {

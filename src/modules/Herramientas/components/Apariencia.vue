@@ -1,6 +1,7 @@
 <template>
     <a-form layout="vertical" class="row-btn">
         <a-row justify="center">
+            <!-- Opciones de apariencia -->
             <a-col :span="10">
                 <a-form-item label="Opciones de apariencia" name="opciones">
                     <a-select v-model:value="opciones" mode="multiple" style="width: 100%"
@@ -10,7 +11,7 @@
         </a-row>
     </a-form>
 
-    <!-- imagen -->
+    <!-- Visualizar imagen -->
     <a-row justify="center">
         <a-col>
             <p>Previsualización</p>
@@ -31,11 +32,14 @@
 </template>
 
 <script setup>
+// Importar funciones de vue
 import { ref } from 'vue'
+// Importar iconos de ant design vue
 import { PlusOutlined } from '@ant-design/icons-vue';
-// opciones
+// opciones de apariencia
 const opciones = ref([])
 const options = ref([]);
+// Generar opciones
 for (let i = 1; i < 5; i++) {
     const value = i.toString(10) + i;
     options.value.push({
@@ -43,9 +47,7 @@ for (let i = 1; i < 5; i++) {
         value,
     });
 }
-
-// imagen pariencia
-
+// manejar los errores - imagen
 function getBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -57,16 +59,19 @@ function getBase64(file) {
 const previewVisible = ref(false);
 const previewImage = ref('');
 const previewTitle = ref('');
+// Imagen
 const fileList = ref([{
     uid: '-1',
     name: 'imagen',
     status: 'done',
     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
 }]);
+// ocultar previsualización
 const handleCancel = () => {
     previewVisible.value = false;
     previewTitle.value = '';
 };
+// Logica parala previsualización de la imagen
 const handlePreview = async file => {
     if (!file.url && !file.preview) {
         file.preview = await getBase64(file.originFileObj);
@@ -76,5 +81,3 @@ const handlePreview = async file => {
     previewTitle.value = file.name || file.url.substring(file.url.lastIndexOf('/') + 1);
 };
 </script>
-
-<style lang="scss" scoped></style>

@@ -1,44 +1,46 @@
 <template>
   <a-layout-header style="padding: 0" class="barra">
     <!-- buscador -->
-
-
     <a-row align="middle" justify="space-between">
       <a-col :span="4">
         <a-select class="ancho" placeholder="Seleccione una empresa" v-model:value="value" show-search :options="options"
           :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur" @change="handleChange"></a-select>
       </a-col>
-      <a-col :span="14">
+      <a-col :span="15">
         <a-menu theme="dark" v-model:selectedKeys="current" mode="horizontal" :items="items" />
       </a-col>
-
-      <a-col :span="4" class="derecha">
-        <a-row justify="space-between">
-          <a-switch checked-children="Oscuro" un-checked-children="Claro" class="color arriba" />
+      <a-col :span="5">
+        <a-row justify="center" align="middle">
+          <a-col :span="15" class="derecha">
+            <a-switch checked-children="Oscuro" un-checked-children="Claro" class="color arriba" />
+          </a-col>
           <!-- Menú de opciones del usuario -->
-          <a-dropdown-button>
-            Hector Luis
-            <template #overlay>
-              <a-menu @click="handleMenuClick" theme="dark">
-                <a-menu-item key="1">
-                  <EditOutlined />
-                  Editar perfil
-                </a-menu-item>
-                <a-menu-item key="2">
-                  <DownCircleOutlined />
-                  Ajustes
-                </a-menu-item>
-                <a-menu-item key="3">
-                  <LogoutOutlined />
-                  Salir
-                </a-menu-item>
-              </a-menu>
-            </template>
-            <template #icon>
-              <UserOutlined />
-            </template>
-          </a-dropdown-button>
+          <a-col :span="9" class="derecha-avatar">
+            <a-dropdown>
 
+              <template #overlay>
+                <a-menu @click="handleMenuClick">
+                  <a-menu-item key="1">
+                    <EditOutlined />
+                    Editar perfil
+                  </a-menu-item>
+                  <a-menu-item key="2">
+                    <DownCircleOutlined />
+                    Ajustes
+                  </a-menu-item>
+                  <a-menu-item key="3">
+                    <LogoutOutlined />
+                    Salir
+                  </a-menu-item>
+                </a-menu>
+              </template>
+              <a-avatar class="color">
+                <template #icon>
+                  <UserOutlined />
+                </template>
+              </a-avatar>
+            </a-dropdown>
+          </a-col>
         </a-row>
       </a-col>
     </a-row>
@@ -374,11 +376,17 @@ const items = ref([{
   margin-top: 6px;
 }
 
-.derecha {
+.ancho {
+  width: 100%;
+  margin-right: 10px;
+}
+
+.derecha-avatar {
+  text-align: end;
   padding-right: 15px;
 }
 
-.ancho {
-  width: 100%;
+.derecha {
+  text-align: end;
 }
 </style>
