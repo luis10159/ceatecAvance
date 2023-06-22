@@ -1,14 +1,17 @@
 <template>
   <a-row justify="center">
+    <!-- Titulo -->
     <a-col>
       <a-typography-title :level="3">Registro de compras</a-typography-title>
     </a-col>
   </a-row>
-  <!-- modal -->
   <div>
+    <!-- Botón para abrir el modal -->
     <a-button type="primary" @click="showModal">Abrir modal</a-button>
+    <!-- Modal actualización de movimientos -->
     <a-modal v-model:open="open" width="1000px" title="Actualización de movimientos" ok-text="Guardar"
       cancel-text="Cancelar" @ok="handleOk">
+      <!-- Formulario -->
       <a-form :model="form" :rules="rules" layout="vertical">
         <a-row :gutter="16" justify="space-between">
           <a-col :span="10">
@@ -38,7 +41,6 @@
                     @change="handleChangeSede" placeholder="Seleccione la sede"></a-select>
                 </a-form-item>
               </a-col>
-
               <a-col :span="12">
                 <a-form-item label="Fecha" name="fecha">
                   <a-date-picker class="ancho" v-model:value="form.fecha" placeholder="seleccione la fecha" />
@@ -49,17 +51,14 @@
                   <a-time-picker class="ancho" placeholder="Seleccione la hora" v-model:value="form.hora" />
                 </a-form-item>
               </a-col>
-
             </a-row>
-
           </a-col>
         </a-row>
-
         <a-row :gutter="16">
           <a-col :span="5">
             <a-form-item label="Proveedor" name="proveedor">
               <a-select placeholder="Seleccione una cuenta contable" v-model:value="form.proveedor" show-search
-                :options="optCuentaPro" :filter-option="filterOptionAbon" @focus="handleFocusPro" @blur="handleBlurPro"
+                :options="optCuentaPro" :filter-option="filterOptionPro" @focus="handleFocusPro" @blur="handleBlurPro"
                 @change="handleChangePro"></a-select>
             </a-form-item>
           </a-col>
@@ -88,7 +87,6 @@
           </a-col>
         </a-row>
         <a-row :gutter="16" justify="end">
-
           <a-col :span="5">
             <a-form-item label="Doc. Cancelación N°" name="docCancel">
               <a-input v-model:value="form.docCancel" placeholder="Ingrese el N° del Doc. Cancelación" />
@@ -111,13 +109,12 @@
             </a-form-item>
           </a-col>
         </a-row>
-        <!-- inferior -->
         <a-row :gutter="16">
           <a-col :span="19">
             <a-row :gutter="16" align="bottom">
               <a-col :span="18">
                 <a-form-item label="Glosario" name="glosario">
-                  <a-input v-model:value="form.glosario" placeholder="Ingrese el glosario"/>
+                  <a-input v-model:value="form.glosario" placeholder="Ingrese el glosario" />
                 </a-form-item>
               </a-col>
               <a-col :span="6">
@@ -166,7 +163,7 @@
                   <a-col :span="24">
                     <a-form-item label="Detracción" name="detraccion">
                       <a-select ref="select" v-model:value="form.detraccion" :options="optDet" @focus="focusDet"
-                    @change="handleChangeDet" placeholder="Seleccione la sede"></a-select>
+                        @change="handleChangeDet" placeholder="Seleccione la sede"></a-select>
                     </a-form-item>
                   </a-col>
                   <a-col :span="7">
@@ -192,7 +189,7 @@
                   <a-col :span="24">
                     <a-form-item label="Percepción" name="percepcion">
                       <a-select ref="select" v-model:value="form.percepcion" :options="optPer" @focus="focusPer"
-                    @change="handleChangePer" placeholder="Seleccione la sede"></a-select>
+                        @change="handleChangePer" placeholder="Seleccione la sede"></a-select>
                     </a-form-item>
                   </a-col>
                   <a-col :span="7">
@@ -212,7 +209,6 @@
                   </a-col>
                 </a-row>
               </a-col>
-
               <a-col :span="6">
                 <a-checkbox v-model:checked="form.ctaICBPERaCheck" class="margen-check">Cta. ICBPER</a-checkbox>
                 <a-form-item name="ctaICBPERa">
@@ -236,7 +232,6 @@
                 </a-form-item>
               </a-col>
             </a-row>
-
           </a-col>
           <a-col :span="5">
             <a-row class="margen-check">Impuestos</a-row>
@@ -281,8 +276,7 @@
       </a-form>
     </a-modal>
   </div>
-
-  <!-- contenido -->
+  <!-- Vista registro de compras -->
   <a-row justify="center">
     <a-col :span="6">
       <a-typography-title class="margen-texto" :level="5">Parámetros</a-typography-title>
@@ -323,10 +317,14 @@
     </a-col>
   </a-row>
 </template>
+
 <script setup>
+// Importar funciones de vue
 import { ref, watch, reactive } from 'vue'
+// Importar componentes de ant desing vue
 import { TreeSelect } from 'ant-design-vue';
 const SHOW_PARENT = TreeSelect.SHOW_PARENT;
+// Datos comtenidos en el arbol
 const treeData = [{
   title: 'Todas las sucursales',
   value: '0-0',
@@ -358,35 +356,37 @@ const treeData = [{
     value: '0-1-2',
   }],
 }];
+// variable que guarda el valor de los parámetros elegidos - Sucursale y Departamentos/Oficinas
 const value = ref([]);
 watch(value, () => {
   console.log(value.value);
 });
-// Parámetros
+// Variable que guarda el rango de fechas
 const value1 = ref();
-// selección radio
+// Varable que guarda la selección radio - Odenado Por
 const valueradio = ref();
+// Estilo de la radio
 const radioStyle = reactive({
   display: 'flex',
   height: '30px',
   lineHeight: '30px',
 });
-
+// Variable que guarda la selección radio de PLE Compras
 const valueradio2 = ref();
 
 // ---------------Modal
-
+// Variable que controla la visibilidad del modal Actualización de movimientos
 const open = ref(false);
-
+// Función que muestra actualización de movimientos
 const showModal = () => {
   open.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en actualización de movimientos
 const handleOk = () => {
   console.log(form);
   open.value = false;
 };
-
+// Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
   ctaConta: null,
   sede: null,
@@ -439,6 +439,8 @@ const form = reactive({
   iscCheck: false,
 
 });
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const rules = {
   ctaConta: [{
     required: true,
@@ -609,9 +611,8 @@ const rules = {
     message: 'Ingrese el ISC (5%)',
   }]
 };
-
-
-//select cuenta contable
+//------ select - cuenta contable
+// Objeto con los datos que se mostrarán en el select
 const optCuentaCont = ref([{
   value: '6311',
   label: 'Transporte',
@@ -625,22 +626,25 @@ const optCuentaCont = ref([{
   value: '6361',
   label: 'Energia electrica',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChange = value => {
   console.log(`Seleccionado ${form.ctaConta}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlur = () => {
   console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocus = () => {
   console.log('focus');
 };
+// Búsqueda
 const filterOption = (input, option) => {
   const inputValue = input.toLowerCase();
   return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
-
-//select cuenta abono
+//--------- select - cuenta abono
+// Objeto con los datos que se mostrarán en el select
 const optCuentaPro = ref([{
   value: '25667891237',
   label: 'Promotora Oriantal S.A.C',
@@ -654,23 +658,25 @@ const optCuentaPro = ref([{
   value: '24967891237',
   label: 'Petro Perú S.A.C',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChangePro = value => {
   console.log(`Seleccionado ${form.ctaConta}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlurPro = () => {
   console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocusPro = () => {
   console.log('focus');
 };
+// Búsqueda
 const filterOptionPro = (input, option) => {
   const inputValue = input.toLowerCase();
   return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
-
-
-//select cuenta abono
+//--------- select - cuenta abono
+// Objeto con los datos que se mostrarán en el select
 const optCuentaAbo = ref([{
   value: '4212',
   label: 'Emitidas',
@@ -684,22 +690,26 @@ const optCuentaAbo = ref([{
   value: '4030',
   label: 'Emitidas 4',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChangeAbon = value => {
   console.log(`Seleccionado ${form.ctaConta}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlurAbon = () => {
   console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocusAbon = () => {
   console.log('focus');
 };
+// Búsqueda
 const filterOptionAbon = (input, option) => {
   const inputValue = input.toLowerCase();
   return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
 
-// Select Tipo de docuemnto
+// --------- Select - Tipo de docuemnto
+// Objeto con los datos que se mostrarán en el select
 const optTipoDoc = ref([{
   value: '01',
   label: 'FAC',
@@ -710,23 +720,26 @@ const optTipoDoc = ref([{
   value: '03',
   label: 'FAC 3',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChangeDoc = value => {
   console.log(`Seleccionado ${form.ctaConta}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlurDoc = () => {
   console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocusDoc = () => {
   console.log('focus');
 };
+// Búsqueda
 const filterOptionDoc = (input, option) => {
   const inputValue = input.toLowerCase();
   return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
-
-// select sede
-const optSede= ref([{
+// --------- select - sede
+// Objeto con los datos que se mostrarán en el select
+const optSede = ref([{
   value: '001',
   label: 'Tumbes',
 }, {
@@ -739,16 +752,16 @@ const optSede= ref([{
   value: '004',
   label: 'Tumbes C',
 }]);
-
+// Función que imprime un valor cuando está en Focus
 const focusSede = () => {
   console.log('focus');
 };
+// Función que imprime valor cada que es cambiado
 const handleChangeSede = value => {
   console.log(`Seleccionado ${value}`);
 };
-
-
-// select Moneda
+//--------- select - Moneda
+// Objeto con los datos que se mostrarán en el select
 const optMone = ref([{
   value: '001',
   label: 'Euro',
@@ -762,16 +775,16 @@ const optMone = ref([{
   value: '004',
   label: 'Moneda B',
 }]);
-
+// Función que imprime un valor cuando está en Focus
 const focusMone = () => {
   console.log('focus');
 };
+// Función que imprime valor cada que es cambiado
 const handleChangeMone = value => {
   console.log(`Seleccionado ${value}`);
 };
-
-
-// select Tipo de operación
+//----------- select - Tipo de operación
+// Objeto con los datos que se mostrarán en el select
 const optOpe = ref([{
   value: '001',
   label: 'Operación A',
@@ -785,16 +798,16 @@ const optOpe = ref([{
   value: '004',
   label: 'Operación D',
 }]);
-
+// Función que imprime un valor cuando está en Focus
 const focusOpe = () => {
   console.log('focus');
 };
+// Función que imprime valor cada que es cambiado
 const handleChangeOpe = value => {
   console.log(`Seleccionado ${value}`);
 };
-
-
-// select deatracción
+//---------- select - detracción
+// Objeto con los datos que se mostrarán en el select
 const optDet = ref([{
   value: '001',
   label: 'Sede A',
@@ -808,16 +821,16 @@ const optDet = ref([{
   value: '004',
   label: 'Sede D',
 }]);
-
+// Función que imprime un valor cuando está en Focus
 const focusDet = () => {
   console.log('focus');
 };
+// Función que imprime valor cada que es cambiado
 const handleChangeDet = value => {
   console.log(`Seleccionado ${value}`);
 };
-
-
-// select percepción
+//---------- select - percepción
+// Objeto con los datos que se mostrarán en el select
 const optPer = ref([{
   value: '001',
   label: 'Sede A',
@@ -831,17 +844,16 @@ const optPer = ref([{
   value: '004',
   label: 'Sede D',
 }]);
-
+// Función que imprime un valor cuando está en Focus
 const focusPer = () => {
   console.log('focus');
 };
+// Función que imprime valor cada que es cambiado
 const handleChangePer = value => {
   console.log(`Seleccionado ${value}`);
 };
-
-
-
 </script>
+
 <style lang="scss" scoped>
 .espacio-arriba {
   margin-top: 30px;

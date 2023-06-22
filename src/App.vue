@@ -12,14 +12,6 @@
     <router-link :to="{ name: 'crear-zona' }">Crear Zona</router-link> |
     <router-link :to="{ name: 'crear-unidad' }">Crear Unidad</router-link> |
     <router-link :to="{ name: 'mes-proceso' }">Apertura mes proceso</router-link> |
-
   </nav>
   <router-view />
-  
-    
 </template>
-
-<script setup>
-
-
-</script>

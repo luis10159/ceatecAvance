@@ -1,8 +1,10 @@
 <template>
+    <!-- Botón para abrir el modal -->
     <a-button type="primary" @click="showModalPro">Balance de comprobación</a-button>
-
+    <!-- Modal  balance de comprobación -->
     <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px" title="Balance de comprobación"
         @ok="handleOkPro">
+        <!-- Formulario -->
         <a-form :model="form" :rules="roles" layout="vertical">
             <a-row class="margen-arriba" :gutter="16" align="middle">
                 <a-col :span="8">
@@ -16,11 +18,8 @@
                         <a-tree-select v-model:value="form.valorDeparta" show-search class="ancho margen-arriba"
                             :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }" placeholder="Seleccione la unidad"
                             allow-clear tree-default-expand-all :tree-data="unidades">
-
                         </a-tree-select>
                     </a-row>
-
-
                 </a-col>
                 <a-col :span="16">
                     <a-row :gutter="16" justify="center">
@@ -58,48 +57,36 @@
                                     <a-input-number class="ancho" v-model:value="form.digitos" :min="1" :max="10" />
                                 </a-form-item>
                             </a-col>
-
                             <a-col :span="24">
                                 <a-row justify="center" class="margen-abajo ancho">
-
                                     <a-col :span="5">
                                         <a-checkbox v-model:checked="form.checkPleDiar">PLE Diario</a-checkbox>
                                     </a-col>
                                 </a-row>
-
                             </a-col>
                         </a-row>
-
                     </a-row>
-
                 </a-col>
             </a-row>
-
         </a-form>
     </a-modal>
 </template>
 
 <script setup>
+// Importar funciones de vue
 import { ref, reactive, watch } from 'vue'
-
-// Buscador
-
-const buscador = ref(null)
-
-//  inicar proceso
+// Variable que controla la visibilidad del modal balance de comprobación
 const openPro = ref(false);
-
+// Función que muestra actualización de movimientos
 const showModalPro = () => {
     openPro.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en actualización de movimientos
 const handleOkPro = (e) => {
     console.log(e);
     openPro.value = false;
 };
-
-
-//datos modal
+// Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     mes: null,
     mesb: null,
@@ -116,7 +103,8 @@ const form = reactive({
     checkCuentas: false,
     opciones: [],
 });
-
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const roles = {
     ano: [{
         required: true,
@@ -138,10 +126,8 @@ const roles = {
         message: 'Selecione la folio',
     }]
 }
-
-
-// opciones
-
+//----- select - opciones
+// Objeto con los datos que se mostrarán en el select
 const options = ref([{
     label: 'Solo apertura',
     value: '01',
@@ -159,10 +145,8 @@ const options = ref([{
     value: '05',
 }]);
 
-
-
-
-//zonas
+//------- select - zonas
+// Objeto con los datos que se mostrarán en el select
 const zonas = ref([{
     title: 'Todas las zonas',
     value: 'todas',
@@ -174,12 +158,13 @@ const zonas = ref([{
         value: 'zona-b',
     }],
 }]);
+// Cada que se cambía de valor se imprime el valor nuevo
 watch(() => form.valorSucursal, (newValue) => {
     console.log(newValue);
 });
 
-// unidades
-
+//------- select - unidades
+// Objeto con los datos que se mostrarán en el select
 const unidades = ref([{
     title: 'Todos las unidades',
     value: 'todas',
@@ -191,12 +176,10 @@ const unidades = ref([{
         value: 'unidad-b',
     }],
 }]);
+// Cada que se cambía de valor se imprime el valor nuevo
 watch(() => form.valorDeparta, (newValue) => {
     console.log(newValue);
 });
-
-
-
 </script>
 
 <style lang="scss" scoped>

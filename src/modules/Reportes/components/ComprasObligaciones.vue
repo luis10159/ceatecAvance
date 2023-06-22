@@ -1,126 +1,127 @@
 <template>
-  <a-button type="primary" @click="showModalPro">Iniciar proceso</a-button>
-
-<a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px"
-    title="Compras y obligaciones corrientes" @ok="handleOkPro">
-    <a-form :model="formCompObli" :rules="rulesCompObli" layout="vertical">
-
-        <a-row :gutter="16" class="margen-arriba">
-            <a-col :span="24">
-                <a-tabs v-model:activeKey="activeKey" :tab-position="mode" :style="{ height: '720px' }"
-                    @tabScroll="callback">
-                    <a-tab-pane v-for="i in 10" :key="i" :tab="`Voucher-${i}`">
-                        <a-row :gutter="16" justify="center">
-                            <a-col :span="8">
-                                <a-form-item name="voucher">
-                                    <a-input v-model:value="formCompObli.voucher" placeholder="Seleccione el voucher" />
-                                </a-form-item>
-                            </a-col>
-
-                        </a-row>
-
-                        <a-row :gutter="16">
-                            <a-col :span="8">
-                                <a-form-item label="Periodo contable" name="PeriaCOnt">
-                                    <a-input v-model:value="formCompObli.PeriaCOnt" placeholder="Ingrese el periodo contable" disabled />
-                                </a-form-item>
-                            </a-col>
-                            <a-col :span="10">
-                                <a-form-item label="Libro auxiliar" name="LibroAux">
-                                    <a-input v-model:value="formCompObli.LibroAux" placeholder="Ingrese el libro auxiliar" disabled />
-                                </a-form-item>
-                            </a-col>
-                            <a-col :span="6">
-                                <a-form-item label="N° de voucher" name="NuVoucher">
-                                    <a-input v-model:value="formCompObli.NuVoucher" placeholder="Ingrese el N° de voucher" disabled />
-                                </a-form-item>
-                            </a-col>
-                        </a-row>
-                        <a-row :gutter="16" class="color">
-                            <a-col :span="8">
-                                <a-form-item label="Fecha" name="fecha">
-                                    <a-date-picker v-model:value="formCompObli.fecha" class="ancho" placeholder="seleccione la fecha" />
-                                </a-form-item>
-                            </a-col>
-                            <a-col :span="16">
-                                <a-form-item label="Glosario" name="glosario">
-                                    <a-input v-model:value="formCompObli.glosario" placeholder="Ingrese el glosario" />
-                                </a-form-item>
-                            </a-col>
-                        </a-row>
-                        <a-row class="margen-arriba">
-                            <a-col :span="25">
-                                <a-table :columns="columns" :data-source="data" bordered size="small"
-                                    :pagination="{ pageSize: 10 }" :scroll="{ y: 235 }">
-                                    <template #bodyCell="{ column, text }">
-                                        <template v-if="column.dataIndex === 'name'">
-                                            <a>{{ text }}</a>
+    <!-- Botón para abrir el modal -->
+    <a-button type="primary" @click="showModalPro">Iniciar proceso</a-button>
+    <!-- Modal compras y obligaciones corrientes -->
+    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px"
+        title="Compras y obligaciones corrientes" @ok="handleOkPro">
+        <!-- Formulario -->
+        <a-form :model="formCompObli" :rules="rulesCompObli" layout="vertical">
+            <a-row :gutter="16" class="margen-arriba">
+                <a-col :span="24">
+                    <a-tabs v-model:activeKey="activeKey" :tab-position="mode" :style="{ height: '720px' }"
+                        @tabScroll="callback">
+                        <a-tab-pane v-for="i in 10" :key="i" :tab="`Voucher-${i}`">
+                            <a-row :gutter="16" justify="center">
+                                <a-col :span="8">
+                                    <a-form-item name="voucher">
+                                        <a-input v-model:value="formCompObli.voucher" placeholder="Seleccione el voucher" />
+                                    </a-form-item>
+                                </a-col>
+                            </a-row>
+                            <a-row :gutter="16">
+                                <a-col :span="8">
+                                    <a-form-item label="Periodo contable" name="PeriaCOnt">
+                                        <a-input v-model:value="formCompObli.PeriaCOnt"
+                                            placeholder="Ingrese el periodo contable" disabled />
+                                    </a-form-item>
+                                </a-col>
+                                <a-col :span="10">
+                                    <a-form-item label="Libro auxiliar" name="LibroAux">
+                                        <a-input v-model:value="formCompObli.LibroAux"
+                                            placeholder="Ingrese el libro auxiliar" disabled />
+                                    </a-form-item>
+                                </a-col>
+                                <a-col :span="6">
+                                    <a-form-item label="N° de voucher" name="NuVoucher">
+                                        <a-input v-model:value="formCompObli.NuVoucher"
+                                            placeholder="Ingrese el N° de voucher" disabled />
+                                    </a-form-item>
+                                </a-col>
+                            </a-row>
+                            <a-row :gutter="16" class="color">
+                                <a-col :span="8">
+                                    <a-form-item label="Fecha" name="fecha">
+                                        <a-date-picker v-model:value="formCompObli.fecha" class="ancho"
+                                            placeholder="seleccione la fecha" />
+                                    </a-form-item>
+                                </a-col>
+                                <a-col :span="16">
+                                    <a-form-item label="Glosario" name="glosario">
+                                        <a-input v-model:value="formCompObli.glosario" placeholder="Ingrese el glosario" />
+                                    </a-form-item>
+                                </a-col>
+                            </a-row>
+                            <a-row class="margen-arriba">
+                                <a-col :span="25">
+                                    <a-table :columns="columns" :data-source="data" bordered size="small"
+                                        :pagination="{ pageSize: 10 }" :scroll="{ y: 235 }">
+                                        <template #bodyCell="{ column, text }">
+                                            <template v-if="column.dataIndex === 'name'">
+                                                <a>{{ text }}</a>
+                                            </template>
                                         </template>
-                                    </template>
-                                </a-table>
-                            </a-col>
-                        </a-row>
-                        <a-row>
-                            <a-col :span="14">
-                                <a-space direction="vertical">
-                                    <a-typography-text strong>Cuenta : ...........</a-typography-text>
-                                    <a-typography-text strong>C. Costo : ...........</a-typography-text>
-                                    <a-typography-text strong>Proveedor : ...........</a-typography-text>
-                                </a-space>
-                            </a-col>
-                            <a-col :span="5">
-                                <a-space direction="vertical">
-                                    <a-typography-text strong>Total Debe</a-typography-text>
-                                    <a-typography-text>s/ 121337.00</a-typography-text>
-                                    <a-typography-text>$ 0.00</a-typography-text>
-                                </a-space>
-                            </a-col>
-                            <a-col :span="5">
-                                <a-space direction="vertical">
-                                    <a-typography-text strong>Total Haber</a-typography-text>
-                                    <a-typography-text>s/ 121337.00</a-typography-text>
-                                    <a-typography-text>$ 0.00</a-typography-text>
-                                </a-space>
-                            </a-col>
-                        </a-row>
-                        <a-row justify="center" class="margen-arriba">
-                            <a-col :span="10"><a-input-search v-model:value="valorBuscar" placeholder="Ingrese el Doc. a buscar"
-                                    enter-button="Buscar Doc." size="small" @search="onSearch" /></a-col>
-                        </a-row>
-                    </a-tab-pane>
-                </a-tabs>
-            </a-col>
-        </a-row>
-    </a-form>
-</a-modal>
+                                    </a-table>
+                                </a-col>
+                            </a-row>
+                            <a-row>
+                                <a-col :span="14">
+                                    <a-space direction="vertical">
+                                        <a-typography-text strong>Cuenta : ...........</a-typography-text>
+                                        <a-typography-text strong>C. Costo : ...........</a-typography-text>
+                                        <a-typography-text strong>Proveedor : ...........</a-typography-text>
+                                    </a-space>
+                                </a-col>
+                                <a-col :span="5">
+                                    <a-space direction="vertical">
+                                        <a-typography-text strong>Total Debe</a-typography-text>
+                                        <a-typography-text>s/ 121337.00</a-typography-text>
+                                        <a-typography-text>$ 0.00</a-typography-text>
+                                    </a-space>
+                                </a-col>
+                                <a-col :span="5">
+                                    <a-space direction="vertical">
+                                        <a-typography-text strong>Total Haber</a-typography-text>
+                                        <a-typography-text>s/ 121337.00</a-typography-text>
+                                        <a-typography-text>$ 0.00</a-typography-text>
+                                    </a-space>
+                                </a-col>
+                            </a-row>
+                            <a-row justify="center" class="margen-arriba">
+                                <a-col :span="10"><a-input-search v-model:value="valorBuscar"
+                                        placeholder="Ingrese el Doc. a buscar" enter-button="Buscar Doc." size="small"
+                                        @search="onSearch" /></a-col>
+                            </a-row>
+                        </a-tab-pane>
+                    </a-tabs>
+                </a-col>
+            </a-row>
+        </a-form>
+    </a-modal>
 </template>
 
 <script setup>
-import {ref, reactive}  from 'vue'
-
-
-//  inicar proceso
+// Importar funciones de vue
+import { ref, reactive } from 'vue'
+// Variable que controla la visibilidad del modal Compras y obligaciones corrientes
 const openPro = ref(false);
-
+// Función que muestra Compras y obligaciones corrientes
 const showModalPro = () => {
     openPro.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en buscar documento
 const handleOkPro = (e) => {
     console.log(e);
     openPro.value = false;
 };
-
-
-// tabs
+// Variable que controla en que modo va a estar el tab
 const mode = ref('left');
+// Llave de activación
 const activeKey = ref(1);
+
 const callback = val => {
     console.log(val);
 };
-
-// Tabla
-
+//Definición de las columnas
 const columns = [{
     title: 'Cuenta',
     dataIndex: 'cuenta',
@@ -152,6 +153,7 @@ const columns = [{
     ellipsis: true,
 },
 ];
+//Datos de la tabla
 const data = [{
     key: '1',
     cuenta: '7673',
@@ -208,15 +210,14 @@ const data = [{
     tags: ['cool', 'teacher'],
 }];
 
-// buscador
+// buscador de documentos
 const valorBuscar = ref(null);
+// Función que imprime la entrada del buscador
 const onSearch = (searchValue) => {
-  console.log('Usa este valor', searchValue);
-  console.log('o usa este valor', valorBuscar.value);
+    console.log('Usa este valor', searchValue);
+    console.log('o usa este valor', valorBuscar.value);
 };
-
-
-//datos modal
+// Objeto reactivo que va a capturar los campos en el formulario
 const formCompObli = reactive({
     voucher: null,
     PeriaCOnt: null,
@@ -224,9 +225,9 @@ const formCompObli = reactive({
     NuVoucher: null,
     fecha: null,
     glosario: null,
-
 });
-
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const rulesCompObli = {
     voucher: [{
         required: true,
@@ -253,7 +254,6 @@ const rulesCompObli = {
         message: 'Selecione el glosario',
     }],
 }
-
 </script>
 
 <style lang="scss" scoped>

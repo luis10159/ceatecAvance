@@ -34,7 +34,7 @@
                   </a-menu-item>
                 </a-menu>
               </template>
-              <a-avatar class="color">
+              <a-avatar class="color puntero">
                 <template #icon>
                   <UserOutlined />
                 </template>
@@ -388,5 +388,9 @@ const items = ref([{
 
 .derecha {
   text-align: end;
+}
+
+.puntero {
+  cursor: pointer;
 }
 </style>

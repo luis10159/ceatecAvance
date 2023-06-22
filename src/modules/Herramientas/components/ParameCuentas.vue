@@ -1,4 +1,5 @@
 <template>
+    <!-- Formulario  -->
     <a-form :model="form" :rules="rules" layout="vertical" class="row-btn">
         <a-row align="middle" justify="space-around">
             <a-col :span="5">
@@ -91,8 +92,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
-// Parámetros de cuentas
+// Importar funciones de vue
+import { ref, reactive } from 'vue'
+// Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     cuentaIGV: null,
     cuentaISC: null,
@@ -107,7 +109,8 @@ const form = reactive({
     cuentaIVAP: null,
     cuentaAuxiliar: null,
 });
-// detalle de los campos
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const rules = {
     cuentaIGV: [{
         required: true,
@@ -158,8 +161,7 @@ const rules = {
         message: 'Ingrese la cuenta Auxiliar',
     }]
 };
-
-// select cuenta IGV
+// ------select - cuenta IGV
 const optionsIGV = ref([{
     value: 'empresaa',
     label: 'CuentaIGV A',
@@ -170,21 +172,24 @@ const optionsIGV = ref([{
     value: 'empresac',
     label: 'CuentaIGV C',
 }]);
-
+// Imprimir valor cada que es cambiado
 const handleChangeIGV = value => {
     console.log(`Seleccionado${value}`);
 };
+// Imprimir valor cuando está en blur
 const handleBlurIGV = () => {
     console.log('blur');
 };
+// Imprimir valor cuando está en focus
 const handleFocusIGV = () => {
     console.log('focus');
 };
+// Busqueda
 const filterOptionIGV = (input, option) => {
     return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
 
-// select cuenta ISC
+// ----- select - cuenta ISC
 const optionsISC = ref([{
     value: 'empresaa',
     label: 'CuentaISC A',
@@ -195,22 +200,23 @@ const optionsISC = ref([{
     value: 'empresac',
     label: 'CuentaISC C',
 }]);
-
+// Imprimir valor cada que es cambiado
 const handleChangeISC = value => {
     console.log(`Seleccionado${value}`);
 };
+// Imprimir valor cuando está en blur
 const handleBlurISC = () => {
     console.log('blur');
 };
+// Imprimir valor cuando está en focus
 const handleFocusISC = () => {
     console.log('focus');
 };
+// Busqueda
 const filterOptionISC = (input, option) => {
     return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
-
-
-// select percepciones
+// ----- select - percepciones
 const optionsPercep = ref([{
     value: 'empresaa',
     label: 'Percepción A',
@@ -221,22 +227,23 @@ const optionsPercep = ref([{
     value: 'empresac',
     label: 'Percepción C',
 }]);
-
+// Imprimir valor cada que es cambiado
 const handleChangePercep = value => {
     console.log(`Seleccionado${value}`);
 };
+// Imprimir valor cuando está en blur
 const handleBlurPercep = () => {
     console.log('blur');
 };
+// Imprimir valor cuando está en focus
 const handleFocusPercep = () => {
     console.log('focus');
 };
+// Busqueda
 const filterOptionPercep = (input, option) => {
     return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
-
-
-// select detracciones
+// ------- select - detracciones
 const optionsDetra = ref([{
     value: 'empresaa',
     label: 'Detracciones A',
@@ -247,23 +254,23 @@ const optionsDetra = ref([{
     value: 'empresac',
     label: 'Detracciones C',
 }]);
-
+// Imprimir valor cada que es cambiado
 const handleChangeDetra = value => {
     console.log(`Seleccionado${value}`);
 };
+// Imprimir valor cuando está en blur
 const handleBlurDetra = () => {
     console.log('blur');
 };
+// Imprimir valor cuando está en focus
 const handleFocusDetra = () => {
     console.log('focus');
 };
+// Busqueda
 const filterOptionDetra = (input, option) => {
     return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
-
-
-
-// select cierre compras
+// ------ select - cierre compras
 const optionsCComp = ref([{
     value: 'empresaa',
     label: 'Cierre Compras A',
@@ -274,23 +281,23 @@ const optionsCComp = ref([{
     value: 'empresac',
     label: 'Cierre Compras C',
 }]);
-
+// Imprimir valor cada que es cambiado
 const handleChangeCComp = value => {
     console.log(`Seleccionado${value}`);
 };
+// Imprimir valor cuando está en blur
 const handleBlurCComp = () => {
     console.log('blur');
 };
+// Imprimir valor cuando está en focus
 const handleFocusCComp = () => {
     console.log('focus');
 };
+// Busqueda
 const filterOptionCComp = (input, option) => {
     return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
-
-
-
-// select cierre ventas
+// ------ select - cierre ventas
 const optionsCVent = ref([{
     value: 'empresaa',
     label: 'CierreVentas A',
@@ -301,21 +308,23 @@ const optionsCVent = ref([{
     value: 'empresac',
     label: 'CierreVentas C',
 }]);
-
+// Imprimir valor cada que es cambiado
 const handleChangeCVent = value => {
     console.log(`Seleccionado${value}`);
 };
+// Imprimir valor cuando está en blur
 const handleBlurCVent = () => {
     console.log('blur');
 };
+// Imprimir valor cuando está en focus
 const handleFocusCVent = () => {
     console.log('focus');
 };
+// Búsqueda
 const filterOptionCVent = (input, option) => {
     return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
-
-// select Dif cambio +
+// ------ select - Dif cambio +
 const optionsDifCamNe = ref([{
     value: 'empresaa',
     label: 'DifCamNe A',
@@ -326,23 +335,23 @@ const optionsDifCamNe = ref([{
     value: 'empresac',
     label: 'DifCamNe C',
 }]);
-
+// Imprimir valor cada que es cambiado
 const handleChangeDifCamNe = value => {
     console.log(`Seleccionado${value}`);
 };
+// Imprimir valor cuando está en blur
 const handleBlurDifCamNe = () => {
     console.log('blur');
 };
+// Imprimir valor cuando está en focus
 const handleFocusDifCamNe = () => {
     console.log('focus');
 };
+// Búsqueda
 const filterOptionDifCamNe = (input, option) => {
     return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
-
-
-
-// select Cuenta reten.
+// ------- select - Cuenta reten.
 const optionsCuenRet = ref([{
     value: 'empresaa',
     label: 'CuentaReten A',
@@ -353,35 +362,30 @@ const optionsCuenRet = ref([{
     value: 'empresac',
     label: 'CuentaReten C',
 }]);
-
+// Imprimir valor cada que es cambiado
 const handleChangeCuenRet = value => {
     console.log(`Seleccionado${value}`);
 };
+// Imprimir valor cuando está en blur
 const handleBlurCuenRet = () => {
     console.log('blur');
 };
+// Imprimir valor cuando está en focus
 const handleFocusCuenRet = () => {
     console.log('focus');
 };
+// Busqueda
 const filterOptionCuenRet = (input, option) => {
     return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
-
-
-
-
-
-// Pruebas - Parametros de cuentas
-
+// Prueba - Impresión de datos ingresados en el formulario
 const consola = () => {
     console.log(form)
 }
 </script>
 
 <style lang="scss" scoped>
-
 .ancho {
-  width: 100%;
+    width: 100%;
 }
-
 </style>

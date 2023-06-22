@@ -1,4 +1,5 @@
 <template>
+  <!-- Formulario -->
   <a-form :model="form" layout="vertical" class="row-btn">
     <a-row justify="space-around">
       <a-col :span="5">
@@ -7,14 +8,12 @@
             :formatter="value => `${value}%`" :parser="value => value.replace('%', '')" />
         </a-form-item>
       </a-col>
-
       <a-col :span="5">
         <a-form-item label="Porcentaje ISC" name="porcISC">
           <a-input-number class="ancho" v-model:value="porcentajes.porcISC" :min="0" :max="100"
             :formatter="value => `${value}%`" :parser="value => value.replace('%', '')" />
         </a-form-item>
       </a-col>
-
       <a-col :span="5">
         <a-form-item label="Porcentaje Retención IGV" name="porcRIGV">
           <a-input-number class="ancho" v-model:value="porcentajes.porcISC" :min="0" :max="100"
@@ -29,14 +28,12 @@
             :formatter="value => `${value}%`" :parser="value => value.replace('%', '')" />
         </a-form-item>
       </a-col>
-
       <a-col :span="5">
         <a-form-item label="Valor minimo para Retención 4ta" name="ValorMinR4ta">
           <a-input-number class="ancho" v-model:value="porcentajes.ValorMinR4ta"
             placeholder="Ingrese Cta. destino Ventas" />
         </a-form-item>
       </a-col>
-
       <a-col :span="5">
         <a-form-item label="Remuneración minima vital" name="remuMinVi">
           <a-input-number class="ancho" v-model:value="porcentajes.remuMinVi" placeholder="Ingrese Cta. destino Ventas" />
@@ -49,14 +46,12 @@
           <a-input-number class="ancho" v-model:value="porcentajes.valorUIT" placeholder="Ingrese Cta. destino Ventas" />
         </a-form-item>
       </a-col>
-
       <a-col :span="5">
         <a-form-item label="Longitud de las series de los documentos" name="LongSerDoc">
           <a-input-number class="ancho" v-model:value="porcentajes.LongSerDoc"
             placeholder="Ingrese Cta. destino Ventas" />
         </a-form-item>
       </a-col>
-
       <a-col :span="5">
         <a-form-item label="Longitud de los números de documentos" name="LongNumDoc">
           <a-input-number class="ancho" v-model:value="porcentajes.LongNumDoc"
@@ -71,11 +66,9 @@
         </a-form-item>
       </a-col>
       <a-col :span="1">
-
         <a-button class="derecha" type="primary" @click="showModal"><template #icon>
             <DropboxOutlined />
           </template></a-button>
-
       </a-col>
     </a-row>
     <a-row justify="center" align="middle">
@@ -86,23 +79,19 @@
         </a-form-item>
       </a-col>
       <a-col :span="1">
-
         <a-button class="derecha" type="primary" @click="showModal2"><template #icon>
             <DropboxOutlined />
           </template></a-button>
-
       </a-col>
     </a-row>
     <a-row justify="center" class="margen-arriba">
       <a-col :span="24">
         <a-divider>CUENTAS INCLUIDAS PARA EL CIERRE CONTABLE</a-divider>
       </a-col>
-
       <a-col :span="5">
         <a-form-item>
           <a-checkbox v-model:checked="checked" v-if="checked == true">Habilitado</a-checkbox>
           <a-checkbox v-model:checked="checked" v-else>Deshabilitado</a-checkbox>
-
         </a-form-item>
       </a-col>
     </a-row>
@@ -110,12 +99,10 @@
       <a-col :span="5">
         <a-form-item name="cuentasCierre">
           <a-input class="ancho" v-model:value="porcentajes.cuentasCierre" placeholder="entrada" />
-
         </a-form-item>
       </a-col>
     </a-row>
     <a-row justify="center">
-
       <a-col :span="5">
         <a-form-item label="Nro. Dig. Cierre" name="cuentasCierre">
           <a-input v-model:value="porcentajes.cuentasCierre" placeholder="entrada2" />
@@ -131,12 +118,9 @@
     </a-row>
   </a-form>
   <a-button type="primary" @click="pruebaP">Datos en consola</a-button>
-
-  <!-- modal -->
-
+  <!-- modal - Asistente de selección -->
   <a-modal v-model:open="open" title="Asistente de selección" @ok="handleOk" width="720px" ok-text="Aceptar"
     cancel-text="Cancelar">
-
     <a-row class="margen-title">
       <a-col :span="24">
         <div>
@@ -155,14 +139,10 @@
         </div>
       </a-col>
     </a-row>
-
   </a-modal>
-
-  <!-- modal2 -->
-
+  <!-- modal 2 - Asistente de selección 2 -->
   <a-modal v-model:open="open2" title="Asistente de selección" @ok="handleOk2" width="720px" ok-text="Aceptar"
     cancel-text="Cancelar">
-
     <a-row class="margen-title">
       <a-col :span="24">
         <div>
@@ -181,17 +161,15 @@
         </div>
       </a-col>
     </a-row>
-
   </a-modal>
 </template>
 
 <script setup>
+// Importar funciones de vue
 import { ref, reactive, computed } from 'vue'
+// Importar iconos de ant design vue
 import { DropboxOutlined } from '@ant-design/icons-vue';
-
-
-// ---------------------Porcentajes
-
+// Objeto reactivo que va a capturar los campos en el formulario
 const porcentajes = reactive({
   porcIGV: undefined,
   porcISC: undefined,
@@ -201,7 +179,6 @@ const porcentajes = reactive({
   remuMinVi: undefined,
   valorUIT: undefined,
   LongSerDoc: undefined,
-
   LongNumDoc: undefined,
   DocSerie: undefined,
   cuentasIGV: undefined,
@@ -210,36 +187,37 @@ const porcentajes = reactive({
   LongSerDoc: undefined,
 });
 
-
-// pruebas- porcentajes
-
+// prueba- Impresión de datos del formulario
 const pruebaP = () => {
   console.log(porcentajes)
 }
 
 
 //-----------------------------Modal
-
+// Variable que controla la visibilidad del modal Asistente de selección
 const open = ref(false);
+// Variable que controla la visibilidad del modal Asistente de selección 2
 const open2 = ref(false);
-
+// Función que muestra Asistente de selección
 const showModal = () => {
   open.value = true;
 };
+// Función que muestra Asistente de selección 2
 const showModal2 = () => {
   open2.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en Asistente de selección
 const handleOk = (e) => {
   console.log(e);
   open.value = false;
 };
+// Función que se ejecuta al apretar aceptar en Asistente de selección 2
 const handleOk2 = (e) => {
   console.log(e);
   open2.value = false;
 };
-//-----------------------tabla modal
-
+//-----------------------tabla modal Asistente de selección
+//Definición de las columnas
 const columns = [{
   title: 'Codigo',
   dataIndex: 'codigo',
@@ -250,6 +228,7 @@ const columns = [{
   title: 'Columna A',
   dataIndex: 'columnaA',
 }];
+// Generción de datos mostrados en la tabla
 const data = [];
 for (let i = 0; i < 11; i++) {
   data.push({
@@ -259,11 +238,14 @@ for (let i = 0; i < 11; i++) {
     columnaA: `Columna de la fila ${i}`,
   });
 }
+// Objeto reactivo que guarda las filas encontradas e inicializa la el estado de cargando en false
 const state = reactive({
   selectedRowKeys: [],
   loading: false,
 });
+// Función donde que se guarda lo que ha sido seleccionado
 const hasSelected = computed(() => state.selectedRowKeys.length > 0);
+// Función que se ejecuta luego de dar click en reiniciar
 const start = () => {
   state.loading = true;
   setTimeout(() => {
@@ -271,12 +253,13 @@ const start = () => {
     state.selectedRowKeys = [];
   }, 1000);
 };
+// Función que que imprime las selecciones ante un cambio de las mismas
 const onSelectChange = selectedRowKeys => {
-  console.log('selectedRowKeys changed: ', selectedRowKeys);
+  console.log('Keys de filas seleccionadas cambiadas: ', selectedRowKeys);
   state.selectedRowKeys = selectedRowKeys;
 };
-//-----------------------tabla modal2
-
+//-----------------------tabla modal 2 - Asistente de selección 2
+//Definición de las columnas
 const columns2 = [{
   title: 'Codigo',
   dataIndex: 'codigo',
@@ -287,6 +270,7 @@ const columns2 = [{
   title: 'Columna A',
   dataIndex: 'columnaA',
 }];
+// Generción de datos mostrados en la tabla
 const data2 = [];
 for (let i = 0; i < 11; i++) {
   data2.push({
@@ -296,11 +280,14 @@ for (let i = 0; i < 11; i++) {
     columnaA: `Columna n de la fila ${i}`,
   });
 }
+// Objeto reactivo que guarda las filas encontradas e inicializa la el estado de cargando en false
 const state2 = reactive({
   selectedRowKeys: [],
   loading: false,
 });
+// Función donde que se guarda lo que ha sido seleccionado
 const hasSelected2 = computed(() => state2.selectedRowKeys.length > 0);
+// Función que se ejecuta luego de dar click en reiniciar
 const start2 = () => {
   state2.loading = true;
   setTimeout(() => {
@@ -308,17 +295,13 @@ const start2 = () => {
     state2.selectedRowKeys = [];
   }, 1000);
 };
+// Función que que imprime las selecciones ante un cambio de las mismas
 const onSelectChange2 = selectedRowKeys => {
   console.log('selectedRowKeys changed: ', selectedRowKeys);
   state2.selectedRowKeys = selectedRowKeys;
 };
-
 // check
 const checked = ref(false);
-
-// selección multiple
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -329,8 +312,6 @@ const checked = ref(false);
 .derecha {
   margin-left: 50%;
 }
-
-
 
 .margen-arriba {
   margin-top: 40px;

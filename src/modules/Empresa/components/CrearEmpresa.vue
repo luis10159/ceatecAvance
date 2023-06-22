@@ -140,7 +140,6 @@
 import { PlusOutlined, CheckCircleOutlined } from '@ant-design/icons-vue';
 // Importar funciones de vue
 import { reactive, ref, onMounted } from 'vue';
-
 // Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     ruc: '',

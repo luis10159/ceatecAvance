@@ -1,4 +1,5 @@
 <template>
+    <!-- Componentes  -->
     <div>
         <DatosPrincipales></DatosPrincipales>
         <ComprasObligaciones></ComprasObligaciones>
@@ -18,18 +19,17 @@
         <BalanceComprobacion></BalanceComprobacion>
         <LibroRetenciones></LibroRetenciones>
         <Daot></Daot>
-
     </div>
     <div>
+        <!-- Prueba con una api -->
         <datos></datos>
     </div>
 </template>
 
 <script setup>
-
-
-
+// Importar funciones de vue
 import { defineAsyncComponent } from 'vue'
+// Importar componentes
 const datos = defineAsyncComponent(() => import('@/modules/Reportes/components/datos.vue'));
 const DatosPrincipales = defineAsyncComponent(() => import('@/modules/Reportes/components/DatosPrincipales.vue'));
 const ComprasObligaciones = defineAsyncComponent(() => import('@/modules/Reportes/components/ComprasObligaciones.vue'));
@@ -49,5 +49,4 @@ const LibroDiario = defineAsyncComponent(() => import('@/modules/Reportes/compon
 const BalanceComprobacion = defineAsyncComponent(() => import('@/modules/Reportes/components/BalanceComprobacion.vue'));
 const LibroRetenciones = defineAsyncComponent(() => import('@/modules/Reportes/components/LibroRetenciones.vue'));
 const Daot = defineAsyncComponent(() => import('@/modules/Reportes/components/Daot.vue'));
-
 </script>

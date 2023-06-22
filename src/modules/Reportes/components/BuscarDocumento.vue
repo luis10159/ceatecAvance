@@ -1,20 +1,17 @@
 <template>
+    <!-- Botón para abrir el modal -->
     <a-button type="primary" @click="showModalPro">Buscar Documento</a-button>
-
+    <!-- Modal  buscar documento -->
     <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px" title="Buscar Documento"
         @ok="handleOkPro">
         <a-row justify="center">
             <a-col :span="8">
-                
                 <a-typography-text strong>Documento a buscar: </a-typography-text>
-
-                    <a-input-search v-model:value="buscador" placeholder="Ingrese el documento" enter-button
-                        @search="enbusca" />
-                
+                <a-input-search v-model:value="buscador" placeholder="Ingrese el documento" enter-button
+                    @search="enbusca" />
             </a-col>
         </a-row>
         <a-row class="margen-arriba">
-
             <a-table bordered :data-source="data" :columns="columns" :pagination="{ pageSize: 5 }"
                 class="ancho margen-arriba" :row-selection="rowSelection" size="small" v-show="existeBusqueda">
                 <template #headerCell="{ column }">
@@ -63,7 +60,6 @@
                 <p>{{ message }}</p>
             </a-table>
         </a-row>
-
         <a-row class="margen-arriba" v-show="existe">
             <a-table bordered :data-source="datab" :columns="columnsb" :pagination="{ pageSize: 5 }" class="ancho"
                 :row-selection="rowSelectionb" :scroll="{ x: 1000 }" size="small">
@@ -108,9 +104,7 @@
                     </span>
                 </template>
                 <template #bodyCell="{ column, record }">
-
                 </template>
-
                 <p>{{ message }}</p>
             </a-table>
         </a-row>
@@ -118,31 +112,29 @@
 </template>
 
 <script setup>
+// Importar iconos de ant design vue
 import { SearchOutlined } from '@ant-design/icons-vue';
+// Importar funciones de vue
 import { reactive, ref, toRefs, h } from 'vue';
-
-//  inicar modal
+// Variable que controla la visibilidad del modal buscar documento
 const openPro = ref(false);
-
+// Función que muestra buscar documento
 const showModalPro = () => {
     openPro.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en buscar documento
 const handleOkPro = (e) => {
     console.log(e);
     openPro.value = false;
 };
-
-
-
+// variable que guarda el valor de la entreda del buscador
 const buscador = ref('')
-// buscar
-
+// variable que controla si existe el valor ingresaso para busqueda
 const existeBusqueda = ref(false)
+// Función que realiza la busqueda y controla el error
 const enbusca = async () => {
     try {
         const foundObj = await datos.value.filter(obj => obj.nroDoc === buscador.value);
-
         if (foundObj.length > 0) {
             data.value = foundObj;
             existeBusqueda.value = true;
@@ -152,7 +144,8 @@ const enbusca = async () => {
         console.error(error);
     }
 }
-
+// -------- Tabla a
+//Datos de la tabla a
 const datos = ref([{
     key: '1',
     tipDoc: '01',
@@ -167,7 +160,6 @@ const datos = ref([{
     fechDoc: '02/06/2023',
     voucherReg: '0473803293',
     rucDNI: '20885665',
-
 }, {
     key: '3',
     tipDoc: '01',
@@ -175,7 +167,6 @@ const datos = ref([{
     fechDoc: '02/06/2023',
     voucherReg: '0473803293',
     rucDNI: '20885665',
-
 }, {
     key: '4',
     tipDoc: '01',
@@ -183,18 +174,19 @@ const datos = ref([{
     fechDoc: '02/06/2023',
     voucherReg: '0473545463',
     rucDNI: '20885665',
-
 }]);
-//tabla con los datos
+//tabla con los datos de la busqueda
 const data = ref([]);
-
+// Objeto reactivo que guarda las filas encontradas, el texto a buscar y la columna que se busca
 const state = reactive({
     searchText: '',
     searchedColumn: '',
     selectedRowKeys: [],
     loading: false,
 });
+//Variable que guarda la entrada del buscador
 const searchInput = ref();
+//Definición de las columnas
 const columns = [{
     title: 'Tipo de Doc.',
     dataIndex: 'tipDoc',
@@ -221,12 +213,10 @@ const columns = [{
             }, 100);
         }
     },
-
 }, {
     title: 'Fecha Doc.',
     dataIndex: 'fechDoc',
     key: 'fechDoc',
-
 }, {
     title: 'Voucher/Resgistro',
     dataIndex: 'voucherReg',
@@ -236,27 +226,24 @@ const columns = [{
     dataIndex: 'rucDNI',
     key: 'rucDNI',
 }];
-
-//Buscar
+//Función que se ejecuta después del enter y click al buscar
 const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     state.searchText = selectedKeys[0];
     state.searchedColumn = dataIndex;
 };
-
-//reiniciar
+//Función para formatear, se ejcuta después del click en reiniciar
 const handleReset = clearFilters => {
     clearFilters({
         confirm: true,
     });
     state.searchText = '';
 };
-
+//Contienen las datos a tener en cuenta para la busqueda
 const stateAsRefs = toRefs(state)
-
-// selección
-
+// Variable que controla la visibilidad de la tabla de coincidencias
 const existe = ref(false);
+// Definición de la selección de las filas
 const rowSelection = {
     type: "radio",
     onChange: (selectedRowKeys, selectedRows) => {
@@ -265,11 +252,9 @@ const rowSelection = {
             existe.value = true;
         }
     },
-
 };
-
-
-//tabla con los datos b
+//-------- Tabla b
+//Datos de la tabla b
 const datab = ref([{
     key: '1',
     cuenta: '6011',
@@ -323,15 +308,16 @@ const datab = ref([{
     tf: '01',
     numerob: '0001-00068743',
 }]);
-
+// Objeto reactivo que guarda las filas encontradas, el texto a buscar y la columna que se busca
 const stateb = reactive({
     searchText: '',
     searchedColumn: '',
     selectedRowKeys: [],
-
     loading: false,
 });
+//Variable que guarda la entrada del buscador
 const searchInputb = ref();
+//Definición de las columnas
 const columnsb = [{
     title: 'Cuenta',
     dataIndex: 'cuenta',
@@ -358,14 +344,10 @@ const columnsb = [{
             }, 100);
         }
     },
-
-
 }, {
     title: 'Debe',
     dataIndex: 'debe',
     key: 'debe',
-
-
 }, {
     title: 'Haber',
     dataIndex: 'haber',
@@ -374,8 +356,6 @@ const columnsb = [{
     title: 'Columna n',
     dataIndex: 'columnan',
     key: 'columnan',
-
-
 }, {
     title: 'Columna m',
     dataIndex: 'columnam',
@@ -401,57 +381,35 @@ const columnsb = [{
     dataIndex: 'numerob',
     key: 'numerob',
 }];
-
-//Buscar b
+//Función que se ejecuta después del enter y click al buscar
 const handleSearchb = (selectedKeys, confirm, dataIndex) => {
     confirm();
     stateb.searchText = selectedKeys[0];
     stateb.searchedColumn = dataIndex;
 };
-
-//reiniciar b
+//Función para formatear, se ejcuta después del click en reiniciar
 const handleResetb = clearFilters => {
     clearFilters({
         confirm: true,
     });
     stateb.searchText = '';
 };
-
+//Contienen las datos a tener en cuenta para la busqueda
 const stateAsRefsb = toRefs(stateb)
-
-
-
-// slección b
-
-
+// Definición de la selección de las filas
 const rowSelectionb = {
     onChange: (selectedRowKeys, selectedRows) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-
     },
-
 };
-
-
-
 </script>
 
 <style lang="scss" scoped>
-.color {
-    border: 2px solid rgba(0, 89, 255, 0.080);
-    background-color: rgba(5, 170, 247, 0.024);
-    border-radius: 10px
-}
-
 .ancho {
     width: 100%;
 }
 
 .margen-arriba {
     margin-top: 25px;
-}
-
-.margen {
-    margin: 10px 0;
 }
 </style>
