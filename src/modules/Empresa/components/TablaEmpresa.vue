@@ -219,7 +219,7 @@ const state = reactive({
   selectedRowKeys: [],
   loading: false,
 });
-//Variable que guarda la entrada del buscador
+// Objeto reactivo que guarda las filas encontradas, el texto a buscar y la columna que se busca
 const searchInput = ref();
 //Definición de las columnas
 const columns = [{

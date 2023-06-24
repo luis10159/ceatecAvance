@@ -1,11 +1,12 @@
 <template>
+    <!-- Botón para abrir el modal -->
     <a-button type="primary" @click="showModalPro">Cuentas por cobrar</a-button>
-
+    <!-- Modal cuentas por cobrar -->
     <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px" title="Cuentas por Cobrar"
         @ok="handleOkPro">
         <a-row class="margen-arriba">
             <a-typography-text strong>Ventas al crédito</a-typography-text>
-
+            <!-- Tabla ventas al crédito -->
             <a-table bordered :data-source="data" :columns="columns" :pagination="{ pageSize: 5 }"
                 class="ancho margen-arriba" :row-selection="rowSelection" size="small">
                 <template #headerCell="{ column }">
@@ -47,20 +48,15 @@
 
                             <template v-else>{{ fragment }}</template>
                         </template>
-
                     </span>
-
                 </template>
                 <template #bodyCell="{ column, record }">
-
                 </template>
-
                 <p>{{ message }}</p>
             </a-table>
         </a-row>
-
-
         <a-row class="margen-arriba" v-show="existe">
+            <!-- Tabla oculta -->
             <a-table bordered :data-source="datab" :columns="columnsb" :pagination="{ pageSize: 5 }" class="ancho"
                 :row-selection="rowSelectionb" :scroll="{ x: 1000 }" size="small">
                 <template #headerCell="{ column }">
@@ -99,17 +95,12 @@
                                 class="highlight">
                                 {{ fragment }}
                             </mark>
-
                             <template v-else>{{ fragment }}</template>
                         </template>
-
                     </span>
-
                 </template>
                 <template #bodyCell="{ column, record }">
-
                 </template>
-
                 <p>{{ message }}</p>
             </a-table>
         </a-row>
@@ -118,10 +109,8 @@
             <a-row :gutter="16" class="ancho" justify="center">
                 <a-col :span="5">
                     <a-button block :icon="h(PlusOutlined)">Añadir selección</a-button>
-                    
                 </a-col>
                 <a-col :span="5">
-                    
                     <a-button danger block :icon="h(ClearOutlined)">Limpiar</a-button>
                 </a-col>
             </a-row>
@@ -130,24 +119,22 @@
 </template>
 
 <script setup>
+// Importar iconos de ant design vue
 import { SearchOutlined, PlusOutlined, ClearOutlined } from '@ant-design/icons-vue';
-import { Radio } from 'ant-design-vue';
+// Importar funciones de vue
 import { reactive, ref, toRefs, h } from 'vue';
-
-//  inicar modal
+// Variable que controla la visibilidad del modal cuentas por cobrar
 const openPro = ref(false);
-
+// Función que muestra cuentas por cobrar
 const showModalPro = () => {
     openPro.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en cuentas por cobrar
 const handleOkPro = (e) => {
     console.log(e);
     openPro.value = false;
 };
-
-
-//tabla con los datos
+//Datos de la primera tabla
 const data = ref([{
     key: '1',
     rucDNI: '73343443',
@@ -162,7 +149,6 @@ const data = ref([{
     total: 340.00,
     amortizado: 0.00,
     saldo: 340.00,
-
 }, {
     key: '3',
     rucDNI: '94573257',
@@ -170,7 +156,6 @@ const data = ref([{
     total: 670.00,
     amortizado: 0.00,
     saldo: 670.00,
-
 }, {
     key: '4',
     rucDNI: '87757348',
@@ -178,17 +163,17 @@ const data = ref([{
     total: 498.10,
     amortizado: 0.00,
     saldo: 498.10,
-
 }]);
-
+// Objeto reactivo que guarda las filas encontradas, el texto a buscar y la columna que se busca
 const state = reactive({
     searchText: '',
     searchedColumn: '',
     selectedRowKeys: [],
-
     loading: false,
 });
+//Variable que guarda la entrada del buscador
 const searchInput = ref();
+//Definición de las columnas
 const columns = [{
     title: 'RUC/DNI',
     dataIndex: 'rucDNI',
@@ -202,7 +187,6 @@ const columns = [{
             }, 100);
         }
     },
-
 }, {
     title: 'Cliente',
     dataIndex: 'cliente',
@@ -216,47 +200,37 @@ const columns = [{
             }, 100);
         }
     },
-
-
 }, {
     title: 'Total',
     dataIndex: 'total',
     key: 'total',
-
 }, {
     title: 'Amortizado',
     dataIndex: 'amortizado',
     key: 'amortizado',
-
-
 }, {
     title: 'Saldo',
     dataIndex: 'saldo',
     key: 'saldo',
 }];
-
-//Buscar
+//Función que se ejecuta después del enter y click al buscar
 const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     state.searchText = selectedKeys[0];
     state.searchedColumn = dataIndex;
 };
-
-//reiniciar
+//Función para formatear, se ejcuta después del click en reiniciar
 const handleReset = clearFilters => {
     clearFilters({
         confirm: true,
     });
     state.searchText = '';
 };
-
+//Contienen las datos a tener en cuenta para la busqueda
 const stateAsRefs = toRefs(state)
-
-
-
-// selección
-
+// Variable que contro la visibilidad del la segunda tabla
 const existe = ref(false);
+// Definción del selector tipo radio 
 const rowSelection = {
     type: "radio",
     onChange: (selectedRowKeys, selectedRows) => {
@@ -265,13 +239,8 @@ const rowSelection = {
             existe.value = true;
         }
     },
-
 };
-
-
-
-
-//tabla con los datos b
+//Datos de la tabla oculta
 const datab = ref([{
     key: '1',
     tipDoc: 'FAC',
@@ -313,15 +282,16 @@ const datab = ref([{
     cuenta: "01-1212",
     docRef: 'Doc ref a'
 }]);
-
+// Objeto reactivo que guarda las filas encontradas, el texto a buscar y la columna que se busca
 const stateb = reactive({
     searchText: '',
     searchedColumn: '',
     selectedRowKeys: [],
-
     loading: false,
 });
+//Variable que guarda la entrada del buscador
 const searchInputb = ref();
+//Definición de las columnas
 const columnsb = [{
     title: 'Tipo Doc.',
     dataIndex: 'tipDoc',
@@ -348,14 +318,10 @@ const columnsb = [{
             }, 100);
         }
     },
-
-
 }, {
     title: 'Fecha Doc.',
     dataIndex: 'fecDoc',
     key: 'fecDoc',
-
-
 }, {
     title: 'Total',
     dataIndex: 'total',
@@ -364,8 +330,6 @@ const columnsb = [{
     title: 'Amortizado',
     dataIndex: 'amortizado',
     key: 'amortizado',
-
-
 }, {
     title: 'Saldo',
     dataIndex: 'saldo',
@@ -379,39 +343,27 @@ const columnsb = [{
     dataIndex: 'docRef',
     key: 'docRef',
 }];
-
-//Buscar b
+//Función que se ejecuta después del enter y click al buscar
 const handleSearchb = (selectedKeys, confirm, dataIndex) => {
     confirm();
     stateb.searchText = selectedKeys[0];
     stateb.searchedColumn = dataIndex;
 };
-
-//reiniciar b
+//Función para formatear, se ejcuta después del click en reiniciar
 const handleResetb = clearFilters => {
     clearFilters({
         confirm: true,
     });
     stateb.searchText = '';
 };
-
+//Contienen las datos a tener en cuenta para la busqueda
 const stateAsRefsb = toRefs(stateb)
-
-
-
-// slección b
-
-
+// Función que imprime filas selecionadas 
 const rowSelectionb = {
     onChange: (selectedRowKeys, selectedRows) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-
     },
-
 };
-
-
-
 </script>
 
 <style lang="scss" scoped>

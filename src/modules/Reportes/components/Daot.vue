@@ -1,19 +1,18 @@
 <template>
+    <!-- Botón para abrir el modal -->
     <a-button type="primary" @click="showModalPro">DAOT</a-button>
-
+    <!-- Modal DAOT -->
     <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="500px" title="DAOT" @ok="handleOkPro">
+        <!-- Formulario -->
         <a-form :model="form" :rules="roles" layout="vertical">
-
             <a-row :gutter="16" class="ancho margen-abajo" justify="center">
                 <a-col :span="24">
                     <a-typography-text strong>Parámeteros</a-typography-text>
                 </a-col>
                 <a-col :span="12">
-
                     <a-form-item label="Nro. UIT" name="nroUIt">
                         <a-input v-model:value="form.nroUIt" placeholder="Ingrese el Nro. UIT" />
                     </a-form-item>
-
                 </a-col>
                 <a-col :span="12">
                     <a-form-item label="Año" name="ano">
@@ -35,34 +34,26 @@
                     </a-radio-group>
                 </a-col>
                 <a-divider />
-
             </a-row>
         </a-form>
     </a-modal>
-    
 </template>
 
 <script setup>
+// Importar funciones de vue
 import { ref, reactive, watch } from 'vue'
-
-// Buscador
-
-const buscador = ref(null)
-
-//  inicar proceso
+// Variable que controla la visibilidad del modal DAOT
 const openPro = ref(false);
-
+// Función que muestra DAOT
 const showModalPro = () => {
     openPro.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en cuentas por cobrar
 const handleOkPro = (e) => {
     console.log(e);
     openPro.value = false;
 };
-
-
-//datos modal
+// Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     ano: null,
     digitos: 2,
@@ -70,7 +61,8 @@ const form = reactive({
     checkB: null,
     nroUIt: null,
 });
-
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const roles = {
     ano: [{
         required: true,
@@ -81,45 +73,6 @@ const roles = {
         message: 'Ingrese el Nro de UIT',
     }]
 }
-
-
-
-
-//sucursales
-const sucursales = ref([{
-    title: 'Todas las sucursales',
-    value: 'todas',
-    children: [{
-        title: 'Lino SAC',
-        value: 'sucursal-a',
-    }, {
-        title: 'Zona b',
-        value: 'sucursal-b',
-    }],
-}]);
-watch(() => form.valorSucursal, (newValue) => {
-    console.log(newValue);
-});
-
-// departamentos
-
-const departamentos = ref([{
-    title: 'Todos las departamentos',
-    value: 'todas',
-    children: [{
-        title: 'Lino SAC',
-        value: 'departamento-a',
-    }, {
-        title: 'Unidad b',
-        value: 'departamento-b',
-    }],
-}]);
-watch(() => form.valorDeparta, (newValue) => {
-    console.log(newValue);
-});
-
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -127,21 +80,7 @@ watch(() => form.valorDeparta, (newValue) => {
     width: 100%;
 }
 
-.margen-arriba {
-    margin-top: 25px;
-}
-
 .margen-abajo {
     margin-bottom: 20px;
-}
-
-.color {
-    border: 2px solid rgba(0, 89, 255, 0.080);
-    background-color: rgba(5, 170, 247, 0.024);
-    border-radius: 10px
-}
-
-.padd {
-    padding-right: 10px;
 }
 </style>

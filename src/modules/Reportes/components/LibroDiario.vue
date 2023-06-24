@@ -1,8 +1,10 @@
 <template>
+    <!-- Botón para abrir el modal -->
     <a-button type="primary" @click="showModalPro">Libro diario</a-button>
-
+    <!-- Modal libro diario -->
     <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px" title="Libro Diario"
         @ok="handleOkPro">
+        <!-- Formulario -->
         <a-form :model="form" :rules="roles" layout="vertical">
             <a-row class="margen-arriba" :gutter="16" align="middle">
                 <a-col :span="10">
@@ -10,39 +12,32 @@
                         <a-tree-select v-model:value="form.valorSucursal" show-search class="ancho"
                             :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }" placeholder="Seleccione la sucursal"
                             allow-clear tree-default-expand-all :tree-data="sucursales">
-
                         </a-tree-select>
                     </a-row>
                     <a-row>
                         <a-tree-select v-model:value="form.valorDeparta" show-search class="ancho margen-arriba"
                             :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }" placeholder="Seleccione la sucursal"
                             allow-clear tree-default-expand-all :tree-data="departamentos">
-
                         </a-tree-select>
                     </a-row>
                     <a-row>
                         <a-tree-select v-model:value="form.valorGrupos" show-search class="ancho margen-arriba"
                             :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }" placeholder="Seleccione la sucursal"
                             allow-clear tree-default-expand-all :tree-data="grupos">
-
                         </a-tree-select>
                     </a-row>
                     <a-row class="margen-arriba" :gutter="16">
                         <a-col span="24" class="color">
                             <a-checkbox v-model:checked="form.checkCuentas">Todas las cuentas</a-checkbox>
-
                             <a-select class="ancho" placeholder="Cuenta" v-model:value="form.cuentas" show-search
                                 :options="optCuentas" :filter-option="filterOptionCuentas" @focus="handleFocusCuentas"
                                 @blur="handleBlurCuentas" @change="handleChangeCuentas"></a-select>
-
                             <a-select class="ancho margen-arriba margen-abajo" placeholder="Cuenta"
                                 v-model:value="form.cuentasB" show-search :options="optCuentasB"
                                 :filter-option="filterOptionCuentasB" @focus="handleFocusCuentasB"
                                 @blur="handleBlurCuentasB" @change="handleChangeCuentasB"></a-select>
-
                         </a-col>
                     </a-row>
-
                 </a-col>
                 <a-col :span="14">
                     <a-row :gutter="16" justify="center">
@@ -81,7 +76,6 @@
                                     </a-form-item>
                                 </a-col>
                             </a-row>
-
                         </a-col>
                         <a-col :span="18" class="margen-arriba">
                             <a-row justify="space-between" class="margen abajo">
@@ -92,39 +86,29 @@
                                     <a-checkbox v-model:checked="form.checkPleDiar">PLE Diario</a-checkbox>
                                 </a-col>
                             </a-row>
-
                         </a-col>
                     </a-row>
-
                 </a-col>
             </a-row>
-
         </a-form>
     </a-modal>
 </template>
 
 <script setup>
-import { ref, reactive, h, watch } from 'vue'
-import { GlobalOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons-vue';
-
-// Buscador
-
-const buscador = ref(null)
-
-//  inicar proceso
+// Importar funciones de vue
+import { ref, reactive, watch } from 'vue'
+// Variable que controla la visibilidad del modal libro diario
 const openPro = ref(false);
-
+// Función que muestra libro diario
 const showModalPro = () => {
     openPro.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en libro diario
 const handleOkPro = (e) => {
     console.log(e);
     openPro.value = false;
 };
-
-
-//datos modal
+// Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     mes: null,
     mesb: null,
@@ -139,9 +123,9 @@ const form = reactive({
     checkCuentConso: false,
     checkPleDiar: false,
     checkCuentas: false,
-
 });
-
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const roles = {
     ano: [{
         required: true,
@@ -163,11 +147,8 @@ const roles = {
         message: 'Selecione la folio',
     }]
 }
-
-
-
-// Select folio
-
+//--------- Select - folio
+// Objeto con los datos que se mostrarán en el select
 const optFolio = ref([{
     value: '001',
     label: 'Folio 1',
@@ -181,16 +162,15 @@ const optFolio = ref([{
     value: '004',
     label: 'Folio 4',
 }]);
-
+// Función que imprime un valor cuando está en blur
 const focusFolio = () => {
     console.log('focus');
 };
+// Función que imprime valor cada que es cambiado
 const handleFolio = value => {
     console.log(`Seleccionado ${value}`);
 };
-
-
-
+// Datos del arbol de selecciones - Sucursales
 const sucursales = ref([{
     title: 'Todas las sucursales',
     value: 'todas',
@@ -202,11 +182,11 @@ const sucursales = ref([{
         value: 'sucursal-b',
     }],
 }]);
+// Imprimir valor cada que es cambiado
 watch(() => form.valorSucursal, (newValue) => {
     console.log(newValue);
 });
-
-
+// Datos del arbol de selecciones - departamentos
 const departamentos = ref([{
     title: 'Todos las Dptos/Ofic.',
     value: 'todas',
@@ -218,11 +198,11 @@ const departamentos = ref([{
         value: 'departamento-b',
     }],
 }]);
+// Imprimir valor cada que es cambiado
 watch(() => form.valorDeparta, (newValue) => {
     console.log(newValue);
 });
-
-
+// Datos del arbol de selecciones - grupos
 const grupos = ref([{
     title: 'Todos los Grupos',
     value: 'todas',
@@ -249,12 +229,12 @@ const grupos = ref([{
         value: 'grupo-g',
     }],
 }]);
-
 watch(() => form.valorGrupos, (newValue) => {
     console.log(newValue);
 });
 
-//select cuentas
+//--------- select - cuentas
+// Objeto con los datos que se mostrarán en el select
 const optCuentas = ref([{
     value: '00',
     label: 'Cuenta 1',
@@ -271,23 +251,25 @@ const optCuentas = ref([{
     value: '04',
     label: 'Cuenta 5',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChangeCuentas = value => {
     console.log(`Seleccionado ${form.cuentasB}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlurCuentas = () => {
     console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocusCuentas = () => {
     console.log('focus');
 };
+// Búsqueda
 const filterOptionCuentas = (input, option) => {
     const inputValue = input.toLowerCase();
     return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
-
-
-//select cuentas b
+//-----------select - cuentas b
+// Objeto con los datos que se mostrarán en el select
 const optCuentasB = ref([{
     value: '00',
     label: 'Cuentab 1',
@@ -304,22 +286,23 @@ const optCuentasB = ref([{
     value: '04',
     label: 'Cuentab 5',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChangeCuentasB = value => {
     console.log(`Seleccionado ${form.cuentasB}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlurCuentasB = () => {
     console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocusCuentasB = () => {
     console.log('focus');
 };
+// Búsqueda
 const filterOptionCuentasB = (input, option) => {
     const inputValue = input.toLowerCase();
     return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
-
-
 </script>
 
 <style lang="scss" scoped>

@@ -1,11 +1,12 @@
 <template>
-    
-
-        <a-button type="primary" @click="showModal">Registro Caja y Bancos</a-button>
-        <a-modal ok-text="Actualizar" cancel-text="Cancelar" v-model:open="open" width="700px"
-            title="Registro de movimientos: Caja y Bancos Egreso" @ok="handleOk">
-            <a-form :model="form" :rules="rules" layout="vertical">
-                <a-config-provider :component-size="componentSize">
+    <!-- Botón para abrir el modal -->
+    <a-button type="primary" @click="showModal">Registro Caja y Bancos</a-button>
+    <!-- Modal registro de movimientos: Caja y Bancos Egreso -->
+    <a-modal ok-text="Actualizar" cancel-text="Cancelar" v-model:open="open" width="700px"
+        title="Registro de movimientos: Caja y Bancos Egreso" @ok="handleOk">
+        <!-- Formulario -->
+        <a-form :model="form" :rules="rules" layout="vertical">
+            <a-config-provider :component-size="componentSize">
                 <a-row :gutter="16" justify="center" class="margen-abajo">
                     <a-col :span="12">
                         <a-form-item label="Cta. Contable" name="ctaCont">
@@ -21,9 +22,7 @@
                                 @change="handleChangeTipo" placeholder="Seleccione el tipo de operación"></a-select>
                         </a-form-item>
                     </a-col>
-
                 </a-row>
-
                 <a-row :gutter="16" align="bottom" class="color">
                     <a-col :span="9">
                         <a-checkbox v-model:checked="form.checProvee"></a-checkbox>
@@ -55,7 +54,6 @@
                                 :filter-option="filterOptionTipDoc" @focus="handleFocusTipDoc" @blur="handleBlurTipDoc"
                                 @change="handleChangeTipDoc" disabled="true"></a-select>
                         </a-form-item>
-
                     </a-col>
                     <a-col :span="9">
                         <a-form-item>
@@ -138,34 +136,30 @@
                     <a-col>
                         <a-button block :icon="h(EditOutlined)">Varios documentos</a-button>
                     </a-col>
-
                 </a-row>
             </a-config-provider>
-            </a-form>
-        </a-modal>
-
+        </a-form>
+    </a-modal>
 </template>
-
 <script setup>
+// Importar funciones de vue
 import { ref, reactive, h } from 'vue'
-import { PrinterOutlined, PlusOutlined, MinusOutlined, ArrowLeftOutlined, EditOutlined } from '@ant-design/icons-vue';
+// Importar iconos de ant design vue
+import { EditOutlined } from '@ant-design/icons-vue';
+// Variable que controla el tamaño de los componentes
 const componentSize = ref('middle');
-
-const value1 = ref();
-
+// Variable que controla la visibilidad del modal registro de movimientos: Caja y Bancos Egreso
 const open = ref(false);
-
+// Función que muestra registro de movimientos: Caja y Bancos Egreso
 const showModal = () => {
     open.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en libro diario
 const handleOk = (e) => {
     console.log(e);
     open.value = false;
 };
-
-
-//datos modal
+// Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     ctaCont: null,
     proveedor: null,
@@ -187,7 +181,8 @@ const form = reactive({
     afectIGV: null,
     checafectIGV: false,
 });
-
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const rules = {
     ctaCont: [{
         required: true,
@@ -241,12 +236,9 @@ const rules = {
         required: true,
         message: 'Seleccione el tipo de operación',
     }],
-
 }
-
-
-
-//select ctaCont
+//---------- select - ctaCont
+// Objeto con los datos que se mostrarán en el select
 const ctaCont = ref([{
     value: '6211',
     label: 'Cta. contable a',
@@ -260,23 +252,25 @@ const ctaCont = ref([{
     value: '6361',
     label: 'Cta. contable d',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChange = value => {
     console.log(`Seleccionado ${form.ctaCont}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlur = () => {
     console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocus = () => {
     console.log('focus');
 };
+// Búsqueda
 const filterOption = (input, option) => {
     const inputValue = input.toLowerCase();
     return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
-
-
-//select proveedor
+//-------- select - proveedor
+// Objeto con los datos que se mostrarán en el select
 const proveedor = ref([{
     value: '6211',
     label: 'Proveedor a',
@@ -290,23 +284,25 @@ const proveedor = ref([{
     value: '6361',
     label: 'Proveedor d',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChangePro = value => {
     console.log(`Seleccionado ${form.proveedor}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlurPro = () => {
     console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocusPro = () => {
     console.log('focus');
 };
+// Búsqueda
 const filterOptionPro = (input, option) => {
     const inputValue = input.toLowerCase();
     return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
-
-
-//select tipo de doc.
+//------------- select - tipo de doc.
+// Objeto con los datos que se mostrarán en el select
 const tipDoc = ref([{
     value: '00',
     label: 'Tipo de doc. a',
@@ -320,25 +316,25 @@ const tipDoc = ref([{
     value: '03',
     label: 'Tipo de doc. d',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChangeTipDoc = value => {
     console.log(`Seleccionado ${form.tipDoc}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlurTipDoc = () => {
     console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocusTipDoc = () => {
     console.log('focus');
 };
+// Búsqueda
 const filterOptionTipDoc = (input, option) => {
     const inputValue = input.toLowerCase();
     return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
-
-
-
-// Select tipo
-
+//-----------Select - tipo
+// Objeto con los datos que se mostrarán en el select
 const optTipOper = ref([{
     value: '001',
     label: 'Depósito en cuenta',
@@ -352,16 +348,14 @@ const optTipOper = ref([{
     value: '004',
     label: 'Selección 4',
 }]);
-
+// Función que imprime un valor cuando está en Focus
 const focusTipo = () => {
     console.log('focus');
 };
+// Función que imprime valor cada que es cambiado
 const handleChangeTipo = value => {
     console.log(`Seleccionado ${value}`);
 };
-
-
-
 </script>
 
 <style lang="scss" scoped>

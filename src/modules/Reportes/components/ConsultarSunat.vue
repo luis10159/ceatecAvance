@@ -1,6 +1,9 @@
 <template>
+    <!-- Botón para abrir el modal -->
     <a-button type="primary" @click="showModal">Consultar Sunat</a-button>
+    <!-- Modal nuevo RUC -->
     <a-modal ok-text="Actualizar" cancel-text="Cancelar" v-model:open="open" width="700px" title="Nuevo RUC" @ok="handleOk">
+        <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
             <a-row :gutter="16" align="middle" class="color margen-abajo">
                 <a-col :span="12">
@@ -19,7 +22,6 @@
                 </a-col>
             </a-row>
             <a-row :gutter="16" align="bottom" class="color">
-                
                 <a-col :span="12">
                     <a-form-item label="Razón social" name="razonSoc">
                         <a-input v-model:value="form.razonSoc" placeholder="Ingrese la razón social" />
@@ -71,33 +73,29 @@
                     </a-form-item>
                 </a-col>
             </a-row>
-            
         </a-form>
     </a-modal>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+// Importar funciones de vue
+import { ref, reactive, h } from 'vue'
+// Importar iconos de ant design vue
 import { GlobalOutlined } from '@ant-design/icons-vue';
-import { h } from 'vue';
-
-
+// Variable que controla la visibilidad del modal nuevo RUC
 const open = ref(false);
-
+// Función que muestra nuevo RUC
 const showModal = () => {
     open.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en nuevo RUC
 const handleOk = (e) => {
     console.log(e);
     open.value = false;
 };
-
-
-//datos modal
+// Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     ruc: null,
-
     CodCapt: null,
     NomComer: null,
     razonSoc: null,
@@ -110,9 +108,9 @@ const form = reactive({
     SisEmCom: null,
     FecInscri: null,
     FeIniAct: null,
-
 });
-
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const rules = {
     ruc: [{
         required: true,
@@ -163,7 +161,6 @@ const rules = {
         message: 'Escriba un correo valido',
         type: 'email',
     }],
-
 }
 </script>
 
@@ -172,10 +169,6 @@ const rules = {
     border: 2px solid rgba(0, 89, 255, 0.080);
     background-color: rgba(5, 170, 247, 0.024);
     border-radius: 10px
-}
-
-.ancho {
-    width: 100%;
 }
 
 .margen-abajo {

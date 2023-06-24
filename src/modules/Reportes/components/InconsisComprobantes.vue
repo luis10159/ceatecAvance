@@ -1,12 +1,12 @@
 <template>
+    <!-- Botón para abrir el modal -->
     <a-button type="primary" @click="showModalPro">Inconsistencias</a-button>
-
+    <!-- Modal inconsistencias de comprobantes -->
     <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px"
         title="Inconsistencias de comprobantes" @ok="handleOkPro">
-
+        <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
             <a-row :gutter="16">
-
                 <a-col :span="24">
                     <a-row :gutter="16" justify="center">
                         <a-col :span="8">
@@ -38,17 +38,10 @@
                         </a-col>
                     </a-row>
                 </a-col>
-
             </a-row>
-
         </a-form>
-
-
-
-
-
         <a-row class="margen-arriba">
-
+            <!-- Tabla de comprobantes -->
             <a-table bordered :data-source="data" :columns="columns" :pagination="{ pageSize: 5 }"
                 class="ancho margen-arriba" :row-selection="rowSelection" size="small">
                 <template #headerCell="{ column }">
@@ -92,13 +85,12 @@
                     </span>
                 </template>
                 <template #bodyCell="{ column, record }">
-
                 </template>
                 <p>{{ message }}</p>
             </a-table>
         </a-row>
-
         <a-row class="margen-arriba" v-show="existe">
+            <!-- Tabla oculta -->
             <a-table bordered :data-source="datab" :columns="columnsb" :pagination="{ pageSize: 5 }" class="ancho"
                 :row-selection="rowSelectionb" :scroll="{ x: 1200 }" size="small">
                 <template #headerCell="{ column }">
@@ -150,14 +142,10 @@
                                 <a-button class="btn-margin" type="primary" danger><template #icon>
                                         <DeleteOutlined />
                                     </template> Eliminar</a-button>
-
                             </a-popconfirm>
-
                         </a-row>
-
                     </template>
                 </template>
-
                 <p>{{ message }}</p>
             </a-table>
         </a-row>
@@ -165,27 +153,24 @@
 </template>
 
 <script setup>
+// Importar iconos de ant design vue
 import { SearchOutlined, DeleteOutlined } from '@ant-design/icons-vue';
+// Importar funciones de vue
 import { reactive, ref, toRefs, h } from 'vue';
-
-//  inicar modal
+// Variable que controla la visibilidad del modal inconsistencias de comprobantes
 const openPro = ref(false);
-
+// Función que muestra inconsistencias de comprobantes
 const showModalPro = () => {
     openPro.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en inconsistencias de comprobantes
 const handleOkPro = (e) => {
     console.log(e);
     openPro.value = false;
 };
-
-
-
-//tabla con los datos
+// datos
 const data = ref([{
     key: '1',
-
     nroDoc: '000100057373',
     ctaRegistro: '12121',
     debe: '9999',
@@ -195,7 +180,6 @@ const data = ref([{
     nro: '0.00'
 }, {
     key: '2',
-
     nroDoc: '000100057373',
     ctaRegistro: '12121',
     debe: '9999',
@@ -205,7 +189,6 @@ const data = ref([{
     nro: '0.00'
 }, {
     key: '3',
-
     nroDoc: '000100046565',
     ctaRegistro: '12121',
     debe: '9999',
@@ -223,15 +206,16 @@ const data = ref([{
     haberDolar: '06/06/2023',
     nro: '0.00'
 }]);
-
+// Objeto reactivo que guarda las filas encontradas, el texto a buscar y la columna que se busca
 const state = reactive({
     searchText: '',
     searchedColumn: '',
     selectedRowKeys: [],
-
     loading: false,
 });
+//Variable que guarda la entrada del buscador
 const searchInput = ref();
+//Definición de las columnas
 const columns = [{
     title: 'Nro. Docuemento',
     dataIndex: 'nroDoc',
@@ -245,7 +229,6 @@ const columns = [{
             }, 100);
         }
     },
-
 }, {
     title: 'Cta. Registro',
     dataIndex: 'ctaRegistro',
@@ -259,19 +242,14 @@ const columns = [{
             }, 100);
         }
     },
-
-
 }, {
     title: 'Debe',
     dataIndex: 'debe',
     key: 'debe',
-
 }, {
     title: 'Haber',
     dataIndex: 'haber',
     key: 'haber',
-
-
 }, {
     title: 'Debe Dolar',
     dataIndex: 'debeDolar',
@@ -281,29 +259,24 @@ const columns = [{
     dataIndex: 'nro',
     key: 'nro',
 }];
-
-//Buscar
+//Función que se ejecuta después del enter y click al buscar
 const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     state.searchText = selectedKeys[0];
     state.searchedColumn = dataIndex;
 };
-
-//reiniciar
+//Función para formatear, se ejcuta después del click en reiniciar
 const handleReset = clearFilters => {
     clearFilters({
         confirm: true,
     });
     state.searchText = '';
 };
-
+//Contienen las datos a tener en cuenta para la busqueda
 const stateAsRefs = toRefs(state)
-
-
-
-// selección
-
+// Variable con controla la visibilidad de la segunda tabla
 const existe = ref(false);
+// Definición de tipo de selector e impresión de filas seleccionadas
 const rowSelection = {
     type: "radio",
     onChange: (selectedRowKeys, selectedRows) => {
@@ -312,13 +285,8 @@ const rowSelection = {
             existe.value = true;
         }
     },
-
 };
-
-
-
-
-//tabla con los datos b
+// Datos de la tabla oculta
 const datab = ref([{
     key: '1',
     cuenta: '6011',
@@ -388,15 +356,16 @@ const datab = ref([{
     columnac: '-',
     columnad: '-',
 }]);
-
+// Objeto reactivo que guarda las filas encontradas, el texto a buscar y la columna que se busca
 const stateb = reactive({
     searchText: '',
     searchedColumn: '',
     selectedRowKeys: [],
-
     loading: false,
 });
+//Variable que guarda la entrada del buscador
 const searchInputb = ref();
+//Definición de las columnas
 const columnsb = [{
     title: 'Cuenta',
     dataIndex: 'cuenta',
@@ -423,14 +392,10 @@ const columnsb = [{
             }, 100);
         }
     },
-
-
 }, {
     title: 'Debe',
     dataIndex: 'debe',
     key: 'debe',
-
-
 }, {
     title: 'Haber',
     dataIndex: 'haber',
@@ -439,8 +404,6 @@ const columnsb = [{
     title: 'Columna n',
     dataIndex: 'columnan',
     key: 'columnan',
-
-
 }, {
     title: 'Columna m',
     dataIndex: 'columnam',
@@ -484,51 +447,36 @@ const columnsb = [{
 }, {
     title: 'Operaciones',
     dataIndex: 'operation',
-
-
 }];
-
-//Buscar b
+//Función que se ejecuta después del enter y click al buscar
 const handleSearchb = (selectedKeys, confirm, dataIndex) => {
     confirm();
     stateb.searchText = selectedKeys[0];
     stateb.searchedColumn = dataIndex;
 };
-
-//reiniciar b
+//Función para formatear, se ejcuta después del click en reiniciar
 const handleResetb = clearFilters => {
     clearFilters({
         confirm: true,
     });
     stateb.searchText = '';
 };
-
+//Contienen las datos a tener en cuenta para la busqueda
 const stateAsRefsb = toRefs(stateb)
-
-//Eliminar
+//Elimina un elemento
 const onDelete = key => {
     datab.value = datab.value.filter(item => item.key !== key);
-
 };
 
 
-// slección b
-
-
+// Imprimir filas seleccionadas de la segunda tabla
 const rowSelectionb = {
     onChange: (selectedRowKeys, selectedRows) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-
     },
-
 };
-
-// ---------------------------------------
-
-
-
-
-//select inconsistencias
+//------------- select - inconsistencias
+// Objeto con los datos que se mostrarán en el select
 const optInconsis = ref([{
     value: '00',
     label: 'Varias cancelaciones de un mismo documento',
@@ -545,33 +493,33 @@ const optInconsis = ref([{
     value: '04',
     label: 'Ctas de la Clase 6 sin destino',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChangeGrupA = value => {
     console.log(`Seleccionado ${form.inconsistencias}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlurInconsis = () => {
     console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocusInconsis = () => {
     console.log('focus');
 };
+// Búsqueda
 const filterOptionInconsis = (input, option) => {
     const inputValue = input.toLowerCase();
     return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
-
-
-//datos modal
+// Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
-
     inconsistencias: null,
     ano: null,
     mes: null,
     mesb: null,
 });
-
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const rules = {
-
     inconsistencias: [{
         required: true,
         message: 'Selecione el grupo auxiliar',
@@ -589,29 +537,14 @@ const rules = {
         message: 'Selecione el mes',
     }],
 }
-
-
-
-
-
 </script>
 
 <style lang="scss" scoped>
-.color {
-    border: 2px solid rgba(0, 89, 255, 0.080);
-    background-color: rgba(5, 170, 247, 0.024);
-    border-radius: 10px
-}
-
 .ancho {
     width: 100%;
 }
 
 .margen-arriba {
     margin-top: 25px;
-}
-
-.margen {
-    margin: 10px 0;
 }
 </style>

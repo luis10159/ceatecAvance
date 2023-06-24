@@ -1,7 +1,10 @@
 <template>
+    <!-- Botón para abrir el modal -->
     <a-button type="primary" @click="showModal">Mantenimiento</a-button>
+    <!-- Modal mantenimineto de clientes y proveedores -->
     <a-modal ok-text="Guardar" cancel-text="Cancelar" v-model:open="open" width="700px"
         title="Mantenimineto de clientes y proveedores" @ok="handleOk">
+        <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
             <a-row :gutter="16" align="bottom" class="color margen-abajo">
                 <a-col :span="18">
@@ -17,7 +20,6 @@
                 </a-col>
             </a-row>
             <a-typography-text strong>Mantenedor de archivos</a-typography-text>
-
             <a-row :gutter="16" align="bottom" class="color">
                 <a-row justify="end" class="ancho">
                     <a-col :span="5">
@@ -29,7 +31,7 @@
                 <a-col :span="9">
                     <a-form-item label="Tipo Doc." name="tipoDoc">
                         <a-select ref="select" v-model:value="form.tipoDoc" :options="optTipDoc" @focus="focusTipDoc"
-                            @change="handleChangeTipDoc"  placeholder="Ingrese tipo doc."></a-select>
+                            @change="handleChangeTipDoc" placeholder="Ingrese tipo doc."></a-select>
                     </a-form-item>
                 </a-col>
                 <a-col :span="6">
@@ -53,7 +55,6 @@
                         <a-form-item label="Teléfono" name="telefono">
                             <a-input v-model:value="form.telefono" placeholder="Ingrese el teléfono" />
                         </a-form-item>
-
                     </a-col>
                     <a-col :span="8">
                         <a-form-item label="Dirección" name="direccion">
@@ -64,22 +65,18 @@
                         </a-form-item>
                         <a-form-item label="Página web" name="pagWeb">
                             <a-input v-model:value="form.pagWeb" addon-before="https://" addon-after=".com">
-
                             </a-input>
                         </a-form-item>
                     </a-col>
                     <a-col :span="8">
-
                         <a-form-item label="Cobrador" name="cobrador">
                             <a-input v-model:value="form.cobrador" placeholder="Ingrese el cobrador" disabled="true" />
                         </a-form-item>
                         <a-form-item label="Correo" name="correo">
                             <a-input v-model:value="form.correo" placeholder="Ingrese el correo" />
                         </a-form-item>
-
                     </a-col>
                 </a-row>
-
             </a-row>
             <a-row justify="center" class="ancho" :gutter="16">
                 <a-col :span="8">
@@ -114,23 +111,23 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+// Importar funciones de vue
+import { ref, reactive, h } from 'vue'
+// Importar iconos de ant design vue
 import { GlobalOutlined, PlusOutlined, MinusOutlined, ArrowLeftOutlined } from '@ant-design/icons-vue';
-import { h } from 'vue';
-
-
+// Variable que controla la visibilidad del modal mantenimineto de clientes y proveedores
 const open = ref(false);
-
+// Función que muestra mantenimineto de clientes y proveedores
 const showModal = () => {
     open.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en mantenimineto de clientes y proveedores
 const handleOk = (e) => {
     console.log(e);
     open.value = false;
 };
-// Select tipo
-
+//----------- Select - tipo
+// Objeto con los datos que se mostrarán en el select
 const optClientProv = ref([{
     value: '001',
     label: 'Cliente/Proveedor',
@@ -144,17 +141,16 @@ const optClientProv = ref([{
     value: '004',
     label: 'Selección 4',
 }]);
-
+// Función que imprime un valor cuando está en blur
 const focus = () => {
     console.log('focus');
 };
+// Función que imprime valor cada que es cambiado
 const handleChange = value => {
     console.log(`Seleccionado ${value}`);
 };
-
-
-// Select tipo Doc
-
+//-------- Select - tipo Doc
+// Objeto con los datos que se mostrarán en el select
 const optTipDoc = ref([{
     value: '001',
     label: 'Cliente/Proveedor',
@@ -168,17 +164,15 @@ const optTipDoc = ref([{
     value: '004',
     label: 'Selección 4',
 }]);
-
+// Función que imprime un valor cuando está en blur
 const focusTipDoc = () => {
     console.log('focus');
 };
+// Función que imprime valor cada que es cambiado
 const handleChangeTipDoc = value => {
     console.log(`Seleccionado ${value}`);
 };
-
-
-
-//datos modal
+// Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     tipo: null,
     checked: false,
@@ -198,7 +192,8 @@ const form = reactive({
     telefonob: null,
     checkedb: null,
 });
-
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const rules = {
     tipo: [{
         required: true,
@@ -269,9 +264,7 @@ const rules = {
         required: true,
         message: 'Escriba el teléfono',
     }],
-
 }
-
 </script>
 
 <style lang="scss" scoped>

@@ -1,10 +1,11 @@
 <template>
+    <!-- Botón para abrir el modal -->
     <a-button type="primary" @click="showModalPro">Parametros Aux</a-button>
-
+    <!-- Modal parámetros auxiliares -->
     <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px" title="Parámetros Auxiliares"
         @ok="handleOkPro">
+        <!-- Formulario -->
         <a-form :model="form" :rules="roles" layout="vertical">
-
             <a-row :gutter="16" class="margen-arriba">
                 <a-col :span="24">
                     <a-tabs v-model:activeKey="activeKey" :tab-position="mode" :style="{ height: '620px' }"
@@ -13,7 +14,6 @@
                             <a-row justify="center" class="margen-abajo">
                                 <a-col>
                                     <a-space wrap>
-
                                         <a-button block :icon="h(PlusOutlined)">Nuevo</a-button>
                                         <a-button type="dashed" block :icon="h(ArrowLeftOutlined)">Deshacer</a-button>
                                         <a-button danger block :icon="h(MinusOutlined)">Eliminar</a-button>
@@ -21,7 +21,6 @@
                                     </a-space>
                                 </a-col>
                             </a-row>
-
                             <a-typography-text strong>Parámetros Auxiliares</a-typography-text>
                             <a-row :gutter="16">
                                 <a-col :span="12">
@@ -42,7 +41,8 @@
                                 <a-col :span="6">
                                     <a-form-item label="Valor" name="valor">
                                         <a-input-number v-model:value="form.valor" :min="0" :max="100"
-                                            :formatter="value => `${value}%`" :parser="value => value.replace('%', '')" class="ancho"/>
+                                            :formatter="value => `${value}%`" :parser="value => value.replace('%', '')"
+                                            class="ancho" />
                                     </a-form-item>
                                 </a-col>
                                 <a-col :span="6">
@@ -52,7 +52,6 @@
                                             placeholder="Ingrese tipo"></a-select>
                                     </a-form-item>
                                 </a-col>
-
                                 <a-col :span="6">
                                     <a-form-item label="Situación" name="descripcion">
                                         <a-checkbox v-model:checked="form.checkCtaCont">Activo</a-checkbox>
@@ -81,11 +80,8 @@
                                     <a-button block :icon="h(PlusOutlined)">Agregar</a-button>
                                     <a-button type="dashed" block :icon="h(EditOutlined)">Modifica</a-button>
                                     <a-button danger block :icon="h(MinusOutlined)">Eliminar</a-button>
-
                                 </a-col>
                             </a-row>
-
-
                         </a-tab-pane>
                     </a-tabs>
                 </a-col>
@@ -95,31 +91,30 @@
 </template>
 
 <script setup>
+// Importar funciones de vue
 import { ref, reactive, h } from 'vue'
+// Importar iconos de ant design vue
 import { PrinterOutlined, PlusOutlined, MinusOutlined, ArrowLeftOutlined, EditOutlined } from '@ant-design/icons-vue';
-
-//  inicar proceso
+// Variable que controla la visibilidad del modal parámetros auxiliares
 const openPro = ref(false);
-
+// Función que muestra parámetros auxiliares
 const showModalPro = () => {
     openPro.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en parámetros auxiliares
 const handleOkPro = (e) => {
     console.log(e);
     openPro.value = false;
 };
-
-
-// tabs
+// Variable que controla la posición del tabs
 const mode = ref('left');
 const activeKey = ref(1);
 const callback = val => {
     console.log(val);
 };
 
-// Tabla
-
+// --------- Tabla
+//Definición de las columnas
 const columns = [{
     title: 'Amones',
     dataIndex: 'cuenta',
@@ -134,8 +129,8 @@ const columns = [{
     dataIndex: 'debeSol',
     key: 'debeSol',
     ellipsis: true,
-}
-];
+}];
+//Datos
 const data = [{
     key: '1',
     cuenta: '7673',
@@ -159,28 +154,23 @@ const data = [{
     cuenta: '7673',
     cCosto: 32,
     debeSol: '87857',
-
 }, {
     key: '4',
     cuenta: '7673',
     cCosto: 32,
     debeSol: '87857',
-
 }, {
     key: '5',
     cuenta: '7673',
     cCosto: 32,
     debeSol: '87857',
-
 }, {
     key: '6',
     cuenta: '7673',
     cCosto: 32,
     debeSol: '87857',
-
 }];
-
-//datos modal
+// Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     descripcion: null,
     debe: null,
@@ -190,7 +180,8 @@ const form = reactive({
     checkSituac: null,
 
 });
-
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const roles = {
     descripcion: [{
         required: true,
@@ -226,8 +217,8 @@ const roles = {
     }],
 }
 
-// Select tipo
-
+//---------Select - tipo
+// Objeto con los datos que se mostrarán en el select
 const optClientProv = ref([{
     value: '001',
     label: 'Cliente/Proveedor',
@@ -241,25 +232,17 @@ const optClientProv = ref([{
     value: '004',
     label: 'Selección 4',
 }]);
-
+// Función que imprime un valor cuando está en blur
 const focusTipo = () => {
     console.log('focus');
 };
+// Función que imprime valor cada que es cambiado
 const handleChangeTipo = value => {
     console.log(`Seleccionado ${value}`);
 };
-
-
-
 </script>
 
 <style lang="scss" scoped>
-.color {
-    border: 2px solid rgba(0, 89, 255, 0.080);
-    background-color: rgba(5, 170, 247, 0.024);
-    border-radius: 10px
-}
-
 .ancho {
     width: 100%;
 }

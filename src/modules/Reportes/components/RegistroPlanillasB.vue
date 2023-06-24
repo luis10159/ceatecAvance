@@ -1,7 +1,10 @@
 <template>
+    <!-- Botón para abrir el modal -->
     <a-button type="primary" @click="showModal">Registro planillas B</a-button>
+    <!-- Modal registro de movimientos: Planillas B -->
     <a-modal ok-text="Guardar" cancel-text="Cancelar" v-model:open="open" width="700px"
         title="Registro de movimientos: Planillas B" @ok="handleOk">
+        <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
             <a-row :gutter="16" justify="space-between" class="margen-abajo">
                 <a-col :span="12">
@@ -17,7 +20,6 @@
                     </a-form-item>
                 </a-col>
             </a-row>
-
             <a-row :gutter="16" align="bottom" class="color">
                 <a-col :span="4">
                     <a-checkbox v-model:checked="form.checkDoc">Documento</a-checkbox>
@@ -278,7 +280,6 @@
                     </a-col>
                     <a-col :span="9">
                         <a-checkbox style="visibility: hidden;">Cancelar</a-checkbox>
-
                     </a-col>
                 </a-row>
                 <a-row justify="center" class="ancho color" v-show="mostrar">
@@ -289,7 +290,6 @@
                     </a-col>
                 </a-row>
             </a-row>
-
             <a-row justify="center">
                 <a-col>
                     <a-button type="dashed" class="ancho" @click="mostrarFilas">
@@ -298,7 +298,6 @@
                     </a-button>
                 </a-col>
             </a-row>
-
         </a-form>
     </a-modal>
 </template>

@@ -1,7 +1,10 @@
 <template>
+    <!-- Botón para abrir el modal -->
     <a-button type="primary" @click="showModal">Registro Planillas</a-button>
+    <!-- Modal registro de movimientos: Planillas -->
     <a-modal ok-text="Actualizar" cancel-text="Cancelar" v-model:open="open" width="700px"
         title="Registro de movimientos: Planillas" @ok="handleOk">
+        <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
             <a-row :gutter="16" justify="center" class="margen-abajo">
                 <a-col :span="12">
@@ -11,11 +14,8 @@
                             :options="ctaCont" :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur"
                             @change="handleChange"></a-select>
                     </a-form-item>
-
                 </a-col>
-
             </a-row>
-
             <a-row :gutter="16" align="bottom" class="color">
                 <a-col :span="9">
                     <a-checkbox v-model:checked="form.checProvee"></a-checkbox>
@@ -47,7 +47,6 @@
                             :filter-option="filterOptionTipDoc" @focus="handleFocusTipDoc" @blur="handleBlurTipDoc"
                             @change="handleChangeTipDoc" disabled="true"></a-select>
                     </a-form-item>
-
                 </a-col>
                 <a-col :span="9">
                     <a-form-item>
@@ -83,17 +82,17 @@
                 </a-col>
                 <a-col :span="9">
                     <a-form-item label="Tipo de cambio" name="TipCamb">
-                    <a-input-number v-model:value="form.TipCamb" placeholder="Ingrese el tipo de cambio">
-                        <template #addonBefore>
-                            <a-select v-model:value="form.moneda" style="width: 60px">
-                                <a-select-option value="USD">$</a-select-option>
-                                <a-select-option value="EUR">€</a-select-option>
-                                <a-select-option value="GBP">£</a-select-option>
-                                <a-select-option value="CNY">¥</a-select-option>
-                                <a-select-option value="PER">S/</a-select-option>
-                            </a-select>
-                        </template>
-                    </a-input-number>
+                        <a-input-number v-model:value="form.TipCamb" placeholder="Ingrese el tipo de cambio">
+                            <template #addonBefore>
+                                <a-select v-model:value="form.moneda" style="width: 60px">
+                                    <a-select-option value="USD">$</a-select-option>
+                                    <a-select-option value="EUR">€</a-select-option>
+                                    <a-select-option value="GBP">£</a-select-option>
+                                    <a-select-option value="CNY">¥</a-select-option>
+                                    <a-select-option value="PER">S/</a-select-option>
+                                </a-select>
+                            </template>
+                        </a-input-number>
                     </a-form-item>
                 </a-col>
                 <a-col :span="6">
@@ -107,30 +106,25 @@
                     </a-form-item>
                 </a-col>
             </a-row>
-
         </a-form>
     </a-modal>
 </template>
 
 <script setup>
+// Importar funciones de vue
 import { ref, reactive } from 'vue'
-import { PlusOutlined } from '@ant-design/icons-vue';
-
-const value1 = ref();
-
+// Variable que controla la visibilidad del modal libro diario
 const open = ref(false);
-
+// Función que muestra libro diario
 const showModal = () => {
     open.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en libro diario
 const handleOk = (e) => {
     console.log(e);
     open.value = false;
 };
-
-
-//datos modal
+// Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     ctaCont: null,
     proveedor: null,
@@ -148,10 +142,9 @@ const form = reactive({
     moneda: "PER",
     debe: null,
     haber: null,
-
-
 });
-
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const rules = {
     ctaCont: [{
         required: true,
@@ -205,12 +198,9 @@ const rules = {
         message: 'Escriba la C. Costo',
         type: 'email',
     }],
-
 }
-
-
-
-//select ctaCont
+//--------- select - ctaCont
+// Objeto con los datos que se mostrarán en el select
 const ctaCont = ref([{
     value: '6211',
     label: 'Cta. contable a',
@@ -224,23 +214,25 @@ const ctaCont = ref([{
     value: '6361',
     label: 'Cta. contable d',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChange = value => {
     console.log(`Seleccionado ${form.ctaCont}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlur = () => {
     console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocus = () => {
     console.log('focus');
 };
+// Búsqueda
 const filterOption = (input, option) => {
     const inputValue = input.toLowerCase();
     return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
-
-
-//select proveedor
+//--------- select - proveedor
+// Objeto con los datos que se mostrarán en el select
 const proveedor = ref([{
     value: '6211',
     label: 'Proveedor a',
@@ -254,23 +246,25 @@ const proveedor = ref([{
     value: '6361',
     label: 'Proveedor d',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChangePro = value => {
     console.log(`Seleccionado ${form.proveedor}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlurPro = () => {
     console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocusPro = () => {
     console.log('focus');
 };
+// Búsqueda
 const filterOptionPro = (input, option) => {
     const inputValue = input.toLowerCase();
     return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
-
-
-//select tipo de doc.
+//---------select - tipo de doc.
+// Objeto con los datos que se mostrarán en el select
 const tipDoc = ref([{
     value: '00',
     label: 'Tipo de doc. a',
@@ -284,23 +278,23 @@ const tipDoc = ref([{
     value: '03',
     label: 'Tipo de doc. d',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChangeTipDoc = value => {
     console.log(`Seleccionado ${form.tipDoc}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlurTipDoc = () => {
     console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocusTipDoc = () => {
     console.log('focus');
 };
+// Búsqueda
 const filterOptionTipDoc = (input, option) => {
     const inputValue = input.toLowerCase();
     return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
-
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -308,10 +302,6 @@ const filterOptionTipDoc = (input, option) => {
     border: 2px solid rgba(0, 89, 255, 0.080);
     background-color: rgba(5, 170, 247, 0.024);
     border-radius: 10px
-}
-
-.ancho {
-    width: 100%;
 }
 
 .margen-abajo {

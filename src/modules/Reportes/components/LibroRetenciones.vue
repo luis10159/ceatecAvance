@@ -1,8 +1,10 @@
 <template>
+    <!-- Botón para abrir el modal -->
     <a-button type="primary" @click="showModalPro">Libro de Retenciones</a-button>
-
+    <!-- Modal balance de comprobación -->
     <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="800px" title="Balance de comprobación"
         @ok="handleOkPro">
+        <!-- Formulario -->
         <a-form :model="form" :rules="roles" layout="vertical">
             <a-row class="margen-arriba" :gutter="16" align="middle">
                 <a-col :span="10">
@@ -17,11 +19,8 @@
                             :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                             placeholder="Seleccione el departamento" allow-clear tree-default-expand-all
                             :tree-data="departamentos">
-
                         </a-tree-select>
                     </a-row>
-
-
                 </a-col>
                 <a-col :span="14">
                     <a-row :gutter="16" justify="center">
@@ -30,12 +29,9 @@
                                 <a-typography-text strong>Requiere</a-typography-text>
                             </a-col>
                             <a-col :span="8">
-
                                 <a-checkbox v-model:checked="form.checkApertura">Solo apertura</a-checkbox>
-
                             </a-col>
                         </a-row>
-
                         <a-row :gutter="16" class="color">
                             <a-col :span="24">
                                 <a-typography-text strong>Parámetros</a-typography-text>
@@ -67,26 +63,20 @@
 </template>
 
 <script setup>
+// Importar funciones de vue
 import { ref, reactive, watch } from 'vue'
-
-// Buscador
-
-const buscador = ref(null)
-
-//  inicar proceso
+// Variable que controla la visibilidad del modal balance de comprobación
 const openPro = ref(false);
-
+// Función que muestra balance de comprobación
 const showModalPro = () => {
     openPro.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en balance de comprobación
 const handleOkPro = (e) => {
     console.log(e);
     openPro.value = false;
 };
-
-
-//datos modal
+// Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     mes: null,
     mesb: null,
@@ -104,7 +94,8 @@ const form = reactive({
     opciones: [],
     checkApertura: false,
 });
-
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const roles = {
     ano: [{
         required: true,
@@ -126,11 +117,7 @@ const roles = {
         message: 'Selecione la folio',
     }]
 }
-
-
-
-
-//sucursales
+// Datos del arbol de selecciones - Sucursales
 const sucursales = ref([{
     title: 'Todas las sucursales',
     value: 'todas',
@@ -142,12 +129,11 @@ const sucursales = ref([{
         value: 'sucursal-b',
     }],
 }]);
+// Imprimir valor cada que es cambiado
 watch(() => form.valorSucursal, (newValue) => {
     console.log(newValue);
 });
-
-// departamentos
-
+// Datos del arbol de selecciones - departamentos
 const departamentos = ref([{
     title: 'Todos las departamentos',
     value: 'todas',
@@ -159,12 +145,10 @@ const departamentos = ref([{
         value: 'departamento-b',
     }],
 }]);
+// Imprimir valor cada que es cambiado
 watch(() => form.valorDeparta, (newValue) => {
     console.log(newValue);
 });
-
-
-
 </script>
 
 <style lang="scss" scoped>
