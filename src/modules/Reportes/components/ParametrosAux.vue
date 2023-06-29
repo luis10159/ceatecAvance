@@ -1,8 +1,6 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModalPro">Parametros Aux</a-button>
     <!-- Modal parámetros auxiliares -->
-    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px" title="Parámetros Auxiliares"
+    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="store.paramAux" width="900px" title="Parámetros Auxiliares"
         @ok="handleOkPro">
         <!-- Formulario -->
         <a-form :model="form" :rules="roles" layout="vertical">
@@ -91,20 +89,17 @@
 </template>
 
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar funciones de vue
 import { ref, reactive, h } from 'vue'
 // Importar iconos de ant design vue
 import { PrinterOutlined, PlusOutlined, MinusOutlined, ArrowLeftOutlined, EditOutlined } from '@ant-design/icons-vue';
-// Variable que controla la visibilidad del modal parámetros auxiliares
-const openPro = ref(false);
-// Función que muestra parámetros auxiliares
-const showModalPro = () => {
-    openPro.value = true;
-};
 // Función que se ejecuta al apretar aceptar en parámetros auxiliares
 const handleOkPro = (e) => {
     console.log(e);
-    openPro.value = false;
+    store.paramAux = false;
 };
 // Variable que controla la posición del tabs
 const mode = ref('left');

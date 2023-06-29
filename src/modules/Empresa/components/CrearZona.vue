@@ -67,6 +67,7 @@ const showDrawer = () => {
 //Función que cierra crear zona
 const onClose = () => {
     visible.value = false;
+    store.modal = false;
 };
 </script>
 

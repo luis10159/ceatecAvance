@@ -303,34 +303,32 @@
 </template>
 
 <script setup>
+// Importar funciones de vue
 import { ref, reactive } from 'vue'
+// Importar iconos de ant design vue
 import { PlusOutlined } from '@ant-design/icons-vue';
-
-// mostar filas
+// Variable que controla la visibilidad de las filas del formulario
 const mostrar = ref(false);
+// Función que muestra y oculata las filas del formulario
 const mostrarFilas = () => {
     if (mostrar.value == false) {
         mostrar.value = true
     } else {
         mostrar.value = false
     }
-
 }
-
-
+// Variable que controla la visibilidad del modal registro de movimientos: Planillas B
 const open = ref(false);
-
+// Función que muestra registro de movimientos: Planillas B
 const showModal = () => {
     open.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en registro de movimientos: Planillas B
 const handleOk = (e) => {
     console.log(e);
     open.value = false;
 };
-
-
-//datos modal
+// Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     empleado: null,
     documento: null,
@@ -385,7 +383,8 @@ const form = reactive({
     checkTotIngB: false,
     checkCancelar: false,
 });
-
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const rules = {
     empleado: [{
         required: true,
@@ -466,12 +465,9 @@ const rules = {
         required: true,
         message: 'Escriba la C. Costo',
     }],
-
 }
-
-
-
-//select empleado
+//------------ select - empleado
+// Objeto con los datos que se mostrarán en el select
 const empleado = ref([{
     value: '6211',
     label: 'Empleado a',
@@ -485,23 +481,25 @@ const empleado = ref([{
     value: '6361',
     label: 'Empleado d',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChange = value => {
     console.log(`Seleccionado ${form.ctaCont}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlur = () => {
     console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocus = () => {
     console.log('focus');
 };
+// Búsqueda
 const filterOption = (input, option) => {
     const inputValue = input.toLowerCase();
     return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
-
-
-//select documento
+//---------- select - documento
+// Objeto con los datos que se mostrarán en el select
 const documento = ref([{
     value: '6211',
     label: 'Documento a',
@@ -515,23 +513,25 @@ const documento = ref([{
     value: '6361',
     label: 'Documento d',
 }]);
-
+// Función que imprime valor cada que es cambiado
 const handleChangeDoc = value => {
     console.log(`Seleccionado ${form.proveedor}`);
 };
+// Función que imprime un valor cuando está en blur
 const handleBlurDoc = () => {
     console.log('blur');
 };
+// Función que imprime un valor cuando está en Focus
 const handleFocusDoc = () => {
     console.log('focus');
 };
+// Búsqueda
 const filterOptionDoc = (input, option) => {
     const inputValue = input.toLowerCase();
     return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
-
-// Select tipo
-
+//-----------Select - tipo
+// Objeto con los datos que se mostrarán en el select
 const optSisPriPen = ref([{
     value: '001',
     label: 'ONP - 13.00 %',
@@ -545,15 +545,14 @@ const optSisPriPen = ref([{
     value: '004',
     label: 'Selección 4',
 }]);
-
+// Función que imprime un valor cuando está en Focus
 const focusTipo = () => {
     console.log('focus');
 };
+// Función que imprime valor cada que es cambiado
 const handleChangeTipo = value => {
     console.log(`Seleccionado ${value}`);
 };
-
-
 </script>
 
 <style lang="scss" scoped>

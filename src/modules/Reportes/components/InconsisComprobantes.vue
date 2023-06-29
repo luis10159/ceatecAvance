@@ -1,8 +1,6 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModalPro">Inconsistencias</a-button>
     <!-- Modal inconsistencias de comprobantes -->
-    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px"
+    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="store.inconCompr" width="900px"
         title="Inconsistencias de comprobantes" @ok="handleOkPro">
         <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
@@ -153,20 +151,18 @@
 </template>
 
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar iconos de ant design vue
 import { SearchOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 // Importar funciones de vue
 import { reactive, ref, toRefs, h } from 'vue';
-// Variable que controla la visibilidad del modal inconsistencias de comprobantes
-const openPro = ref(false);
-// Función que muestra inconsistencias de comprobantes
-const showModalPro = () => {
-    openPro.value = true;
-};
+
 // Función que se ejecuta al apretar aceptar en inconsistencias de comprobantes
 const handleOkPro = (e) => {
     console.log(e);
-    openPro.value = false;
+    store.inconCompr = false;
 };
 // datos
 const data = ref([{

@@ -1,12 +1,11 @@
 <template>
+    <!-- Botón para abrir el modal -->
     <a-button type="primary" @click="showModalPro">Tipo de Cambio</a-button>
-
+    <!-- Modal Tipo de Cambio -->
     <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px" title="Tipo de Cambio"
         @ok="handleOkPro">
+        <!-- Formulario -->
         <a-form :model="form" :rules="roles" layout="vertical">
-
-
-
             <a-row class="margen-arriba" :gutter="16" align="middle">
                 <a-col :span="10">
                     <a-table :columns="columns" :data-source="data" bordered size="small" :pagination="{ pageSize: 10 }"
@@ -39,10 +38,9 @@
                         <a-col :span="24">
                             <a-typography-text strong>Registro/Modificación</a-typography-text>
                         </a-col>
-
                         <a-col :span="10">
                             <a-form-item label="Fecha" name="fecha">
-                                <a-date-picker class="ancho" v-model:value="form.fecha" placeholder="Fecha"/>
+                                <a-date-picker class="ancho" v-model:value="form.fecha" placeholder="Fecha" />
                             </a-form-item>
                         </a-col>
                         <a-col :span="7">
@@ -55,9 +53,7 @@
                                 <a-input v-model:value="form.compra" placeholder="Ingrese Cta. Haber" />
                             </a-form-item>
                         </a-col>
-                        
                     </a-row>
-
                 </a-col>
             </a-row>
             <a-row justify="center" class="margen-abajo">
@@ -66,37 +62,30 @@
                         <a-button block :icon="h(GlobalOutlined)">T. Cambio SUNAT</a-button>
                         <a-button block :icon="h(PlusOutlined)">Nuevo</a-button>
                         <a-button block :icon="h(SaveOutlined)">Guardar</a-button>
-                        
                     </a-space>
                 </a-col>
             </a-row>
-
         </a-form>
     </a-modal>
 </template>
 
 <script setup>
+// Importar funciones de vue
 import { ref, reactive, h } from 'vue'
+// Importar iconos de ant design vue
 import { GlobalOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons-vue';
-
-// Buscador
-
-const buscador = ref(null)
-
-//  inicar proceso
+// Variable que controla la visibilidad del modal Tipo de Cambio
 const openPro = ref(false);
-
+// Función que muestra Tipo de Cambio
 const showModalPro = () => {
     openPro.value = true;
 };
-
+// Función que se ejecuta al apretar aceptar en Tipo de Cambio
 const handleOkPro = (e) => {
     console.log(e);
     openPro.value = false;
 };
-
-// Tabla
-
+//Definición de las columnas
 const columns = [{
     title: 'Fecha',
     dataIndex: 'fecha',
@@ -113,6 +102,7 @@ const columns = [{
     ellipsis: true,
 }
 ];
+//Datos
 const data = [{
     key: '1',
     fecha: '01/06/2023',
@@ -136,37 +126,32 @@ const data = [{
     fecha: '01/06/2023',
     compra: 32,
     venta: '87857',
-
 }, {
     key: '4',
     fecha: '01/06/2023',
     compra: 32,
     venta: '87857',
-
 }, {
     key: '5',
     fecha: '01/06/2023',
     compra: 32,
     venta: '87857',
-
 }, {
     key: '6',
     fecha: '01/06/2023',
     compra: 32,
     venta: '87857',
-
 }];
-
-//datos modal
+// Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     ano: null,
     mes: null,
     venta: null,
     compra: null,
     moneda: null,
-
 });
-
+// Detalle de los campos, mensaje al ingresar un dato no válido 
+// y si es un campo requerido o no
 const roles = {
     ano: [{
         required: true,
@@ -193,11 +178,8 @@ const roles = {
         message: 'Selecione la moneda',
     }]
 }
-
-
-
-// Select moneda
-
+//---------- Select - moneda
+// Objeto con los datos que se mostrarán en el select
 const optMoneda = ref([{
     value: '001',
     label: 'Dólares americanos',
@@ -211,19 +193,17 @@ const optMoneda = ref([{
     value: '004',
     label: 'Selección 4',
 }]);
-
+// Función que imprime un valor cuando está en blur
 const focusMoneda = () => {
     console.log('focus');
 };
+// Función que imprime valor cada que es cambiado
 const handleMoneda = value => {
     console.log(`Seleccionado ${value}`);
 };
-
 </script>
 
 <style lang="scss" scoped>
-
-
 .ancho {
     width: 100%;
 }

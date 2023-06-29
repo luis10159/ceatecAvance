@@ -1,8 +1,6 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModal">Abrir</a-button>
     <!-- Modal nuevo RUC -->
-    <a-modal ok-text="Iniciar Proceso" cancel-text="Cancelar" v-model:open="open" width="700px" title="Datos principales"
+    <a-modal ok-text="Iniciar Proceso" cancel-text="Cancelar" v-model:open="store.ingresoMov" width="700px" title="Datos principales"
         @ok="handleOk">
         <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
@@ -25,7 +23,6 @@
                             </a-form-item>
                         </a-col>
                     </a-row>
-
                 </a-col>
                 <a-col :span="10">
                     <a-row :gutter="16">
@@ -65,18 +62,15 @@
 </template>
 
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar funciones de vue
 import { ref, reactive, computed, watch } from 'vue'
-// Variable que controla la visibilidad del modal nuevo RUC
-const open = ref(false);
-// Función que muestra nuevo RUC
-const showModal = () => {
-    open.value = true;
-};
 // Función que se ejecuta al apretar aceptar en nuevo RUC
 const handleOk = (e) => {
     console.log(e);
-    open.value = false;
+    store.ingresoMov = false;
 };
 //------ select - sucursal
 // Objeto con los datos que se mostrarán en el select

@@ -11,8 +11,10 @@
 </template>
 
 <script setup>
-import { ref, defineAsyncComponent } from 'vue'
+// Importar funciones de vue
+import { defineAsyncComponent } from 'vue'
 //Importación de componenetes
 const CrearZona = defineAsyncComponent(() => import('@/modules/Empresa/components/CrearZona.vue'));
 const TablaZona = defineAsyncComponent(() => import('@/modules/Empresa/components/TablaZona.vue'));
+
 </script>

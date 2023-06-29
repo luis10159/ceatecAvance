@@ -1,8 +1,6 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModalPro">Libro diario</a-button>
     <!-- Modal libro diario -->
-    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px" title="Libro Diario"
+    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="store.libDiario" width="900px" title="Libro Diario"
         @ok="handleOkPro">
         <!-- Formulario -->
         <a-form :model="form" :rules="roles" layout="vertical">
@@ -95,18 +93,15 @@
 </template>
 
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar funciones de vue
 import { ref, reactive, watch } from 'vue'
-// Variable que controla la visibilidad del modal libro diario
-const openPro = ref(false);
-// Función que muestra libro diario
-const showModalPro = () => {
-    openPro.value = true;
-};
 // Función que se ejecuta al apretar aceptar en libro diario
 const handleOkPro = (e) => {
     console.log(e);
-    openPro.value = false;
+    store.libDiario = false;
 };
 // Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({

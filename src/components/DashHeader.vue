@@ -7,7 +7,8 @@
           :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur" @change="handleChange"></a-select>
       </a-col>
       <a-col :span="15">
-        <a-menu theme="dark" v-model:selectedKeys="current" mode="horizontal" :items="items" />
+        <a-menu theme="dark" v-model:selectedKeys="current" mode="horizontal" :items="items" @click="handleClick"
+          subMenuOpenDelay="0.4" />
       </a-col>
       <a-col :span="5">
         <a-row justify="center" align="middle">
@@ -45,18 +46,61 @@
       </a-col>
     </a-row>
   </a-layout-header>
+  <!-- Componenetes modales -->
+  <ParametrosAux></ParametrosAux>
+  <MantenimientoBancos></MantenimientoBancos>
+  <BuscarDocumento></BuscarDocumento>
+  <InconsisComprobantes></InconsisComprobantes>
+  <LibroDiario></LibroDiario>
+  <BalanceComprobacion></BalanceComprobacion>
+
 </template>
+
 <script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
+// Funcion para abrir modales
+const handleClick = e => {
+  console.log('click', e);
+  if (e.key == 'config:246') {
+    console.log('Hola');
+    store.cambiarParamAux();
+  } else if (e.key == 'config:60') {
+    store.cambiarMantBancos();
+  } else if (e.key == 'config:31') {
+    router.push('/plan-contable')
+  } else if (e.key == 'config:240') {
+    store.cambiarMantBancos();
+  } else if (e.key == 'config:2') {
+    store.cambiarInconCompr();
+  } else if (e.key == 'config:164') {
+    store.cambiarLibDiario();
+  } else if (e.key == 'config:169') {
+    store.cambiarBalanComp();
+  }
+};
 // Importar iconos de ant design vue
 import {
   UserOutlined,
   EditOutlined,
   LogoutOutlined,
   DownCircleOutlined
-
 } from "@ant-design/icons-vue";
 // Importar componentes de vue
-import { h, ref } from "vue";
+import { h, ref, defineAsyncComponent } from "vue";
+// Importar componentes modales
+const ParametrosAux = defineAsyncComponent(() => import('@/modules/Reportes/components/ParametrosAux.vue'));
+const MantenimientoBancos = defineAsyncComponent(() => import('@/modules/Reportes/components/MantenimientoBancos.vue'));
+const BuscarDocumento = defineAsyncComponent(() => import('@/modules/Reportes/components/BuscarDocumento.vue'));
+const InconsisComprobantes = defineAsyncComponent(() => import('@/modules/Reportes/components/InconsisComprobantes.vue'));
+const LibroDiario = defineAsyncComponent(() => import('@/modules/Reportes/components/LibroDiario.vue'));
+const BalanceComprobacion = defineAsyncComponent(() => import('@/modules/Reportes/components/BalanceComprobacion.vue'));
+
+
 const value = ref(null);
 //Empresas - opciones
 const options = ref([{
@@ -95,18 +139,14 @@ const items = ref([{
   label: 'Movimiento',
   title: 'Movimiento',
   children: [{
-    label: 'Opción 1',
+    label: 'Ingreso de movimientos',
     key: 'config:1',
   }, {
-    label: 'Opción 2',
+    label: 'Inconsistencia de comprobantes',
     key: 'config:2',
   }, {
-
-    label: 'Opción 3',
-    key: 'config:3',
-  }, {
-    label: 'Opción 4',
-    key: 'config:4',
+    label: 'Salir',
+    key: 'config:30',
   }],
 }, {
   key: 'tabla',
@@ -114,18 +154,41 @@ const items = ref([{
   label: 'Tabla',
   title: 'Tabla',
   children: [{
-    label: 'Opción 31',
+    label: 'Plan contable',
     key: 'config:31',
   }, {
-    label: 'Opción 32',
+    label: 'Grupos Contables',
     key: 'config:32',
   }, {
 
-    label: 'Opción 33',
-    key: 'config:43',
+    label: 'Departamento Empresarial',
+    key: 'config:33',
   }, {
-    label: 'Opción 34',
-    key: 'config:54',
+    label: 'Centro de Costos',
+    key: 'config:34',
+  }, {
+    key: 'config:40',
+    label: 'Entidades',
+    children: [{
+      label: 'Opción 41',
+      key: 'config:41',
+    }, {
+      label: 'Opción 42',
+      key: 'config:42',
+    }],
+  }, {
+    key: 'config:50',
+    label: 'Tabla General',
+    children: [{
+      label: 'Opción 51',
+      key: 'config:51',
+    }, {
+      label: 'Opción 52',
+      key: 'config:53',
+    }],
+  }, {
+    label: 'Mantenimiento de Bancos',
+    key: 'config:60',
   }],
 }, {
   key: 'reportes-contables',
@@ -200,72 +263,81 @@ const items = ref([{
     label: 'DAOT',
     key: 'config:151',
   }, {
-    key: 'config:159',
+    key: 'config:152',
     label: 'Libros Cajas y Bancos',
     children: [{
-      label: 'Opción 152',
-      key: 'config:152',
-    }, {
       label: 'Opción 153',
       key: 'config:153',
-    }],
-  }, {
-    key: 'config:160',
-    label: 'Registros Contables',
-    children: [{
-      label: 'Opción 161',
-      key: 'config:161',
-    }, {
-      label: 'Opción 171',
-      key: 'config:171',
-    }],
-  }, {
-    label: 'Libro Diario',
-    key: 'config:172',
-  }, {
-    label: 'Libro Diario Simplificado',
-    key: 'config:173',
-  }, {
-    label: 'Libro mayor',
-    key: 'config:174',
-  }, {
-    key: 'config:170',
-    label: 'Estados Financieros',
-    children: [{
-      label: 'Opción 175',
-      key: 'config:176',
-    }, {
-      label: 'Opción 176',
-      key: 'config:176',
-    }],
-  }, {
-    label: 'Libro Inventario y Balance',
-    key: 'config:174',
-  }, {
-    key: 'config:169',
-    label: 'Detalle del Inventario Balance',
-    children: [{
-      label: 'Opción 165',
-      key: 'config:165',
-    }, {
-      label: 'Opción 166',
-      key: 'config:166',
-    }],
-  }, {
-    label: 'Libro de Retenciones',
-    key: 'config:178',
-  }, {
-    label: 'Libro Renta 4ta Categoria',
-    key: 'config:178',
-  }, {
-    key: 'config:179',
-    label: 'Formatos Adicionales',
-    children: [{
-      label: 'Opción 155',
-      key: 'config:155',
     }, {
       label: 'Opción 156',
       key: 'config:156',
+    }],
+  }, {
+    key: 'config:157',
+    label: 'Registros Contables',
+    children: [{
+      label: 'Opción 158',
+      key: 'config:158',
+    }, {
+      label: 'Opción 163',
+      key: 'config:163',
+    }],
+  }, {
+    label: 'Libro Diario',
+    key: 'config:164',
+  }, {
+    label: 'Libro Diario Simplificado',
+    key: 'config:165',
+  }, {
+    label: 'Libro mayor',
+    key: 'config:166',
+  }, {
+    key: 'config:167',
+    label: 'Estados Financieros',
+    children: [{
+      label: 'Balance General',
+      key: 'config:168',
+    }, {
+      label: 'Balance de comprobación',
+      key: 'config:169',
+    }, {
+      label: 'Estado Flujo Efectivo',
+      key: 'config:170',
+    }, {
+      label: 'Estado de Cambio en el Patrimonio Neto',
+      key: 'config:171',
+    }, {
+      label: 'Estado Resultados Integrales',
+      key: 'config:172',
+    }],
+  }, {
+    label: 'Libro Inventario y Balance',
+    key: 'config:173',
+  }, {
+    key: 'config:174',
+    label: 'Detalle del Inventario Balance',
+    children: [{
+      label: 'Opción 175',
+      key: 'config:175',
+    }, {
+      label: 'Opción 180',
+      key: 'config:180',
+    }],
+  }, {
+    label: 'Libro de Retenciones',
+    key: 'config:181',
+  }, {
+    label: 'Libro Renta 4ta Categoria',
+    key: 'config:182',
+  }, {
+    key: 'config:183',
+    label: 'Formatos Adicionales',
+    children: [{
+      label: 'Opción 184',
+      key: 'config:184',
+    }, {
+      label: 'Opción 190',
+      key: 'config:190',
     }],
   }],
 }, {
@@ -274,15 +346,15 @@ const items = ref([{
   label: 'Activo Fijo',
   title: 'Activo Fijo',
   children: [{
-    label: 'Opción 181',
-    key: 'config:181',
-  }, {
-    label: 'Opción 182',
-    key: 'config:182',
-  }, {
-
     label: 'Opción 191',
     key: 'config:191',
+  }, {
+    label: 'Opción 192',
+    key: 'config:192',
+  }, {
+
+    label: 'Opción 193',
+    key: 'config:193',
   }, {
     label: 'Opción 201',
     key: 'config:201',
@@ -293,18 +365,37 @@ const items = ref([{
   label: 'Otros Reportes',
   title: 'Otros Reportes',
   children: [{
-    label: 'Opción 211',
     key: 'config:211',
+    label: 'Proveedor',
+    children: [{
+      label: 'Compra',
+      key: 'config:212',
+    }, {
+      label: 'Venta',
+      key: 'config:213',
+    }, {
+      label: 'Estado de Cuenta Corriente',
+      key: 'config:213',
+    }, {
+      label: 'Situación / Estado de Documento',
+      key: 'config:213',
+    }],
   }, {
-    label: 'Opción 212',
-    key: 'config:213',
+    label: 'Tipos de documento',
+    key: 'config:220',
   }, {
-
-    label: 'Opción 221',
+    label: 'Plan contable',
     key: 'config:221',
   }, {
-    label: 'Opción 231',
+
+    label: 'Grupos Contables',
+    key: 'config:221',
+  }, {
+    label: 'Listado Reparo Tributario',
     key: 'config:231',
+  }, {
+    label: 'Ubicar Doc. Registrado',
+    key: 'config:240',
   }],
 }, {
   key: 'herramientas',
@@ -377,8 +468,8 @@ const items = ref([{
 }
 
 .ancho {
-  width: 100%;
-  margin-right: 10px;
+  width: 90%;
+
 }
 
 .derecha-avatar {

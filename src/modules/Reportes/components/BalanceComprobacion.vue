@@ -1,8 +1,6 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModalPro">Balance de comprobación</a-button>
     <!-- Modal  balance de comprobación -->
-    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px" title="Balance de comprobación"
+    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="store.balanComp" width="900px" title="Balance de comprobación"
         @ok="handleOkPro">
         <!-- Formulario -->
         <a-form :model="form" :rules="roles" layout="vertical">
@@ -73,18 +71,15 @@
 </template>
 
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar funciones de vue
 import { ref, reactive, watch } from 'vue'
-// Variable que controla la visibilidad del modal balance de comprobación
-const openPro = ref(false);
-// Función que muestra actualización de movimientos
-const showModalPro = () => {
-    openPro.value = true;
-};
 // Función que se ejecuta al apretar aceptar en actualización de movimientos
 const handleOkPro = (e) => {
     console.log(e);
-    openPro.value = false;
+    store.balanComp = false;
 };
 // Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({

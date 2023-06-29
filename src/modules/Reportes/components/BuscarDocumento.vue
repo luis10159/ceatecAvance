@@ -1,8 +1,6 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModalPro">Buscar Documento</a-button>
     <!-- Modal  buscar documento -->
-    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px" title="Buscar Documento"
+    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="store.ubiDoc" width="900px" title="Buscar Documento"
         @ok="handleOkPro">
         <a-row justify="center">
             <a-col :span="8">
@@ -112,20 +110,18 @@
 </template>
 
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar iconos de ant design vue
 import { SearchOutlined } from '@ant-design/icons-vue';
 // Importar funciones de vue
 import { reactive, ref, toRefs, h } from 'vue';
-// Variable que controla la visibilidad del modal buscar documento
-const openPro = ref(false);
-// Función que muestra buscar documento
-const showModalPro = () => {
-    openPro.value = true;
-};
+
 // Función que se ejecuta al apretar aceptar en buscar documento
 const handleOkPro = (e) => {
     console.log(e);
-    openPro.value = false;
+    store.ubiDoc = false;
 };
 // variable que guarda el valor de la entreda del buscador
 const buscador = ref('')

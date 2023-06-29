@@ -1,8 +1,6 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModalPro">Mantenimiento Bancos</a-button>
     <!-- Modal mantenimiento de bancos -->
-    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px" title="Mantenimiento de bancos"
+    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="store.mantBancos" width="900px" title="Mantenimiento de bancos"
         @ok="handleOkPro">
         <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
@@ -60,20 +58,17 @@
 </template>
 
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar funciones de vue
 import { ref, reactive, h } from 'vue'
 // Importar iconos de ant design vue
 import { PrinterOutlined, PlusOutlined, MinusOutlined, ArrowLeftOutlined } from '@ant-design/icons-vue';
-// Variable que controla la visibilidad del modal mantenimiento de bancos
-const openPro = ref(false);
-// Función que muestra mantenimiento de bancos
-const showModalPro = () => {
-    openPro.value = true;
-};
 // Función que se ejecuta al apretar aceptar en mantenimiento de bancos
 const handleOkPro = (e) => {
     console.log(e);
-    openPro.value = false;
+    store.mantBancos = false;
 };
 // Variable que controla la posición del tabs
 const mode = ref('left');
