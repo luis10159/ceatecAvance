@@ -1,9 +1,7 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModal">Registro planillas B</a-button>
     <!-- Modal registro de movimientos: Planillas B -->
-    <a-modal ok-text="Guardar" cancel-text="Cancelar" v-model:open="open" width="700px"
-        title="Registro de movimientos: Planillas B" @ok="handleOk">
+    <a-modal ok-text="Guardar" cancel-text="Cancelar" v-model:open="store.regPlani2" width="700px"
+        :title="titulo" @ok="handleOk">
         <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
             <a-row :gutter="16" justify="space-between" class="margen-abajo">
@@ -303,8 +301,11 @@
 </template>
 
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar funciones de vue
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 // Importar iconos de ant design vue
 import { PlusOutlined } from '@ant-design/icons-vue';
 // Variable que controla la visibilidad de las filas del formulario
@@ -317,16 +318,13 @@ const mostrarFilas = () => {
         mostrar.value = false
     }
 }
-// Variable que controla la visibilidad del modal registro de movimientos: Planillas B
-const open = ref(false);
-// Función que muestra registro de movimientos: Planillas B
-const showModal = () => {
-    open.value = true;
-};
+const titulo = computed(() => {
+  return "Actualización de Movimientos - " + store.formCompObliga.titulo;
+});
 // Función que se ejecuta al apretar aceptar en registro de movimientos: Planillas B
 const handleOk = (e) => {
     console.log(e);
-    open.value = false;
+    store.regPlani2 = false;
 };
 // Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({

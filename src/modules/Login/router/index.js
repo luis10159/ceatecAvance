@@ -5,7 +5,10 @@ export default {
       {
         path: '/login',
         name: 'login',
-        component: () => import(/* webpackChunkName: "inicio" */ '@/modules/Login/views/LoginView.vue')
+        component: () => import(/* webpackChunkName: "inicio" */ '@/modules/Login/views/LoginView.vue'),
+        meta: {
+          requireAuth: false,
+        },
       },
 
     ],

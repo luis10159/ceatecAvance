@@ -26,6 +26,15 @@
         <template #icon>
             <PlusCircleOutlined />
         </template>
+        <a-tooltip placement="left" title="Parámetros" :get-popup-container="getPopupContainer" color="blue">
+            <a-float-button>
+                <template #icon>
+                    <router-link :to="{ name: 'parametros' }">
+                        <ToolOutlined />
+                    </router-link>
+                </template>
+            </a-float-button>
+        </a-tooltip>
         <a-tooltip placement="left" title="Opción 5" :get-popup-container="getPopupContainer" color="blue">
             <a-float-button>
                 <template #icon>
@@ -89,7 +98,7 @@ const dashfooter = defineAsyncComponent(() => import('@/components/DashFooter.vu
 const DatosPrincipales = defineAsyncComponent(() => import('@/modules/Reportes/components/DatosPrincipales.vue'));
 
 // Importar iconos de antdesign vue
-import { PlusCircleOutlined, EditOutlined, FileAddOutlined, UsergroupAddOutlined, ReconciliationOutlined, DollarOutlined } from '@ant-design/icons-vue';
+import { PlusCircleOutlined, EditOutlined, FileAddOutlined, UsergroupAddOutlined, ReconciliationOutlined, DollarOutlined, ToolOutlined } from '@ant-design/icons-vue';
 //Tooltip ingreso de movimientos
 const getPopupContainer = trigger => {
     return trigger.parentElement;

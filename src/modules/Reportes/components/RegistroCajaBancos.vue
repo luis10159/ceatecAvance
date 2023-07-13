@@ -1,9 +1,7 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModal">Registro Caja y Bancos</a-button>
     <!-- Modal registro de movimientos: Caja y Bancos Egreso -->
-    <a-modal ok-text="Actualizar" cancel-text="Cancelar" v-model:open="open" width="700px"
-        title="Registro de movimientos: Caja y Bancos Egreso" @ok="handleOk">
+    <a-modal ok-text="Actualizar" cancel-text="Cancelar" v-model:open="store.regCajBancos" width="700px"
+        :title="titulo" @ok="handleOk">
         <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
             <a-config-provider :component-size="componentSize">
@@ -14,7 +12,6 @@
                                 :options="ctaCont" :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur"
                                 @change="handleChange"></a-select>
                         </a-form-item>
-
                     </a-col>
                     <a-col :span="12">
                         <a-form-item label="Tipo de operación" name="TipOper">
@@ -96,7 +93,7 @@
                     </a-col>
                     <a-col :span="7">
                         <a-form-item label="Tipo de cambio" name="TipCamb">
-                            <a-input-number v-model:value="form.TipCamb" placeholder="Ingrese el tipo de cambio">
+                            <a-input-number v-model:value="form.TipCamb" placeholder="Ingrese el tipo de cambio" @click="store.cambiarTipCambio()">
                                 <template #addonBefore>
                                     <a-select v-model:value="form.moneda" style="width: 60px">
                                         <a-select-option value="USD">$</a-select-option>
@@ -134,31 +131,40 @@
                 </a-row>
                 <a-row justify="center" class="ancho">
                     <a-col>
-                        <a-button block :icon="h(EditOutlined)">Varios documentos</a-button>
+                        <a-button block :icon="h(EditOutlined)" @click="store.cambiarCuentCobrar()">Varios
+                            documentos</a-button>
                     </a-col>
                 </a-row>
             </a-config-provider>
         </a-form>
     </a-modal>
+    <CuentasPorCobrar></CuentasPorCobrar>
+    <TipoCambio></TipoCambio>
 </template>
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar funciones de vue
-import { ref, reactive, h } from 'vue'
+import { ref, reactive, h, defineAsyncComponent, computed } from 'vue'
 // Importar iconos de ant design vue
 import { EditOutlined } from '@ant-design/icons-vue';
 // Variable que controla el tamaño de los componentes
+// Importar componentes
+const CuentasPorCobrar = defineAsyncComponent(() => import('@/modules/Reportes/components/CuentasPorCobrar.vue'));
+const TipoCambio = defineAsyncComponent(() => import('@/modules/Reportes/components/TipoCambio.vue'));
+// Tamaño del componenete - config
 const componentSize = ref('middle');
 // Variable que controla la visibilidad del modal registro de movimientos: Caja y Bancos Egreso
 const open = ref(false);
-// Función que muestra registro de movimientos: Caja y Bancos Egreso
-const showModal = () => {
-    open.value = true;
-};
 // Función que se ejecuta al apretar aceptar en libro diario
 const handleOk = (e) => {
     console.log(e);
-    open.value = false;
+    store.regCajBancos = false;
 };
+const titulo = computed(() => {
+  return "Actualización de Movimientos - " + store.formCompObliga.titulo;
+});
 // Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     ctaCont: null,

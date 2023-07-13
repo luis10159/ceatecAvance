@@ -3,7 +3,10 @@ export default {
       {
         path: '/parametros',
         name: 'parametros',
-        component: () => import(/* webpackChunkName: "parametros" */ '@/modules/Herramientas/views/ParametrosView.vue')
+        component: () => import(/* webpackChunkName: "parametros" */ '@/modules/Herramientas/views/ParametrosView.vue'),
+        meta: {
+          requireAuth: true,
+        },
       }
     ]
 }

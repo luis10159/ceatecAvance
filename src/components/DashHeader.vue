@@ -3,33 +3,29 @@
     <!-- buscador -->
     <a-row align="middle" justify="space-between">
       <a-col :span="4">
-        <a-select class="ancho" placeholder="Seleccione una empresa" v-model:value="value" show-search :options="options"
+        <a-select class="ancho" placeholder="Seleccione la empresa" v-model:value="value" show-search :options="options"
           :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur" @change="handleChange"></a-select>
       </a-col>
-      <a-col :span="15">
+      <a-col :span="18">
         <a-menu theme="dark" v-model:selectedKeys="current" mode="horizontal" :items="items" @click="handleClick"
           subMenuOpenDelay="0.4" />
       </a-col>
-      <a-col :span="5">
+      <a-col :span="2">
         <a-row justify="center" align="middle">
-          <a-col :span="15" class="derecha">
-            <a-switch checked-children="Oscuro" un-checked-children="Claro" class="color arriba" />
-          </a-col>
           <!-- Menú de opciones del usuario -->
-          <a-col :span="9" class="derecha-avatar">
+          <a-col :span="24" class="derecha-avatar">
             <a-dropdown>
-
               <template #overlay>
                 <a-menu @click="handleMenuClick">
                   <a-menu-item key="1">
                     <EditOutlined />
-                    Editar perfil
+                    Editar Perfil
                   </a-menu-item>
                   <a-menu-item key="2">
                     <DownCircleOutlined />
                     Ajustes
                   </a-menu-item>
-                  <a-menu-item key="3">
+                  <a-menu-item key="3" @click="salir">
                     <LogoutOutlined />
                     Salir
                   </a-menu-item>
@@ -46,20 +42,20 @@
       </a-col>
     </a-row>
   </a-layout-header>
-  <!-- Componenetes modales -->
+  <!-- Componenentes modales -->
   <ParametrosAux></ParametrosAux>
   <MantenimientoBancos></MantenimientoBancos>
   <BuscarDocumento></BuscarDocumento>
   <InconsisComprobantes></InconsisComprobantes>
   <LibroDiario></LibroDiario>
   <BalanceComprobacion></BalanceComprobacion>
-
+  <LibroRetenciones></LibroRetenciones>
+  <Daot></Daot>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router'
 const router = useRouter()
-
 //Manejador de estados - con pinia
 import { useIndexStore } from '@/store/index'
 const store = useIndexStore()
@@ -81,6 +77,10 @@ const handleClick = e => {
     store.cambiarLibDiario();
   } else if (e.key == 'config:169') {
     store.cambiarBalanComp();
+  } else if (e.key == 'config:181') {
+    store.cambiarLibReten();
+  } else if (e.key == 'config:151') {
+    store.cambiarDaot();
   }
 };
 // Importar iconos de ant design vue
@@ -99,8 +99,8 @@ const BuscarDocumento = defineAsyncComponent(() => import('@/modules/Reportes/co
 const InconsisComprobantes = defineAsyncComponent(() => import('@/modules/Reportes/components/InconsisComprobantes.vue'));
 const LibroDiario = defineAsyncComponent(() => import('@/modules/Reportes/components/LibroDiario.vue'));
 const BalanceComprobacion = defineAsyncComponent(() => import('@/modules/Reportes/components/BalanceComprobacion.vue'));
-
-
+const LibroRetenciones = defineAsyncComponent(() => import('@/modules/Reportes/components/LibroRetenciones.vue'));
+const Daot = defineAsyncComponent(() => import('@/modules/Reportes/components/Daot.vue'));
 const value = ref(null);
 //Empresas - opciones
 const options = ref([{
@@ -115,7 +115,7 @@ const options = ref([{
 }]);
 // Imprimir en diferentes estados del input
 const handleChange = value => {
-  console.log(`selected ${value}`);
+  console.log(`Selecionado ${value}`);
 };
 const handleBlur = () => {
   console.log('blur');
@@ -453,6 +453,11 @@ const items = ref([{
     key: 'config:264',
   }],
 }]);
+// salir
+const salir = () => {
+  store.token = false;
+  router.push({name: 'login'})
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,8 +1,6 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModalPro">DAOT</a-button>
     <!-- Modal DAOT -->
-    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="500px" title="DAOT" @ok="handleOkPro">
+    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="store.daot" width="500px" title="DAOT" @ok="handleOkPro">
         <!-- Formulario -->
         <a-form :model="form" :rules="roles" layout="vertical">
             <a-row :gutter="16" class="ancho margen-abajo" justify="center">
@@ -40,18 +38,15 @@
 </template>
 
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar funciones de vue
-import { ref, reactive, watch } from 'vue'
-// Variable que controla la visibilidad del modal DAOT
-const openPro = ref(false);
-// Función que muestra DAOT
-const showModalPro = () => {
-    openPro.value = true;
-};
+import { reactive } from 'vue'
 // Función que se ejecuta al apretar aceptar en cuentas por cobrar
 const handleOkPro = (e) => {
     console.log(e);
-    openPro.value = false;
+    store.daot = false;
 };
 // Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({

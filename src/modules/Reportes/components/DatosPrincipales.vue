@@ -1,7 +1,7 @@
 <template>
     <!-- Modal nuevo RUC -->
-    <a-modal ok-text="Iniciar Proceso" cancel-text="Cancelar" v-model:open="store.ingresoMov" width="700px" title="Datos principales"
-        @ok="handleOk">
+    <a-modal ok-text="Iniciar Proceso" cancel-text="Cancelar" v-model:open="store.ingresoMov" width="700px"
+        title="Datos principales" @ok="handleOk">
         <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
             <a-row :gutter="16">
@@ -59,6 +59,7 @@
             </a-row>
         </a-form>
     </a-modal>
+    <ComprasObligaciones></ComprasObligaciones>
 </template>
 
 <script setup>
@@ -66,11 +67,72 @@
 import { useIndexStore } from '@/store/index'
 const store = useIndexStore()
 // Importar funciones de vue
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed, watch, defineAsyncComponent } from 'vue'
+// importar componentes de ant design vue
+import { message } from 'ant-design-vue';
+// Importar componentes
+const ComprasObligaciones = defineAsyncComponent(() => import('@/modules/Reportes/components/ComprasObligaciones.vue'));
+// Llave - mensaje
+const key = 'updatable';
 // Función que se ejecuta al apretar aceptar en nuevo RUC
 const handleOk = (e) => {
-    console.log(e);
-    store.ingresoMov = false;
+    if (form.GrupAux == '03' && form.sucursal != null && form.ano != null && form.mes != null && form.oficina != null) {
+        console.log(e);
+        console.log(form);
+        store.formCompObliga.ano = form.ano;
+        store.formCompObliga.mes = form.mes;
+        store.formCompObliga.grupAux = form.GrupAux;
+        store.formCompObliga.titulo = 'Compras y obligaciones corrientes';
+        console.log(store.formCompObliga);
+        store.comprasOblig = true;
+        store.ingresoMov = false;
+    } else if(form.GrupAux == '04' && form.sucursal != null && form.ano != null && form.mes != null && form.oficina != null){
+        console.log(e);
+        console.log(form);
+        store.formCompObliga.ano = form.ano;
+        store.formCompObliga.mes = form.mes;
+        store.formCompObliga.grupAux = form.GrupAux;
+        store.formCompObliga.titulo = 'Registro de ventas';
+        console.log(store.formCompObliga);
+        store.comprasOblig = true;
+        store.ingresoMov = false;
+    } else if(form.GrupAux == '05' && form.sucursal != null && form.ano != null && form.mes != null && form.oficina != null){
+        console.log(e);
+        console.log(form);
+        store.formCompObliga.ano = form.ano;
+        store.formCompObliga.mes = form.mes;
+        store.formCompObliga.grupAux = form.GrupAux;
+        store.formCompObliga.titulo = 'Planillas';
+        console.log(store.formCompObliga);
+        store.comprasOblig = true;
+        store.ingresoMov = false;
+    } else if(form.GrupAux == '01' && form.sucursal != null && form.ano != null && form.mes != null && form.oficina != null){
+        console.log(e);
+        console.log(form);
+        store.formCompObliga.ano = form.ano;
+        store.formCompObliga.mes = form.mes;
+        store.formCompObliga.grupAux = form.GrupAux;
+        store.formCompObliga.titulo = 'Caja y Bancos Egresos';
+        console.log(store.formCompObliga);
+        store.comprasOblig = true;
+        store.ingresoMov = false;
+    }  else if(form.GrupAux == '06' && form.sucursal != null && form.ano != null && form.mes != null && form.oficina != null){
+        console.log(e);
+        console.log(form);
+        store.formCompObliga.ano = form.ano;
+        store.formCompObliga.mes = form.mes;
+        store.formCompObliga.grupAux = form.GrupAux;
+        store.formCompObliga.titulo = 'Caja y Bancos - Ingresos';
+        console.log(store.formCompObliga);
+        store.comprasOblig = true;
+        store.ingresoMov = false;
+    }
+    else {
+        message.loading({ content: 'Cargando...', key });
+        setTimeout(() => {
+            message.error({ content: 'Por favor, llene correctamente los campos correspondientes', key, duration: 2 });
+        }, 1000);
+    }
 };
 //------ select - sucursal
 // Objeto con los datos que se mostrarán en el select
@@ -137,7 +199,7 @@ const filterOptionDepar = (input, option) => {
     return option.value.toLowerCase().indexOf(inputValue) >= 0 || option.label.toLowerCase().indexOf(inputValue) >= 0;
 };
 // Variable que guarda el valor del switch
-const checked1 = ref(false)
+const checked1 = ref(true)
 //-----------select - grupos auxiliares
 // Objeto con los datos que se mostrarán en el select
 const optGrupAux = ref([{
@@ -145,13 +207,22 @@ const optGrupAux = ref([{
     label: 'Asiento de Apertura',
 }, {
     value: '01',
-    label: 'Cajas y Bancos - Ingresos',
+    label: 'Cajas y Bancos Egresos',
 }, {
     value: '02',
     label: 'Almacenes',
 }, {
     value: '03',
-    label: 'COmpras y obligaciones corrientes',
+    label: 'Compras y obligaciones corrientes',
+}, {
+    value: '04',
+    label: 'Registro de Ventas',
+}, {
+    value: '05',
+    label: 'Planillas',
+}, {
+    value: '06',
+    label: 'Cajas y Bancos - Ingresos',
 }]);
 // Función que imprime valor cada que es cambiado
 const handleChangeGrupA = value => {

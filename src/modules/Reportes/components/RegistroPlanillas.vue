@@ -1,9 +1,7 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModal">Registro Planillas</a-button>
     <!-- Modal registro de movimientos: Planillas -->
-    <a-modal ok-text="Actualizar" cancel-text="Cancelar" v-model:open="open" width="700px"
-        title="Registro de movimientos: Planillas" @ok="handleOk">
+    <a-modal ok-text="Actualizar" cancel-text="Cancelar" v-model:open="store.regPlani" width="700px"
+        :title="titulo" @ok="handleOk">
         <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
             <a-row :gutter="16" justify="center" class="margen-abajo">
@@ -106,24 +104,35 @@
                     </a-form-item>
                 </a-col>
             </a-row>
+            <a-row justify="center" class="ancho">
+                    <a-col>
+                        <a-button block :icon="h(TeamOutlined)" @click="store.cambiarRegPlani2()">Registro Planillas</a-button>
+                    </a-col>
+                </a-row>
         </a-form>
     </a-modal>
+    <RegistroPlanillasB></RegistroPlanillasB>
 </template>
 
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar funciones de vue
-import { ref, reactive } from 'vue'
-// Variable que controla la visibilidad del modal libro diario
-const open = ref(false);
-// Función que muestra libro diario
-const showModal = () => {
-    open.value = true;
-};
+import { ref, reactive, computed, h, defineAsyncComponent } from 'vue'
+// Importar iconos de ant design vue
+import { TeamOutlined } from '@ant-design/icons-vue';
+// importar componenetes
+const RegistroPlanillasB = defineAsyncComponent(() => import('@/modules/Reportes/components/RegistroPlanillasB.vue'));
+
 // Función que se ejecuta al apretar aceptar en libro diario
 const handleOk = (e) => {
     console.log(e);
-    open.value = false;
+    store.regPlani = false;
 };
+const titulo = computed(() => {
+  return "Actualización de Movimientos - " + store.formCompObliga.titulo;
+});
 // Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({
     ctaCont: null,

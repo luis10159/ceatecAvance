@@ -1,8 +1,6 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModal">Consultar Sunat</a-button>
     <!-- Modal nuevo RUC -->
-    <a-modal ok-text="Actualizar" cancel-text="Cancelar" v-model:open="open" width="700px" title="Nuevo RUC" @ok="handleOk">
+    <a-modal ok-text="Actualizar" cancel-text="Cancelar" v-model:open="store.consulSunat" width="700px" title="Nuevo RUC" @ok="handleOk">
         <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
             <a-row :gutter="16" align="middle" class="color margen-abajo">
@@ -78,20 +76,17 @@
 </template>
 
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar funciones de vue
-import { ref, reactive, h } from 'vue'
+import { reactive, h } from 'vue'
 // Importar iconos de ant design vue
 import { GlobalOutlined } from '@ant-design/icons-vue';
-// Variable que controla la visibilidad del modal nuevo RUC
-const open = ref(false);
-// Función que muestra nuevo RUC
-const showModal = () => {
-    open.value = true;
-};
 // Función que se ejecuta al apretar aceptar en nuevo RUC
 const handleOk = (e) => {
     console.log(e);
-    open.value = false;
+    store.consulSunat = false;
 };
 // Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({

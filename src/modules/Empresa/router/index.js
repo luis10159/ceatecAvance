@@ -7,6 +7,9 @@ export default {
         import(
           /* webpackChunkName: "crear-empresa" */ "@/modules/Empresa/views/CrearEmpresaView.vue"
         ),
+      meta: {
+        requireAuth: true,
+      },
     },
     {
       path: "/asignar-empresa",
@@ -15,6 +18,9 @@ export default {
         import(
           /* webpackChunkName: "asignar-empresa" */ "@/modules/Empresa/views/AsignarEmpresaView.vue"
         ),
+      meta: {
+        requireAuth: true,
+      },
     },
     {
       path: "/crear-zona",
@@ -23,6 +29,9 @@ export default {
         import(
           /* webpackChunkName: "crear-zona" */ "@/modules/Empresa/views/CrearZonaView.vue"
         ),
+      meta: {
+        requireAuth: true,
+      },
     },
     {
       path: "/crear-unidad",
@@ -31,6 +40,9 @@ export default {
         import(
           /* webpackChunkName: "crear-unidad" */ "@/modules/Empresa/views/CrearUnidadView.vue"
         ),
+      meta: {
+        requireAuth: true,
+      },
     },
     {
       path: "/mes-proceso",
@@ -39,6 +51,9 @@ export default {
         import(
           /* webpackChunkName: "mes-proceso" */ "@/modules/Empresa/views/MesProcesoView.vue"
         ),
+      meta: {
+        requireAuth: true,
+      },
     },
   ],
 };

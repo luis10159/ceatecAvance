@@ -1,8 +1,6 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModal">Resgistrar Cobranza</a-button>
     <!-- Modal registrar cobranza -->
-    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="open" width="700px" title="Registrar cobranza"
+    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="store.regisCobran" width="700px" title="Registrar cobranza"
         @ok="handleOk">
         <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
@@ -56,7 +54,7 @@
                     </a-col>
                     <a-col :span="7">
                         <a-form-item label="Tipo de cambio" name="TipCamb">
-                            <a-input-number v-model:value="form.TipCamb" placeholder="Ingrese el tipo de cambio">
+                            <a-input-number v-model:value="form.TipCamb" placeholder="Ingrese el tipo de cambio" @click="store.cambiarTipCambio()">
                                 <template #addonBefore>
                                     <a-select v-model:value="form.moneda" style="width: 60px">
                                         <a-select-option value="USD">$</a-select-option>
@@ -174,25 +172,25 @@
             </a-row>
         </a-row>
     </a-modal>
+    <TipoCambio></TipoCambio>
 </template>
 
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar funciones de vue
-import { ref, reactive, h, toRefs } from 'vue'
+import { ref, reactive, h, toRefs, defineAsyncComponent } from 'vue'
 // Importar iconos de ant design vue
 import { PlusOutlined, ArrowLeftOutlined, SaveOutlined, DeleteOutlined, CheckOutlined, SearchOutlined } from '@ant-design/icons-vue';
+// Importar componentes
+const TipoCambio = defineAsyncComponent(() => import('@/modules/Reportes/components/TipoCambio.vue'));
 // Variable que controla el tamaño de los componentes
 const componentSize = ref('middle');
-// Variable que controla la visibilidad del modal registrar cobranza
-const open = ref(false);
-// Función que muestra registrar cobranza
-const showModal = () => {
-    open.value = true;
-};
 // Función que se ejecuta al apretar aceptar en registrar cobranza
 const handleOk = (e) => {
     console.log(e);
-    open.value = false;
+    store.regisCobran = false;
 };
 // Objeto reactivo que va a capturar los campos en el formulario
 const form = reactive({

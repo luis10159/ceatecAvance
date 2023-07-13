@@ -1,8 +1,11 @@
-
 export default {
-        path: '/dashboard',
-        name: 'dashboard',
-        component: () => import(/* webpackChunkName: "inicio" */ '@/modules/Inicio/views/DashboardView.vue')
-
-}
-
+  path: "/dashboard",
+  name: "dashboard",
+  component: () =>
+    import(
+      /* webpackChunkName: "inicio" */ "@/modules/Inicio/views/DashboardView.vue"
+    ),
+  meta: {
+    requireAuth: true,
+  },
+};

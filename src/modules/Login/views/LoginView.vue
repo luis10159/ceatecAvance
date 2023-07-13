@@ -16,10 +16,10 @@
           <h2>Identificación del usuario</h2>
         </a-row>
         <!-- Items del formuario -->
-        <a-form-item label="Email" name="username" :rules="[
+        <a-form-item label="Email" name="email" :rules="[
           { type: 'email', required: true, message: 'No es un correo electrónico válido' },
         ]">
-          <a-input v-model:value="formState.username" placeholder="Ingrese su email">
+          <a-input v-model:value="formState.email" placeholder="Ingrese su email">
             <template #prefix>
               <MailOutlined class="site-form-item-icon" />
             </template>
@@ -48,13 +48,13 @@
         <a-form-item label="Plataforma" name="platform">
           <a-select placeholder="Seleccione la plataforma" v-model:value="formState.platform">
             <a-select-option value="plataformaa">Plataforma a</a-select-option>
-            <a-select-option value="plataforma">Plataforma b</a-select-option>
+            <a-select-option value="plataformab">Plataforma b</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="Año" name="age">
           <a-select placeholder="Seleccione el año" v-model:value="formState.age">
-            <a-select-option value="2022">202x</a-select-option>
-            <a-select-option value="2023">202x</a-select-option>
+            <a-select-option value="2022">2022</a-select-option>
+            <a-select-option value="2023">2023</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item>
@@ -68,27 +68,51 @@
             Iniciar
           </a-button>
         </a-form-item>
+        <a-alert v-if="visible" message="Datos no válidos, ingrese nuevamente" type="error" closable
+          :after-close="handleClose" show-icon>
+          <template #icon>
+            <SmileOutlined />
+          </template>
+        </a-alert>
       </a-form>
     </a-col>
   </a-row>
 </template>
 
 <script setup>
+import router from '@/router'
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
+if (store.token == true) {
+  router.push({ name: 'dashboard' })
+}
 // Importar funciones de vue
-import { reactive, computed } from "vue";
+import { reactive, computed, ref } from "vue";
 // Importar iconos de ant design vue
-import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons-vue";
+import { UserOutlined, MailOutlined, LockOutlined, SmileOutlined } from "@ant-design/icons-vue";
 // variables sincronizadas con las entradas
 const formState = reactive({
-  username: "",
+  email: "",
   password: "",
   platform: null,
   age: null,
   remember: false,
 });
+// Alerta de ingreso de datos no válidos
+const visible = ref(false);
+const handleClose = () => {
+  visible.value = false;
+};
 // mensaje de envio exitoso en consola
 const onFinish = (values) => {
-  console.log("Success:", values);
+  if (store.formLogin.email == values.email && store.formLogin.password == values.password) {
+    console.log("Success:", values);
+    store.token = true;
+    router.push({ name: 'dashboard' })
+  } else {
+    visible.value = true;
+  }
 };
 // mensaje de éxito en consola
 const onFinishFailed = (errorInfo) => {
@@ -97,7 +121,7 @@ const onFinishFailed = (errorInfo) => {
 // bloqueo del botón iniciar
 const disabled = computed(() => {
   return !(
-    formState.username &&
+    formState.email &&
     formState.password &&
     formState.platform &&
     formState.age

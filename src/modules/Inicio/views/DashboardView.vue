@@ -1,3 +1,8 @@
 <template>
-    <a-typography-title>Bienvenido a CeaCont</a-typography-title>
+    <a-typography-title class="centrar">Bienvenido a CeaCont</a-typography-title>
 </template>
+<style lang="scss" scoped>
+.centrar {
+    text-align: center;
+}
+</style>

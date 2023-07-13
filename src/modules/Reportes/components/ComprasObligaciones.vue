@@ -1,9 +1,7 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModalPro">Iniciar proceso</a-button>
     <!-- Modal compras y obligaciones corrientes -->
-    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="openPro" width="900px"
-        title="Compras y obligaciones corrientes" @ok="handleOkPro">
+    <a-modal ok-text="Aceptar" cancel-text="Cancelar" v-model:open="store.comprasOblig" width="900px" :title="titulo"
+        @ok="handleOkPro">
         <!-- Formulario -->
         <a-form :model="formCompObli" :rules="rulesCompObli" layout="vertical">
             <a-row :gutter="16" class="margen-arriba">
@@ -53,14 +51,24 @@
                             </a-row>
                             <a-row class="margen-arriba">
                                 <a-col :span="25">
-                                    <a-table :columns="columns" :data-source="data" bordered size="small"
-                                        :pagination="{ pageSize: 10 }" :scroll="{ y: 235 }">
-                                        <template #bodyCell="{ column, text }">
-                                            <template v-if="column.dataIndex === 'name'">
-                                                <a>{{ text }}</a>
-                                            </template>
+                                    <a-dropdown :trigger="['contextmenu']">
+                                        <div>
+                                            <a-table :columns="columns" :data-source="data" bordered size="small"
+                                                :pagination="{ pageSize: 10 }" :scroll="{ y: 235 }">
+                                                <template #bodyCell="{ column, text }">
+                                                    <template v-if="column.dataIndex === 'name'">
+                                                        <a>{{ text }}</a>
+                                                    </template>
+                                                </template>
+                                            </a-table>
+                                        </div>
+                                        <template #overlay>
+                                            <a-menu @click="onClick">
+                                                <a-menu-item key="1" :icon="h(PlusOutlined)">Agregar
+                                                    movimiento</a-menu-item>
+                                            </a-menu>
                                         </template>
-                                    </a-table>
+                                    </a-dropdown>
                                 </a-col>
                             </a-row>
                             <a-row>
@@ -97,21 +105,33 @@
             </a-row>
         </a-form>
     </a-modal>
+    <actualizacionMovimientos></actualizacionMovimientos>
+    <RegistroPlanillas></RegistroPlanillas>
+    <RegistroCajaBancos></RegistroCajaBancos>
 </template>
 
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar funciones de vue
-import { ref, reactive } from 'vue'
-// Variable que controla la visibilidad del modal Compras y obligaciones corrientes
-const openPro = ref(false);
-// Función que muestra Compras y obligaciones corrientes
-const showModalPro = () => {
-    openPro.value = true;
-};
+import { ref, reactive, h, defineAsyncComponent, computed } from 'vue'
+import { PlusOutlined } from '@ant-design/icons-vue';
+// importar componentes
+const actualizacionMovimientos = defineAsyncComponent(() => import('@/modules/Reportes/components/actualizacionMovimientos.vue'));
+const RegistroPlanillas = defineAsyncComponent(() => import('@/modules/Reportes/components/RegistroPlanillas.vue'));
+const RegistroCajaBancos = defineAsyncComponent(() => import('@/modules/Reportes/components/RegistroCajaBancos.vue'));
+// const titulo = ref(`${store.formCompObliga.titulo} Mes de ${store.formCompObliga.mes}  del ${store.formCompObliga.ano}`)
+
+
+const titulo = computed(() => {
+    return store.formCompObliga.titulo + " - Mes de " + store.formCompObliga.mes + ' del ' + store.formCompObliga.ano;
+});
+
 // Función que se ejecuta al apretar aceptar en buscar documento
 const handleOkPro = (e) => {
     console.log(e);
-    openPro.value = false;
+    store.comprasOblig = false;
 };
 // Variable que controla en que modo va a estar el tab
 const mode = ref('left');
@@ -215,7 +235,7 @@ const valorBuscar = ref(null);
 // Función que imprime la entrada del buscador
 const onSearch = (searchValue) => {
     console.log('Usa este valor', searchValue);
-    console.log('o usa este valor', valorBuscar.value);
+    console.log('o el siguiente', valorBuscar.value);
 };
 // Objeto reactivo que va a capturar los campos en el formulario
 const formCompObli = reactive({
@@ -254,6 +274,27 @@ const rulesCompObli = {
         message: 'Selecione el glosario',
     }],
 }
+// Menú - agregar movimiento
+const onClick = ({
+    key,
+}) => {
+    console.log(`Click en el item ${key}`);
+    if (store.formCompObliga.grupAux == '00') {
+
+    } else if (store.formCompObliga.grupAux == '01') {
+        store.regCajBancos = true;
+    } else if (store.formCompObliga.grupAux == '02') {
+        store.movimientos = true;
+    } else if (store.formCompObliga.grupAux == '03') {
+        store.movimientos = true;
+    } else if (store.formCompObliga.grupAux == '04') {
+        store.movimientos = true;
+    } else if (store.formCompObliga.grupAux == '05') {
+        store.regPlani = true;
+    } else if (store.formCompObliga.grupAux == '06') {
+        store.regCajBancos = true;
+    }
+};
 </script>
 
 <style lang="scss" scoped>

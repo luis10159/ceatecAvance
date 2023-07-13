@@ -1,8 +1,7 @@
 <template>
-    <!-- Botón para abrir el modal -->
-    <a-button type="primary" @click="showModal">Mantenimiento</a-button>
+
     <!-- Modal mantenimineto de clientes y proveedores -->
-    <a-modal ok-text="Guardar" cancel-text="Cancelar" v-model:open="open" width="700px"
+    <a-modal ok-text="Guardar" cancel-text="Cancelar" v-model:open="store.mantCliProv" width="700px"
         title="Mantenimineto de clientes y proveedores" @ok="handleOk">
         <!-- Formulario -->
         <a-form :model="form" :rules="rules" layout="vertical">
@@ -99,7 +98,7 @@
             <a-row justify="center">
                 <a-col>
                     <a-space wrap>
-                        <a-button type="primary" block :icon="h(GlobalOutlined)">Consultar Sunat</a-button>
+                        <a-button type="primary" block :icon="h(GlobalOutlined)" @click="store.cambiarConsulSunat()">Consultar SUNAT</a-button>
                         <a-button block :icon="h(PlusOutlined)">Nuevo</a-button>
                         <a-button type="dashed" block :icon="h(ArrowLeftOutlined)">Deshacer</a-button>
                         <a-button danger block :icon="h(MinusOutlined)">Eliminar</a-button>
@@ -108,23 +107,23 @@
             </a-row>
         </a-form>
     </a-modal>
+    <ConsultarSunat></ConsultarSunat>
 </template>
 
 <script setup>
+//Manejador de estados - con pinia
+import { useIndexStore } from '@/store/index'
+const store = useIndexStore()
 // Importar funciones de vue
-import { ref, reactive, h } from 'vue'
+import { ref, reactive, h, defineAsyncComponent } from 'vue'
 // Importar iconos de ant design vue
 import { GlobalOutlined, PlusOutlined, MinusOutlined, ArrowLeftOutlined } from '@ant-design/icons-vue';
-// Variable que controla la visibilidad del modal mantenimineto de clientes y proveedores
-const open = ref(false);
-// Función que muestra mantenimineto de clientes y proveedores
-const showModal = () => {
-    open.value = true;
-};
+// Importar componentes
+const ConsultarSunat = defineAsyncComponent(() => import('@/modules/Reportes/components/ConsultarSunat.vue'));
 // Función que se ejecuta al apretar aceptar en mantenimineto de clientes y proveedores
 const handleOk = (e) => {
     console.log(e);
-    open.value = false;
+    store.mantCliProv = false;
 };
 //----------- Select - tipo
 // Objeto con los datos que se mostrarán en el select
@@ -141,7 +140,7 @@ const optClientProv = ref([{
     value: '004',
     label: 'Selección 4',
 }]);
-// Función que imprime un valor cuando está en blur
+// Función que imprime el valor cuando está en blur
 const focus = () => {
     console.log('focus');
 };

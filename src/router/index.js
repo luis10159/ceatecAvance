@@ -6,8 +6,8 @@ import MainLayout from "@/layouts/DashboardLayout.vue";
 import Empresa from "@/modules/Empresa/router/index.js";
 import Herramientas from "@/modules/Herramientas/router/index.js";
 import Reportes from "@/modules/Reportes/router/index.js";
-
 // import ModuloB from '../modules/TablaGeneral/router/index.js'
+import { useIndexStore } from "@/store/index";
 
 const routes = [
   {
@@ -15,36 +15,48 @@ const routes = [
     component: MainLayout,
     children: [
       {
-        ...Inicio
+        ...Inicio,
       },
       {
-        ...Tabla
+        ...Tabla,
       },
-      
     ],
+    meta: {
+      requireAuth: true,
+    },
   },
   {
     path: "/principal",
     component: MainLayout,
-
-    ...Empresa
+    meta: {
+      requireAuth: true,
+    },
+    ...Empresa,
+    
   },
   {
     path: "/secundario",
     component: MainLayout,
-
-    ...Herramientas
+    meta: {
+      requireAuth: true,
+    },
+    ...Herramientas,
   },
   {
     path: "/terciario",
     component: MainLayout,
-
-    ...Reportes
+    meta: {
+      requireAuth: true,
+    },
+    ...Reportes,
   },
   {
     path: "/",
     name: "home",
     ...Login,
+    meta: {
+      requireAuth: true,
+    },
   },
   {
     path: "/:catchAll(.*)*",
@@ -55,6 +67,15 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const store = useIndexStore();
+  if ((to.meta.requireAuth == true) && (store.token == false)) {
+    next('login')
+  } else {
+    next()
+  }
 });
 
 export default router;
